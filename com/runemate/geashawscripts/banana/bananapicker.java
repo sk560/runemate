@@ -3,8 +3,10 @@ package com.runemate.geashawscripts.banana;
 //Imports are all the classes that we are going to use methods from
 
 import com.runemate.game.api.client.paint.PaintListener;
+import com.runemate.game.api.hybrid.RuneScape;
 import com.runemate.game.api.hybrid.entities.Actor;
 import com.runemate.game.api.hybrid.entities.GameObject;
+import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.input.Keyboard;
 import com.runemate.game.api.hybrid.local.Camera;
@@ -17,6 +19,7 @@ import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.location.navigation.Path;
 import com.runemate.game.api.hybrid.location.navigation.Traversal;
 import com.runemate.game.api.hybrid.region.GameObjects;
+import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
@@ -43,7 +46,7 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
     private int BANANA_COUNT, BANANA_BASKET_PRICE, PROFIT_MADE;
 
     final Area KARAMJA_AREA = new Area.Rectangular(new Coordinate(2905, 3154), new Coordinate(2935, 3180, 0));
-    final Area EDGEVILLE_AREA = new Area.Rectangular(new Coordinate(3084, 3488, 0), new Coordinate(3097, 3499, 0));
+    final Area EDGEVILLE_AREA = new Area.Rectangular(new Coordinate(3082, 3487, 0), new Coordinate(3097, 3499, 0));
     final Player player = Players.getLocal();
     private Path walkToTree;
 
@@ -53,16 +56,13 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
         getEventDispatcher().addListener(this);
         BANANA_BASKET_PRICE = GrandExchange.lookup(5416).getPrice();
         runtime.start();
-        debug("Glory teleport.");
     }
 
     @Override
     public void onLoop() {
 
-        gloryTeleportTo("Karamja.");
-
         // Check if the user is logged in.
-        /*if (RuneScape.isLoggedIn()) {
+        if (RuneScape.isLoggedIn()) {
             if (atEdgeville()) {
                 if (gotFilledBaskets()) {
                     Npc banker = Npcs.newQuery().names("Banker").results().nearest();
@@ -74,24 +74,27 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
                                 openBank();
                             }
                         } else {
-                            debug("Turning camera to banker");
                             Camera.setPitch(0.234);
                             Camera.turnTo(banker);
                         }
                     }
                 } else if (gotAllEmptyBaskets()) {
-                    gloryTeleportTo("Karamja.");
+                    if (!isBusy(player)) {
+                        gloryTeleportTo("Karamja.");
+                    }
                 }
             } else if (atKaramja()) {
                 if (gotFilledBaskets()) {
-                    gloryTeleportTo("Edgeville.");
+                    if (!isBusy(player)) {
+                        gloryTeleportTo("Edgeville.");
+                    }
                 } else if (canPutBananasInBasket()) {
                     putBananasIntoBasket();
                 } else if (canPickBananasFromTree()) {
                     pickBananasFromTree();
                 }
             }
-        }*/
+        }
     }
 
     /**
@@ -99,14 +102,13 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
      */
     private boolean gloryTeleportTo(String location) {
         SlotAction action = ActionBar.getFirstAction(GLORY);
-
         if (action != null) {
             status = "Activating glory.";
             if (action.activate()) {
                 if (gloryInterfaceIsVisible(location)) {
                     InterfaceComponent com = Interfaces.newQuery().texts(location).results().first();
-                    if (com != null) {
-                        status = "Selecting Edgeville teleport.";
+                    if (com != null && com.equals(location)) {
+                        status = "Selecting " + location + " teleport";
                         if (com.click()) {
                             Execution.delayUntil(() -> !gloryInterfaceIsVisible(location), 3000, 4000);
                             return true;
@@ -162,7 +164,6 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
 
         if (tree != null) {
             if (tree.distanceTo(player) > 7) {
-                debug("Tree is further than 7 steps");
                 status = "Tree is further than 7 steps";
                 walkToTree = Traversal.getDefaultWeb().getPathBuilder().buildTo(tree);
                 if (walkToTree != null) {
@@ -271,8 +272,14 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
      * Check if the teleport interface is visible.
      */
     private boolean gloryInterfaceIsVisible(String location) {
-        InterfaceComponent component = Interfaces.newQuery().texts(location).visible().results().first();
-        return (component != null && component.isValid());
+        InterfaceComponent component = Interfaces.newQuery().texts(location).results().first();
+        if (component != null) {
+            if (component.isValid()) {
+                debug("Location: " + location + " seems valid.");
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isBusy(final Actor player) {
