@@ -1,0 +1,15 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.gildedaltar.gildedaltar</main-class>
+    <name>Gilded Altar trainer</name>
+    <description>Trains prayer using your own Gilded Altar and a Yak</description>
+    <version>0.1</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>RS3</game-type>
+    </compatibility>
+    <categories>
+        <category>PRAYER</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>gildedaltar</internal-id>
+</manifest>

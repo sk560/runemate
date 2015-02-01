@@ -1,0 +1,15 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.yakhidebuyer.yakhidebuyer</main-class>
+    <name>Yak hide buyer</name>
+    <description>Buys yak hides at Jatizso</description>
+    <version>0.1</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>RS3</game-type>
+    </compatibility>
+    <categories>
+        <category>MONEYMAKING</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>yakhidebuyer</internal-id>
+</manifest>
