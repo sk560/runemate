@@ -36,11 +36,12 @@ public class autotanner extends LoopingScript implements PaintListener, Inventor
     private StopWatch updateTimer = new StopWatch();
     private final int updateInterval = 15000;
 
-    private long timeRanSoFar;
+    private long timeRanSoFar, lastRunTime;
 
     private int xpGained = 0,
             hidesTanned = 0,
             hidesTannedSoFar = 0,
+            lastHidesTanned = 0,
             expGainedSoFar = 0,
             profitMadeSoFar = 0,
             startExp = -1,
@@ -51,7 +52,9 @@ public class autotanner extends LoopingScript implements PaintListener, Inventor
             hidePrice,
             bodyRunePrice,
             astralRunePrice,
-            userId;
+            userId,
+            lastExpGained,
+            lastProfitMade;
 
     @Override
     public void onStart(String... args) {
@@ -94,17 +97,21 @@ public class autotanner extends LoopingScript implements PaintListener, Inventor
 
             // Update the database.
             if (updateTimer.getRuntime() > updateInterval) {
-                timeRanSoFar = updateTimer.getRuntime();
-                expGainedSoFar = xpGained - expGainedSoFar;
-                profitMadeSoFar = profitMade - profitMadeSoFar;
-                hidesTannedSoFar = hidesTanned - hidesTannedSoFar;
+
+                timeRanSoFar = (runtime.getRuntime() - lastRunTime);
+                expGainedSoFar = xpGained - lastExpGained;
+                profitMadeSoFar = profitMade - lastProfitMade;
+                hidesTannedSoFar = hidesTanned - lastHidesTanned;
+
                 updateDatabase(userId, userName, timeRanSoFar, expGainedSoFar, profitMadeSoFar, hidesTannedSoFar);
+
                 updateTimer.reset();
 
                 // Reset xp gained, profit made and hides tanned.
-                expGainedSoFar = 0;
-                profitMadeSoFar = 0;
-                hidesTannedSoFar = 0;
+                lastRunTime = runtime.getRuntime();
+                lastExpGained = xpGained;
+                lastProfitMade = profitMade;
+                lastHidesTanned = hidesTanned;
             }
 
             // Perform the loop actions.
@@ -301,6 +308,7 @@ public class autotanner extends LoopingScript implements PaintListener, Inventor
         System.out.println("2. Experience: " + exp);
         System.out.println("3. Profit made: " + profit);
         System.out.println("4. Hides tanned: " + hidesTanned);
+
         try {
             String website = "http://erikdekamps.nl";
             URL submit = new URL(website + "/update?uid="+userId+"&username="+userName+"&runtime="+(time/1000)+"&exp="+exp+"&profit="+profit+"&hides="+hidesTanned);
