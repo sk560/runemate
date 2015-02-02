@@ -1,10 +1,12 @@
-package com.runemate.geashawscripts.banana;
+package com.runemate.geashawscripts.LazyBananaPicker;
 
 //Imports are all the classes that we are going to use methods from
 
 import com.runemate.game.api.client.paint.PaintListener;
+import com.runemate.game.api.hybrid.RuneScape;
 import com.runemate.game.api.hybrid.entities.Actor;
 import com.runemate.game.api.hybrid.entities.GameObject;
+import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.input.Keyboard;
 import com.runemate.game.api.hybrid.local.Camera;
@@ -17,6 +19,7 @@ import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.location.navigation.Path;
 import com.runemate.game.api.hybrid.location.navigation.Traversal;
 import com.runemate.game.api.hybrid.region.GameObjects;
+import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
@@ -30,7 +33,7 @@ import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import java.awt.*;
 import java.text.NumberFormat;
 
-public class bananapicker extends LoopingScript implements PaintListener, InventoryListener {
+public class LazyBananaPicker extends LoopingScript implements PaintListener, InventoryListener {
 
     private String status = "Starting up...";
     private final StopWatch runtime = new StopWatch();
@@ -58,10 +61,8 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
 
     @Override
     public void onLoop() {
-        gloryTeleportTo("Karamja");
-
         // Check if the user is logged in.
-        /*if (RuneScape.isLoggedIn()) {
+        if (RuneScape.isLoggedIn()) {
             if (atEdgeville()) {
                 if (gotFilledBaskets()) {
                     Npc banker = Npcs.newQuery().names("Banker").results().nearest();
@@ -93,7 +94,7 @@ public class bananapicker extends LoopingScript implements PaintListener, Invent
                     pickBananasFromTree();
                 }
             }
-        }*/
+        }
     }
 
     /**

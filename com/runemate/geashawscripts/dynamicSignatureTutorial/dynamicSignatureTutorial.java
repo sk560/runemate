@@ -1,4 +1,4 @@
-package com.runemate.geashawscripts.dynamicSignatureTutorial;
+package com.runemate.geashawscripts.DynamicSignatureTutorial;
 
 //Imports are all the classes that we are going to use methods from
 
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class dynamicSignatureTutorial extends LoopingScript  {
+public class DynamicSignatureTutorial extends LoopingScript  {
 
     private String userName;
 

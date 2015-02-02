@@ -1,0 +1,16 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.LazyAutoTanner.LazyAutoTanner</main-class>
+    <name>Auto Tanner</name>
+    <description>Make Leather on Dragonhides</description>
+    <version>0.1</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>RS3</game-type>
+    </compatibility>
+    <categories>
+        <category>MAGIC</category>
+        <category>MONEYMAKING</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>tanner</internal-id>
+</manifest>

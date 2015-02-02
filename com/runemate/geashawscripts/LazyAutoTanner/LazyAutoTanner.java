@@ -1,4 +1,4 @@
-package com.runemate.geashawscripts.makeleather;
+package com.runemate.geashawscripts.LazyAutoTanner;
 
 //Imports are all the classes that we are going to use methods from
 
@@ -15,6 +15,7 @@ import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.LoopingScript;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
+import javafx.application.Platform;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -23,7 +24,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.NumberFormat;
 
-public class autotanner extends LoopingScript implements PaintListener, InventoryListener {
+public class LazyAutoTanner extends LoopingScript implements PaintListener, InventoryListener {
 
     private String status = "Loading...";
 
@@ -77,6 +78,7 @@ public class autotanner extends LoopingScript implements PaintListener, Inventor
         // Standard loop delay little slower than normal.
         setLoopDelay(100, 200);
         debug("Debugging dynamic signature.");
+        Platform.runLater(() -> new LazyAutoTannerGUI(this));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.runemate.geashawscripts.gildedaltar;
+package com.runemate.geashawscripts.LazyGildedAltar;
 
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.entities.Actor;
@@ -30,7 +30,7 @@ import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import java.awt.*;
 import java.text.NumberFormat;
 
-public class gildedaltar extends LoopingScript implements PaintListener, InventoryListener {
+public class LazyGildedAltar extends LoopingScript implements PaintListener, InventoryListener {
 
     /**
      * 1. Teleport to own house.

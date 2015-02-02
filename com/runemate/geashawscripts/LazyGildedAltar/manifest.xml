@@ -1,9 +1,10 @@
 <manifest>
-    <main-class>com.runemate.geashawscripts.gildedaltar.gildedaltar</main-class>
+    <main-class>com.runemate.geashawscripts.gildedaltar.LazyGildedAltar</main-class>
     <name>Gilded Altar trainer</name>
     <description>Trains prayer using your own Gilded Altar and a Yak</description>
     <version>0.1</version>
     <open-source>true</open-source>
+    <hidden>true</hidden>
     <compatibility>
         <game-type>RS3</game-type>
     </compatibility>
