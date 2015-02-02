@@ -1,8 +1,8 @@
 <manifest>
     <main-class>com.runemate.geashawscripts.LazyAutoTanner.LazyAutoTanner</main-class>
     <name>Auto Tanner</name>
-    <description>Make Leather on Dragonhides</description>
-    <version>0.1</version>
+    <description>Make Leather on Green dragonhides</description>
+    <version>1.0</version>
     <open-source>true</open-source>
     <compatibility>
         <game-type>RS3</game-type>

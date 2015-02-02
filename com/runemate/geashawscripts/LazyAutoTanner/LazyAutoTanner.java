@@ -15,7 +15,6 @@ import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.LoopingScript;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
-import javafx.application.Platform;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -77,8 +76,6 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
 
         // Standard loop delay little slower than normal.
         setLoopDelay(100, 200);
-        debug("Debugging dynamic signature.");
-        Platform.runLater(() -> new LazyAutoTannerGUI(this));
     }
 
     @Override
@@ -219,7 +216,7 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
      * Presses space bar.
      */
     private boolean pressSpacebar() {
-        status = "Pressing spacebar";
+        status = "Pressing spacebar.";
         if (Keyboard.typeKey(" ")) {
             if (interfaceTextIsVisible("Tan")) {
                 status = "Tanning hides.";
@@ -341,13 +338,27 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
     public void onPaint(Graphics2D g) {
         int x = 5, y = 15;
 
+        final Color color1 = new Color(51, 102, 255, 155);
+        final Color color2 = new Color(0, 0, 0);
+        final Color color3 = new Color(255, 255, 255);
+        final BasicStroke stroke1 = new BasicStroke(1);
+        final Font font1 = new Font("Tahoma", 0, 12);
+
         xpGained = Skill.MAGIC.getExperience() - startExp;
 
         runeCostPerHide = ((2 * bodyRunePrice) / 5) - ((2 * astralRunePrice) / 5);
         profitPerHide = leatherPrice - hidePrice - runeCostPerHide;
         profitMade = profitPerHide * hidesTanned;
 
-        g.drawString("Version " + getMetaData().getVersion(), x, y);
+        g.setColor(color1);
+        g.fillRect(0, 0, 193, 96);
+        g.setColor(color2);
+        g.setStroke(stroke1);
+        g.drawRect(0, 0, 193, 96);
+        g.setFont(font1);
+        g.setColor(color3);
+
+        g.drawString(getMetaData().getName() + " Version " + getMetaData().getVersion(), x, y);
         g.drawString("Run time: " + runtime.getRuntimeAsString(), x, y + 15);
         g.drawString("Status: " + status, x, y + 30);
         g.drawString("Exp gained: " + formatNumber(xpGained) + " (" + formatNumber(getHourly(xpGained, runtime.getRuntime())) + ")", x, y + 45);
