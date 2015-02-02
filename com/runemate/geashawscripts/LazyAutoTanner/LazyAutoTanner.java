@@ -34,7 +34,7 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
 
     private final StopWatch runtime = new StopWatch();
     private StopWatch updateTimer = new StopWatch();
-    private final int updateIntervalMinutes = 1;
+    private final int updateIntervalMilliSeconds = 30000;
 
     private long timeRanSoFar, lastRunTime;
 
@@ -78,7 +78,7 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
         if (RuneScape.isLoggedIn()) {
 
             // Update the database.
-            if (updateTimer.getRuntime() > (updateIntervalMinutes * 1000)) {
+            if (updateTimer.getRuntime() > updateIntervalMilliSeconds) {
 
                 timeRanSoFar = (runtime.getRuntime() - lastRunTime);
                 expGainedSoFar = xpGained - lastExpGained;

@@ -56,7 +56,7 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
         getEventDispatcher().addListener(this);
         BANANA_BASKET_PRICE = GrandExchange.lookup(5416).getPrice();
         runtime.start();
-        debug("Testing teleport 4.");
+        debug("Blie bloe!");
     }
 
     @Override
@@ -78,15 +78,17 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
                             Camera.turnTo(banker);
                         }
                     }
-                } else if (gotAllEmptyBaskets()) {
-                    if (!isBusy(player)) {
-                        gloryTeleportTo("Karamja.");
+                } else {
+                    if (gotAllEmptyBaskets()) {
+                        if (!isBusy(player)) {
+                            gloryTeleportTo("Karamja");
+                        }
                     }
                 }
             } else if (atKaramja()) {
                 if (gotFilledBaskets()) {
                     if (!isBusy(player)) {
-                        gloryTeleportTo("Edgeville.");
+                        gloryTeleportTo("Edgeville");
                     }
                 } else if (canPutBananasInBasket()) {
                     putBananasIntoBasket();
@@ -105,18 +107,19 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
         if (action != null) {
             status = "Activating glory.";
             if (action.activate()) {
+                Execution.delay(1500, 3000);
                 if (gloryInterfaceIsVisible(location)) {
                     InterfaceComponent com = Interfaces.newQuery().textContains(location).results().first();
+                    Execution.delay(1500, 3000);
                     if (com != null) {
+                        Execution.delay(1500, 3000);
                         status = "Selecting " + location + " teleport";
                         if (com.click()) {
-                            Execution.delayUntil(() -> !gloryInterfaceIsVisible(location), 3000, 4000);
+                            Execution.delay(1500, 3000);
                         }
 
                         return true;
                     }
-                } else {
-                    Execution.delayUntil(() -> gloryInterfaceIsVisible(location), 1000, 1500);
                 }
             }
         }

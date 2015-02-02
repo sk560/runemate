@@ -4,7 +4,6 @@
     <description>Picks bananas from Karamja and uses Glory for teleporting</description>
     <version>0.1</version>
     <open-source>true</open-source>
-    <hidden>true</hidden>
     <compatibility>
         <game-type>RS3</game-type>
     </compatibility>
