@@ -56,7 +56,7 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
         getEventDispatcher().addListener(this);
         BANANA_BASKET_PRICE = GrandExchange.lookup(5416).getPrice();
         runtime.start();
-        debug("Testing teleport 1.");
+        debug("Testing teleport 4.");
     }
 
     @Override
@@ -110,8 +110,7 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
                     if (com != null) {
                         status = "Selecting " + location + " teleport";
                         if (com.click()) {
-                            //Execution.delayUntil(() -> !gloryInterfaceIsVisible(location), 3000, 4000);
-                            stop();
+                            Execution.delayUntil(() -> !gloryInterfaceIsVisible(location), 3000, 4000);
                         }
 
                         return true;
@@ -129,14 +128,8 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
      * Check if the teleport interface is visible.
      */
     private boolean gloryInterfaceIsVisible(String location) {
-        InterfaceComponent component = Interfaces.newQuery().textContains(location).results().first();
-        if (component != null) {
-            if (component.isValid()) {
-                debug("Location: " + location + " seems valid.");
-                return true;
-            }
-        }
-        return false;
+        InterfaceComponent component = Interfaces.newQuery().textContains(location).visible().results().first();
+        return (component != null && component.isValid());
     }
 
     /**

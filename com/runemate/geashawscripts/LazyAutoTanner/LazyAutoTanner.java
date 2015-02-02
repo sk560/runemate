@@ -34,27 +34,15 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
 
     private final StopWatch runtime = new StopWatch();
     private StopWatch updateTimer = new StopWatch();
-    private final int updateInterval = 15000;
+    private final int updateIntervalMinutes = 1;
 
     private long timeRanSoFar, lastRunTime;
 
-    private int xpGained = 0,
-            hidesTanned = 0,
-            hidesTannedSoFar = 0,
-            lastHidesTanned = 0,
-            expGainedSoFar = 0,
-            profitMadeSoFar = 0,
-            startExp = -1,
-            runeCostPerHide,
-            profitPerHide,
-            profitMade,
-            leatherPrice,
-            hidePrice,
-            bodyRunePrice,
-            astralRunePrice,
-            userId,
-            lastExpGained,
-            lastProfitMade;
+    private int startExp = -1, xpGained = 0, expGainedSoFar = 0, lastExpGained = 0,
+            hidesTanned = 0, hidesTannedSoFar = 0, lastHidesTanned = 0,
+            profitMade, profitMadeSoFar = 0, lastProfitMade = 0,
+            hidePrice, leatherPrice, bodyRunePrice, astralRunePrice, runeCostPerHide, profitPerHide,
+            userId;
 
     @Override
     public void onStart(String... args) {
@@ -62,18 +50,13 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
         leatherPrice = GrandExchange.lookup(1745).getPrice();
         bodyRunePrice = GrandExchange.lookup(559).getPrice();
         astralRunePrice = GrandExchange.lookup(9075).getPrice();
-
         // Getting the forum data.
         userId = com.runemate.game.api.hybrid.Environment.getForumId();
         userName = com.runemate.game.api.hybrid.Environment.getForumName();
-
         // Add the listener for the paint.
         getEventDispatcher().addListener(this);
-
         // Starting both timers.
-        runtime.start();
-        updateTimer.start();
-
+        runtime.start(); updateTimer.start();
         // Standard loop delay little slower than normal.
         setLoopDelay(100, 200);
     }
@@ -95,7 +78,7 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
         if (RuneScape.isLoggedIn()) {
 
             // Update the database.
-            if (updateTimer.getRuntime() > updateInterval) {
+            if (updateTimer.getRuntime() > (updateIntervalMinutes * 1000)) {
 
                 timeRanSoFar = (runtime.getRuntime() - lastRunTime);
                 expGainedSoFar = xpGained - lastExpGained;
@@ -351,10 +334,10 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
         profitMade = profitPerHide * hidesTanned;
 
         g.setColor(color1);
-        g.fillRect(0, 0, 193, 96);
+        g.fillRect(0, 0, 200, 96);
         g.setColor(color2);
         g.setStroke(stroke1);
-        g.drawRect(0, 0, 193, 96);
+        g.drawRect(0, 0, 200, 96);
         g.setFont(font1);
         g.setColor(color3);
 
