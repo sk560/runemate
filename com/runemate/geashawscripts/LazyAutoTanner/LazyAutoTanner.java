@@ -2,6 +2,7 @@ package com.runemate.geashawscripts.LazyAutoTanner;
 
 //Imports are all the classes that we are going to use methods from
 
+import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.RuneScape;
 import com.runemate.game.api.hybrid.input.Keyboard;
@@ -17,13 +18,16 @@ import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.NumberFormat;
 
-public class LazyAutoTanner extends LoopingScript implements PaintListener, InventoryListener {
+public class LazyAutoTanner extends LoopingScript implements PaintListener, InventoryListener, MouseListener, MouseMotionListener {
 
     private String status = "Loading...";
 
@@ -34,7 +38,7 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
 
     private final StopWatch runtime = new StopWatch();
     private StopWatch updateTimer = new StopWatch();
-    private final int updateIntervalMilliSeconds = 30000;
+    private final int updateIntervalMilliSeconds = 60000;
 
     private long timeRanSoFar, lastRunTime;
 
@@ -313,13 +317,23 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
             e.printStackTrace();
         }
     }
-    /*
-     * This is where we put everything that we want to draw to the screen
-	 * Graphics2D is the class that contains all the paint methods
-	 */
+
+    private int startX, startY = 0;
+    private int relativeX, relativeY;
+    public int paintWidth = 200;
+    public int paintHeight = 95;
+    public int userCoverWith = 100;
+    public int userCoverHeight = 19;
+
+    private static boolean isMouseDown = false;
+
+    /**
+     * This is where we put everything that we want to draw to the screen.
+     */
     @Override
     public void onPaint(Graphics2D g) {
-        int x = 5, y = 15;
+        int TextXLocation = startX + 5;
+        int TextYLocation = startY + 5;
 
         final Color color1 = new Color(51, 102, 255, 155);
         final Color color2 = new Color(0, 0, 0);
@@ -334,18 +348,53 @@ public class LazyAutoTanner extends LoopingScript implements PaintListener, Inve
         profitMade = profitPerHide * hidesTanned;
 
         g.setColor(color1);
-        g.fillRect(0, 0, 200, 96);
+        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
+        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
         g.setColor(color2);
         g.setStroke(stroke1);
-        g.drawRect(0, 0, 200, 96);
+        g.drawRect(startX + 1, startY + 1, paintWidth, paintHeight);
         g.setFont(font1);
         g.setColor(color3);
 
-        g.drawString(getMetaData().getName() + " Version " + getMetaData().getVersion(), x, y);
-        g.drawString("Run time: " + runtime.getRuntimeAsString(), x, y + 15);
-        g.drawString("Status: " + status, x, y + 30);
-        g.drawString("Exp gained: " + formatNumber(xpGained) + " (" + formatNumber(getHourly(xpGained, runtime.getRuntime())) + ")", x, y + 45);
-        g.drawString("Hides tanned: " + formatNumber(hidesTanned) + " (" + formatNumber(getHourly(hidesTanned, runtime.getRuntime())) + ")", x, y + 60);
-        g.drawString("Profit made: " + formatNumber(profitMade) + " (" + formatNumber(getHourly(profitMade, runtime.getRuntime())) + ")", x, y + 75);
+        g.drawString(getMetaData().getName() + " - Version " + getMetaData().getVersion(), TextXLocation, TextYLocation += 10);
+        g.drawString("Run time: " + runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
+        g.drawString("Status: " + status, TextXLocation, TextYLocation += 15);
+        g.drawString("Exp gained: " + formatNumber(xpGained) + " (" + formatNumber(getHourly(xpGained, runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
+        g.drawString("Hides tanned: " + formatNumber(hidesTanned) + " (" + formatNumber(getHourly(hidesTanned, runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
+        g.drawString("Profit made: " + formatNumber(profitMade) + " (" + formatNumber(getHourly(profitMade, runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
+
+        //Username Coverupper
+        g.setColor(Color.black);
+        g.fillRect(0, ClientUI.getFrame().getHeight() - 103, userCoverWith, userCoverHeight);
+    }
+    public void mouseClicked(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+    }
+    public void mouseEntered(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+    public void mouseExited(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+    public void mousePressed(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        isMouseDown = true;
+        relativeX = arg0.getX() - startX;
+        relativeY = arg0.getY() - startY;
+    }
+    public void mouseReleased(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        isMouseDown = false;
+    }
+    public void mouseDragged(MouseEvent e) {
+        if (isMouseDown == true) {
+            startX = e.getX() - relativeX;
+            startY = e.getY() - relativeY;
+        }
+    }
+    public void mouseMoved(MouseEvent e) {
+
     }
 }

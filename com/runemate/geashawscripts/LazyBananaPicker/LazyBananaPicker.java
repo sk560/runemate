@@ -2,6 +2,7 @@ package com.runemate.geashawscripts.LazyBananaPicker;
 
 //Imports are all the classes that we are going to use methods from
 
+import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.RuneScape;
 import com.runemate.game.api.hybrid.entities.Actor;
@@ -31,9 +32,12 @@ import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.text.NumberFormat;
 
-public class LazyBananaPicker extends LoopingScript implements PaintListener, InventoryListener {
+public class LazyBananaPicker extends LoopingScript implements PaintListener, InventoryListener, MouseListener, MouseMotionListener {
 
     private String status = "Starting up...";
     private final StopWatch runtime = new StopWatch();
@@ -57,6 +61,16 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
         BANANA_BASKET_PRICE = GrandExchange.lookup(5416).getPrice();
         runtime.start();
         debug("Blie bloe!");
+    }
+
+    @Override
+    public void onPause() {
+        runtime.stop();
+    }
+
+    @Override
+    public void onResume() {
+        runtime.start();
     }
 
     @Override
@@ -107,12 +121,11 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
         if (action != null) {
             status = "Activating glory.";
             if (action.activate()) {
-                Execution.delay(1500, 3000);
+                Execution.delay(500, 1000);
                 if (gloryInterfaceIsVisible(location)) {
                     InterfaceComponent com = Interfaces.newQuery().textContains(location).results().first();
-                    Execution.delay(1500, 3000);
+                    Execution.delay(500, 1000);
                     if (com != null) {
-                        Execution.delay(1500, 3000);
                         status = "Selecting " + location + " teleport";
                         if (com.click()) {
                             Execution.delay(1500, 3000);
@@ -174,7 +187,7 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
     private boolean pickBananasFromTree() {
         GameObject tree = GameObjects.newQuery().names("Banana Tree").actions("Pick").results().nearest();
 
-        if (tree != null) {
+        if (tree != null && KARAMJA_AREA.contains(tree)) {
             if (tree.distanceTo(player) > 7) {
                 status = "Tree is further than 7 steps";
                 walkToTree = Traversal.getDefaultWeb().getPathBuilder().buildTo(tree);
@@ -324,31 +337,78 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
         }
     }
 
-    /*
+    private int startX, startY = 0;
+    private int relativeX, relativeY;
+    public int paintWidth = 200;
+    public int paintHeight = 95;
+    public int userCoverWith = 85;
+    public int userCoverHeight = 19;
+
+    private static boolean isMouseDown = false;
+
+    /**
      * This is where we put everything that we want to draw to the screen.
-	 * Graphics2D is the class that contains all the paint methods.
 	 */
     @Override
     public void onPaint(Graphics2D g) {
-        int x = 5, y = 15;
+        int TextXLocation = startX + 5;
+        int TextYLocation = startY + 5;
+
+        final Color color1 = new Color(51, 102, 255, 155);
+        final Color color2 = new Color(0, 0, 0);
+        final Color color3 = new Color(255, 255, 255);
+        final BasicStroke stroke1 = new BasicStroke(1);
+        final Font font1 = new Font("Tahoma", 0, 12);
+
+        g.setColor(color1);
+        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
+        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
+        g.setColor(color2);
+        g.setStroke(stroke1);
+        g.drawRect(startX + 1, startY + 1, paintWidth, paintHeight);
+        g.setFont(font1);
+        g.setColor(color3);
 
         PROFIT_MADE = BANANA_COUNT / 5 * BANANA_BASKET_PRICE;
-        g.drawString("Version " + getMetaData().getVersion(), x, y);
-        g.drawString("Run time: " + runtime.getRuntimeAsString(), x, y + 15);
-        g.drawString("Status: " + status, x, y + 30);
-        g.drawString("Bananas: " + formatNumber(BANANA_COUNT)  + " (" + formatNumber(getHourly(BANANA_COUNT, runtime.getRuntime())) + ")", x, y + 45);
-        g.drawString("Baskets: " + formatNumber(BANANA_COUNT / 5)  + " (" + formatNumber(getHourly(BANANA_COUNT /5, runtime.getRuntime())) + ")", x, y + 60);
-        g.drawString("Profits: " + formatNumber(PROFIT_MADE)  + " (" + formatNumber(getHourly(PROFIT_MADE, runtime.getRuntime())) + ")", x, y + 75);
-    }
+        g.drawString(getMetaData().getName() + " - Version " + getMetaData().getVersion(), TextXLocation, TextYLocation += 10);
+        g.drawString("Run time: " + runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
+        g.drawString("Status: " + status, TextXLocation, TextYLocation += 15);
+        g.drawString("Bananas: " + formatNumber(BANANA_COUNT)  + " (" + formatNumber(getHourly(BANANA_COUNT, runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
+        g.drawString("Baskets: " + formatNumber(BANANA_COUNT / 5)  + " (" + formatNumber(getHourly(BANANA_COUNT /5, runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
+        g.drawString("Profits: " + formatNumber(PROFIT_MADE)  + " (" + formatNumber(getHourly(PROFIT_MADE, runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
 
-    @Override
-    public void onPause() {
-        runtime.stop();
+        //Username Coverupper
+        g.setColor(Color.black);
+        g.fillRect(0, ClientUI.getFrame().getHeight() - 103, userCoverWith, userCoverHeight);
     }
-
-    @Override
-    public void onResume() {
-        runtime.start();
+    public void mouseClicked(MouseEvent arg0) {
+        // TODO Auto-generated method stub
     }
+    public void mouseEntered(MouseEvent arg0) {
+        // TODO Auto-generated method stub
 
+    }
+    public void mouseExited(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+
+    }
+    public void mousePressed(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        isMouseDown = true;
+        relativeX = arg0.getX() - startX;
+        relativeY = arg0.getY() - startY;
+    }
+    public void mouseReleased(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        isMouseDown = false;
+    }
+    public void mouseDragged(MouseEvent e) {
+        if (isMouseDown == true) {
+            startX = e.getX() - relativeX;
+            startY = e.getY() - relativeY;
+        }
+    }
+    public void mouseMoved(MouseEvent e) {
+
+    }
 }
