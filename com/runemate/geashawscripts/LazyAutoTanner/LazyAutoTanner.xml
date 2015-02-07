@@ -1,5 +1,5 @@
 <manifest>
-    <main-class>com.runemate.geashawscripts.LazyAutoTannerTasked.LazyAutoTannerTasked</main-class>
+    <main-class>com.runemate.geashawscripts.LazyAutoTanner.LazyAutoTanner</main-class>
     <name>Lazy Auto Tanner</name>
     <description>Make Leather on Green dragonhides</description>
     <version>1.1</version>

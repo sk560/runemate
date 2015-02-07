@@ -1,12 +1,13 @@
-package com.runemate.geashawscripts.LazyAutoTannerTasked.Tasks;
+package com.runemate.geashawscripts.LazyAutoTanner.Tasks;
 
 import com.runemate.game.api.hybrid.input.Keyboard;
-import com.runemate.game.api.hybrid.local.hud.interfaces.*;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
+import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.SlotAction;
 import com.runemate.game.api.script.Execution;
-import com.runemate.geashawscripts.LazyAutoTannerTasked.Constants;
-import com.runemate.geashawscripts.LazyAutoTannerTasked.Methods;
+import com.runemate.geashawscripts.LazyAutoTanner.Constants;
+import com.runemate.geashawscripts.LazyAutoTanner.Methods;
 
 /**
  * Created by Geashaw on 6-2-2015.
@@ -15,7 +16,7 @@ public class Cast extends com.runemate.game.api.script.framework.task.Task {
 
     @Override
     public boolean validate() {
-        return gotHides() && !com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen();
+        return gotAllHides() && !com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen();
     }
 
     @Override

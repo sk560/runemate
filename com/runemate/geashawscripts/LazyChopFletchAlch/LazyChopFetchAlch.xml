@@ -1,0 +1,16 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.LazyChopFletchAlch.LazyChopFetchAlch</main-class>
+    <name>Lazy Chop Fletch Alch</name>
+    <description>Chops logs, fetches them into bows and alchs them</description>
+    <version>0.1</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>RS3</game-type>
+    </compatibility>
+    <categories>
+        <category>MAGIC</category>
+        <category>WOODCUTTING</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>chopfletchalch</internal-id>
+</manifest>

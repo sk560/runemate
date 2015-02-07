@@ -1,4 +1,4 @@
-package com.runemate.geashawscripts.LazyAutoTannerTasked;
+package com.runemate.geashawscripts.LazyAutoTanner;
 
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.region.Players;
@@ -22,9 +22,9 @@ public class Constants {
 
     public static int startExp = -1, xpGained = 0, expGainedSoFar = 0, lastExpGained = 0;
     public static int hidesTanned = 0, hidesTannedSoFar = 0, lastHidesTanned = 0;
-    public static int profitMade, profitMadeSoFar = 0, lastProfitMade = 0;
-    public static int hidePrice, leatherPrice, bodyRunePrice, astralRunePrice, runeCostPerHide, profitPerHide;
-    public static int userId;
+    public static int profitMade = 0, profitMadeSoFar = 0, lastProfitMade = 0;
+    public static int hidePrice = 0, leatherPrice = 0, runeCostPerHide = 0, bodyRunePrice = 0, astralRunePrice = 0, profitPerHide = 0;
+    public static int USER_ID;
 
     public static int startX, startY = 0;
     public static int relativeX, relativeY;

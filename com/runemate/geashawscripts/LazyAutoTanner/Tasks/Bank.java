@@ -1,11 +1,11 @@
-package com.runemate.geashawscripts.LazyAutoTannerTasked.Tasks;
+package com.runemate.geashawscripts.LazyAutoTanner.Tasks;
 
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.geashawscripts.LazyAutoTannerTasked.Constants;
+import com.runemate.geashawscripts.LazyAutoTanner.Constants;
 
 /**
  * Created by Geashaw on 6-2-2015.

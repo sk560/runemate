@@ -1,4 +1,4 @@
-package com.runemate.geashawscripts.LazyAutoTannerTasked;
+package com.runemate.geashawscripts.LazyAutoTanner;
 
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
@@ -6,6 +6,10 @@ import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.SlotAction;
 import com.runemate.game.api.script.Execution;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.NumberFormat;
 
 /**
@@ -75,5 +79,36 @@ public class Methods {
      */
     public static boolean isBusy() {
         return Constants.player.isMoving() || Constants.player.getAnimationId() != -1;
+    }
+
+    public static void updateDatabase(int userId, String userName, long time, int exp, int profit, int hidesTanned) {
+
+        System.out.println("--- Inserting data into the database ---");
+        System.out.println("1. Runtime: " + time);
+        System.out.println("2. Experience: " + exp);
+        System.out.println("3. Profit made: " + profit);
+        System.out.println("4. Hides tanned: " + hidesTanned);
+
+        try {
+            String website = "http://erikdekamps.nl";
+            URL submit = new URL(website + "/update?uid="+userId+"&username="+userName+"&runtime="+(time/1000)+"&exp="+exp+"&profit="+profit+"&hides="+hidesTanned);
+            URLConnection connection = submit.openConnection();
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            final BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+
+            while ((line = rd.readLine()) != null) {
+                if (rd.readLine().contains("success")) {
+                    System.out.println("Successfully updated!");
+                } else if (line.toLowerCase().contains("fuck off")) {
+                    System.out.println("Something is fucked up, couldn't update!");
+                }
+                rd.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

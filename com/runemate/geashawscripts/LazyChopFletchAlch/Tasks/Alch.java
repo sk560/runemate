@@ -1,11 +1,11 @@
-package com.runemate.geashawscripts.LazyAutoTannerTasked.Tasks;
+package com.runemate.geashawscripts.LazyChopFletchAlch.Tasks;
 
 import com.runemate.game.api.script.framework.task.Task;
 
 /**
- * Created by Geashaw on 6-2-2015.
+ * Created by Deka on 7-2-2015.
  */
-public class Exit extends Task {
+public class Alch extends Task {
 
     @Override
     public boolean validate() {

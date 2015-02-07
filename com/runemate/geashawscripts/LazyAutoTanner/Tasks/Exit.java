@@ -1,11 +1,11 @@
-package com.runemate.geashawscripts.LazyAutoTannerTasked.Tasks;
+package com.runemate.geashawscripts.LazyAutoTanner.Tasks;
 
 import com.runemate.game.api.script.framework.task.Task;
 
 /**
- * Created by Deka on 6-2-2015.
+ * Created by Geashaw on 6-2-2015.
  */
-public class Update extends Task {
+public class Exit extends Task {
 
     @Override
     public boolean validate() {
