@@ -15,15 +15,17 @@ public class Alch extends Task {
 
     @Override
     public boolean validate() {
-        return Inventory.getQuantity("Yew shieldbow (u)") > 0;
+        return Methods.gotShieldBows() && Inventory.getQuantity(Constants.logs) == 0;
     }
 
     @Override
     public void execute() {
-        if (selectSpell()) {
+        if (Methods.spellIsSelected()) {
             if (clickShieldBow()) {
-                Execution.delayUntil(() -> !Methods.isBusy(Constants.player), 1000);
+                Execution.delayUntil(() -> !Methods.isBusy(Constants.player), 500, 800);
             }
+        } else {
+            selectSpell();
         }
     }
 
@@ -31,10 +33,9 @@ public class Alch extends Task {
      * Select the High Level Alchemy spell from the ability bar.
      */
     private boolean selectSpell() {
-        SlotAction action = ActionBar.getFirstAction("High Level Alchemy");
-
+        SlotAction action = ActionBar.getFirstAction(Constants.spell);
         if (action != null) {
-            Constants.status = "Activating High Alchemy.";
+            Constants.status = "Activating " + Constants.spell + ".";
             if (Keyboard.typeKey(action.getSlot().getKeyBind())) {
                 if (!action.isSelected()) {
                     Execution.delayUntil(() -> action.isSelected(), 0, 500);
@@ -49,21 +50,16 @@ public class Alch extends Task {
      * Click the yew shieldbow (u) in the inventory.
      */
     private boolean clickShieldBow() {
-        final SpriteItem bow = Inventory.getItems("Yew shieldbow (u)").first();
+        final SpriteItem bow = Inventory.getItems(Constants.shieldBow).last();
         if (bow != null) {
-            Constants.status = "Alching bow.";
             if (bow.interact("Cast")) {
-                Execution.delayUntil(() -> !gotShieldBows(), 500, 1000);
+                Constants.status = "Alching " + Constants.shieldBow + ".";
+                Execution.delayUntil(() -> !Methods.gotShieldBows(), 500, 1000);
+                return true;
             }
-            return true;
         }
         return false;
     }
 
-    /**
-     * Check if player has any Yew Shieldbows (u).
-     */
-    private boolean gotShieldBows() {
-        return Inventory.getQuantity("Yew shieldbow (u)") > 0;
-    }
+
 }
