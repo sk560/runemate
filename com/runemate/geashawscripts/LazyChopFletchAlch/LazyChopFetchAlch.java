@@ -87,32 +87,23 @@ public class LazyChopFetchAlch extends TaskScript implements PaintListener, Mous
         g.setColor(Color.black);
         g.fillRect(0, ClientUI.getFrame().getHeight() - 103, Constants.userCoverWith, Constants.userCoverHeight);
     }
-
-    public void mouseClicked(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-    }
-    public void mouseEntered(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-    }
-    public void mouseExited(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-    }
     public void mousePressed(MouseEvent arg0) {
-        // TODO Auto-generated method stub
         Constants.isMouseDown = true;
         Constants.relativeX = arg0.getX() - Constants.startX;
         Constants.relativeY = arg0.getY() - Constants.startY;
     }
-    public void mouseReleased(MouseEvent arg0) {
-        Constants.isMouseDown = false;
-    }
+
     public void mouseDragged(MouseEvent e) {
         if (Constants.isMouseDown == true) {
             Constants.startX = e.getX() - Constants.relativeX;
             Constants.startY = e.getY() - Constants.relativeY;
         }
     }
-    public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
+    public void mouseReleased(MouseEvent arg0) {
+        Constants.isMouseDown = false;
     }
+    public void mouseClicked(MouseEvent arg0) {}
+    public void mouseEntered(MouseEvent arg0) {}
+    public void mouseExited(MouseEvent arg0) {}
+    public void mouseMoved(MouseEvent e) {}
 }
