@@ -30,10 +30,10 @@ import java.text.NumberFormat;
 public class LazyAutoTanner extends LoopingScript implements PaintListener, InventoryListener, MouseListener, MouseMotionListener {
 
     private String status = "Loading...";
-
     private final String makeLeatherAction = "Make Leather";
     private final String dragonHide = "Green dragonhide";
     private final String tannedHide = "Green dragon leather";
+
     private String userName;
 
     private final StopWatch runtime = new StopWatch();

@@ -205,6 +205,7 @@ public class LazyBananaPicker extends LoopingScript implements PaintListener, In
                             Camera.setPitch(0.60, 0.65);
                         } else {
                             status = "Picking bananas.";
+                            Camera.turnTo(tree);
                             return tree.interact("Pick");
                         }
                     }
