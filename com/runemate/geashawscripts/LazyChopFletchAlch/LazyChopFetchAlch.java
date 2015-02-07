@@ -3,13 +3,9 @@ package com.runemate.geashawscripts.LazyChopFletchAlch;
 import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
-import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
-import com.runemate.geashawscripts.LazyAutoTanner.Constants;
-import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Exit;
-import com.runemate.geashawscripts.LazyChopFletchAlch.Tasks.Alch;
-import com.runemate.geashawscripts.LazyChopFletchAlch.Tasks.Chop;
-import com.runemate.geashawscripts.LazyChopFletchAlch.Tasks.Fletch;
+import com.runemate.geashawscripts.LazyChopFletchAlch.Utils.Constants;
+import com.runemate.geashawscripts.LazyChopFletchAlch.Tasks.*;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -23,12 +19,13 @@ public class LazyChopFetchAlch extends TaskScript implements PaintListener, Mous
 
     public void onStart(String... args) {
         // Add all tasks.
-        add(new Chop(), new Fletch(), new Alch(), new Exit());
+        add(new Chop(), new Fletch(), new Alch(), new Misc(), new Exit());
         // Add the listener for the paint.
         getEventDispatcher().addListener(this);
         // Starting both timers.
         setLoopDelay(100, 300);
         getEventDispatcher().addListener(this);
+        Constants.runtime.start();
     }
 
     /**
@@ -36,6 +33,12 @@ public class LazyChopFetchAlch extends TaskScript implements PaintListener, Mous
      */
     @Override
     public void onPaint(Graphics2D g) {
+        int TextXLocation = Constants.startX + 5;
+        int TextYLocation = Constants.startY + 5;
+
+        g.drawString("Run time: " + Constants.runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
+        g.drawString("Status: " + Constants.status, TextXLocation, TextYLocation += 15);
+
         //Username Coverupper
         g.setColor(Color.black);
         g.fillRect(0, ClientUI.getFrame().getHeight() - 103, Constants.userCoverWith, Constants.userCoverHeight);

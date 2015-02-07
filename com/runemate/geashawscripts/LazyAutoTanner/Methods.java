@@ -50,7 +50,6 @@ public class Methods {
     /**
      * Check if an interface with a specific text is visible.
      */
-
     public static boolean interfaceTextIsVisible(String text) {
         InterfaceComponent x = Interfaces.newQuery().texts(text).visible().results().first();
         return x != null && x.isValid() && x.isVisible();
