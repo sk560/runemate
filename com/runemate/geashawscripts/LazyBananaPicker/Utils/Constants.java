@@ -1,4 +1,4 @@
-package com.runemate.geashawscripts.LazyBananaPicker;
+package com.runemate.geashawscripts.LazyBananaPicker.Utils;
 
 import com.runemate.game.api.hybrid.entities.Player;
 import com.runemate.game.api.hybrid.location.Area;

@@ -1,7 +1,7 @@
 package com.runemate.geashawscripts.LazyBananaPicker.Tasks;
 
 import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.geashawscripts.LazyBananaPicker.Methods;
+import com.runemate.geashawscripts.LazyBananaPicker.Utils.*;
 
 /**
  * Created by Geashaw on 9-2-2015.

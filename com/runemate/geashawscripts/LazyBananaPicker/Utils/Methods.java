@@ -1,4 +1,4 @@
-package com.runemate.geashawscripts.LazyBananaPicker;
+package com.runemate.geashawscripts.LazyBananaPicker.Utils;
 
 import com.runemate.game.api.hybrid.entities.Actor;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Bank;

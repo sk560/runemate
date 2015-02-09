@@ -5,8 +5,7 @@ import com.runemate.game.api.hybrid.local.Camera;
 import com.runemate.game.api.hybrid.location.navigation.Traversal;
 import com.runemate.game.api.hybrid.region.GameObjects;
 import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.geashawscripts.LazyBananaPicker.Constants;
-import com.runemate.geashawscripts.LazyBananaPicker.Methods;
+import com.runemate.geashawscripts.LazyBananaPicker.Utils.*;
 
 /**
  * Created by Geashaw on 9-2-2015.
@@ -31,7 +30,6 @@ public class Pick extends Task {
 
         if (tree != null && Constants.KARAMJA_AREA.contains(tree)) {
             if (tree.distanceTo(Constants.player) > 7) {
-                Constants.status = "Tree is further than 7 steps";
                 Constants.walkToTree = Traversal.getDefaultWeb().getPathBuilder().buildTo(tree);
                 if (Constants.walkToTree != null) {
                     Constants.status = "Walking to tree";
@@ -51,10 +49,12 @@ public class Pick extends Task {
                         }
                     }
                 } else {
-                    Methods.debug("Turning camera to tree");
+                    Constants.status = "Turning camera to tree";
                     Camera.turnTo(tree);
                 }
             }
+        } else {
+            Constants.status = "Waiting for bananas to grow.";
         }
         return false;
     }

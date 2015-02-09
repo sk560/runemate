@@ -9,8 +9,7 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.geashawscripts.LazyBananaPicker.Constants;
-import com.runemate.geashawscripts.LazyBananaPicker.Methods;
+import com.runemate.geashawscripts.LazyBananaPicker.Utils.*;
 
 /**
  * Created by Geashaw on 9-2-2015.

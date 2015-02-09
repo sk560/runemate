@@ -5,8 +5,7 @@ import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.SlotAction;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.geashawscripts.LazyBananaPicker.Constants;
-import com.runemate.geashawscripts.LazyBananaPicker.Methods;
+import com.runemate.geashawscripts.LazyBananaPicker.Utils.*;
 
 /**
  * Created by Geashaw on 9-2-2015.
