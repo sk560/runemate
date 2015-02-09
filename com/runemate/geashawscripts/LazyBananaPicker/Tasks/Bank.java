@@ -84,7 +84,7 @@ public class Bank extends Task {
         final SpriteItem glory = com.runemate.game.api.hybrid.local.hud.interfaces.Bank.newQuery().names(Constants.pattern).results().first();
         if (glory != null) {
             Constants.status = "Equiping glory";
-
+            Methods.debug("Equiping glory");
             final int count = glory.getQuantity();
                 if (glory.interact("Wear")) {
                     Execution.delayUntil(() -> glory.getQuantity() != count, 1000);
