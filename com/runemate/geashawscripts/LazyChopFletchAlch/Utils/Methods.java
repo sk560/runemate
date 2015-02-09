@@ -5,6 +5,7 @@ import com.runemate.game.api.hybrid.input.Keyboard;
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
+import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.SlotAction;
 import com.runemate.game.api.script.Execution;
@@ -55,12 +56,11 @@ public class Methods {
      */
     public static boolean pressSpacebar() {
         Constants.status = "Pressing spacebar.";
-        if (Keyboard.typeKey(" ")) {
-            if (Methods.interfaceTextIsVisible(Constants.fletchInterfaceText)) {
+        if(Methods.fletchInterfaceIsVisible()) {
+            if (Keyboard.typeKey(" ")) {
                 Constants.status = "Pressing spacebar.";
-                Execution.delayUntil(() -> !Methods.gotLogs(), 0, 500);
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -75,15 +75,20 @@ public class Methods {
      * Check if the fletching interface is visible.
      */
     public static boolean fletchInterfaceIsVisible() {
-        InterfaceComponent fletch = Interfaces.getAt(1370, 38);
-        return fletch != null && fletch.isValid() && fletch.isVisible();
+
+        return interfaceTextIsVisible("Fletch");
+
+        /*InterfaceComponent fletch = Interfaces.getAt(1370, 59, 3);
+        Methods.debug("Fletch interface is visible.");
+        return fletch != null && fletch.isValid() && fletch.isVisible();*/
     }
     /**
      * Check if the toolbelt interface is visible.
      */
     public static boolean toolbeltInterfaceIsVisible() {
-        InterfaceComponent fletch = Interfaces.getAt(1370, 38);
-        return interfaceTextIsVisible(Constants.toolInterfaceText);
+        Methods.debug("Toolbelt interface is visible.");
+        InterfaceComponent knife = Interfaces.getAt(1179, 33, 1);
+        return knife != null && knife.isValid() && knife.isVisible();
     }
     /**
      * Check if player has logs.
@@ -109,6 +114,50 @@ public class Methods {
                 return true;
             } else {
                 Execution.delayUntil(() -> action.isSelected(), 0, 500);
+            }
+        }
+        return false;
+    }
+    /**
+     * Click on the tooloption for fletching.
+     */
+    public static boolean clickToolOption() {
+        InterfaceComponent knifeImage = Interfaces.getAt(1179, 33);
+        if (knifeImage != null && knifeImage.isVisible()) {
+            if (knifeImage.click()) {
+                Execution.delayUntil(() -> !knifeImage.isVisible(), 1000);
+            }
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Select the High Level Alchemy spell from the ability bar.
+     */
+    public static boolean selectSpell() {
+        SlotAction action = ActionBar.getFirstAction(Constants.spell);
+        if (action != null) {
+            Constants.status = "Activating " + Constants.spell + ".";
+            if (Keyboard.typeKey(action.getSlot().getKeyBind())) {
+                if (!action.isSelected()) {
+                    Execution.delayUntil(() -> action.isSelected(), 0, 500);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Click the yew shieldbow (u) in the inventory.
+     */
+    public static boolean clickShieldBow() {
+        final SpriteItem bow = Inventory.getItems(Constants.shieldBow).last();
+        if (bow != null) {
+            if (bow.interact("Cast")) {
+                Constants.status = "Alching " + Constants.shieldBow + ".";
+                Execution.delayUntil(() -> !Methods.gotShieldBows(), 500, 1000);
+                return true;
             }
         }
         return false;

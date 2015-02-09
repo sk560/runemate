@@ -22,9 +22,9 @@ public class Constants {
 
     public static int startX, startY = 0;
     public static int relativeX, relativeY;
-    public static int paintWidth = 200;
+    public static int paintWidth = 215;
     public static int paintHeight = 95;
-    public static int userCoverWith = 150;
+    public static int userCoverWith = 100;
     public static int userCoverHeight = 19;
 
     public static boolean isMouseDown = false;
