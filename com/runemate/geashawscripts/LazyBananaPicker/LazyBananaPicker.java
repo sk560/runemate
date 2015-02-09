@@ -3,11 +3,13 @@ package com.runemate.geashawscripts.LazyBananaPicker;
 import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.local.Skill;
+import com.runemate.game.api.rs3.net.GrandExchange;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
 import com.runemate.geashawscripts.LazyBananaPicker.Tasks.*;
-import com.runemate.geashawscripts.LazyBananaPicker.Utils.*;
+import com.runemate.geashawscripts.LazyBananaPicker.Utils.Constants;
+import com.runemate.geashawscripts.LazyBananaPicker.Utils.Methods;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -25,6 +27,7 @@ public class LazyBananaPicker extends TaskScript implements PaintListener, Inven
 
         // Starting both timers.
         Constants.runtime.start();
+        Constants.bananaBasketPrice = GrandExchange.lookup(5416).getPrice();
 
         if (Constants.startExp == -1 && Skill.CONSTITUTION.getExperience() > 0) {
             Constants.runtime.start();

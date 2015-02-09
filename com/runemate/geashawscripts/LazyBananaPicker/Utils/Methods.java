@@ -125,13 +125,13 @@ public class Methods {
      * Check if the player has glories in bank.
      */
     public static boolean gotGloriesInBank() {
-        return false;
+        return Bank.containsAnyOf(Constants.glory);
     }
 
     /**
      * Check if the player has empty baskets in bank.
      */
     public static boolean gotEmptyBasketsInBank() {
-        return false;
+        return Bank.getQuantity(Constants.basket) >= 23;
     }
 }

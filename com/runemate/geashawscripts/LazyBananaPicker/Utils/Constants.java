@@ -28,7 +28,7 @@ public class Constants {
     public static String status = "Starting up...";
     public static final String banana = "Banana", basket = "Basket", filledBasket = "Bananas (5)", glory = "Amulet of glory";
 
-    public static int bananaCount = 0, bananaBasketPrice, profitMade, startExp = 1;
+    public static int bananaCount = 0, bananaBasketPrice = 0, profitMade = 0, startExp = 1;
 
     public static final Area KARAMJA_AREA = new Area.Rectangular(new Coordinate(2905, 3154), new Coordinate(2935, 3180, 0));
     public static final Area EDGEVILLE_AREA = new Area.Rectangular(new Coordinate(3082, 3487, 0), new Coordinate(3097, 3499, 0));

@@ -1,5 +1,6 @@
 package com.runemate.geashawscripts.LazyBananaPicker.Tasks;
 
+import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyBananaPicker.Utils.*;
 
@@ -15,6 +16,6 @@ public class Exit extends Task {
 
     @Override
     public void execute() {
-        // Nothing yhet.
+        Environment.getScript().stop();
     }
 }
