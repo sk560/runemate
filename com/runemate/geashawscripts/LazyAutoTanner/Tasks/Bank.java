@@ -34,7 +34,7 @@ public class Bank extends Task {
 
         if (component != null && component.isVisible()) {
             if (component.click()) {
-                Constants.STATUS = "Performing bank preset";
+                Constants.status = "Performing bank preset";
                 Execution.delayUntil(() -> !com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen(), 0, 1000);
                 return true;
             }
@@ -47,14 +47,14 @@ public class Bank extends Task {
      * Check if the inventory contains at least 5 tanned hides.
      */
     private boolean gotAllLeather() {
-        return (Inventory.contains(Constants.TANNED_HIDE) && Inventory.getQuantity(Constants.TANNED_HIDE) >= 23);
+        return (Inventory.contains(Constants.leather) && Inventory.getQuantity(Constants.leather) >= 23);
     }
 
     /**
      * Open the bank.
      */
     private boolean openBank() {
-        Constants.STATUS = "Opening the bank.";
+        Constants.status = "Opening the bank.";
         if (!com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen()) {
             if (com.runemate.game.api.hybrid.local.hud.interfaces.Bank.open()) {
                 Execution.delayUntil(() -> com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen(), 500);

@@ -4,10 +4,16 @@ import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.local.Skill;
 import com.runemate.game.api.rs3.net.GrandExchange;
+import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
-import com.runemate.geashawscripts.LazyAutoTanner.Tasks.*;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Bank;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Cast;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Exit;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Update;
+import com.runemate.geashawscripts.LazyAutoTanner.gui.Loader;
+import javafx.application.Platform;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -19,21 +25,32 @@ import java.awt.event.MouseMotionListener;
  */
 public class LazyAutoTanner extends TaskScript implements PaintListener, InventoryListener, MouseListener, MouseMotionListener {
 
+    public static boolean guiOpen;
+
     public void onStart(String... args) {
+
+        // Set the Gui to be open.
+        guiOpen = true;
+
         // Add all tasks.
         add(new Cast(), new Bank(), new Update(), new Exit());
 
-        Constants.hidePrice = GrandExchange.lookup(1753).getPrice();
-        Constants.leatherPrice = GrandExchange.lookup(1745).getPrice();
         Constants.bodyRunePrice = GrandExchange.lookup(559).getPrice();
         Constants.astralRunePrice = GrandExchange.lookup(9075).getPrice();
 
         // Getting the forum data.
-        Constants.USER_ID = com.runemate.game.api.hybrid.Environment.getForumId();
-        Constants.USERNAME = com.runemate.game.api.hybrid.Environment.getForumName();
+        Constants.userId = com.runemate.game.api.hybrid.Environment.getForumId();
+        Constants.username = com.runemate.game.api.hybrid.Environment.getForumName();
 
         // Add the listener for the paint.
         getEventDispatcher().addListener(this);
+
+        // Launch the GUI on the JavaFX Application thread
+        // Don't change this to a method reference btw it won't work on the bot store.
+        Platform.runLater(() -> new Loader());
+        while (guiOpen) {
+            Execution.delay(200);
+        }
 
         // Starting both timers.
         Constants.runtime.start();
@@ -43,9 +60,18 @@ public class LazyAutoTanner extends TaskScript implements PaintListener, Invento
             Constants.runtime.start();
             Constants.startExp = Skill.MAGIC.getExperience();
         }
-
         setLoopDelay(100, 300);
         getEventDispatcher().addListener(this);
+
+        Constants.hidePrice = GrandExchange.lookup(Constants.hideId).getPrice();
+        Constants.leatherPrice = GrandExchange.lookup(Constants.leatherId).getPrice();
+
+        // Display information to the user.
+        Methods.debug("Selected hide: " + Constants.hide);
+        Methods.debug("Hide price: " + Constants.hidePrice);
+        Methods.debug("Leather price: " + Constants.leatherPrice);
+        Methods.debug("Profit per hide: " + (Constants.leatherPrice - Constants.hidePrice - (Constants.bodyRunePrice / 5) - (Constants.astralRunePrice / 5)));
+        Methods.debug("Estimated profit per hour: " + (Constants.leatherPrice - Constants.hidePrice - (Constants.bodyRunePrice / 5) - (Constants.astralRunePrice / 5)) * 4700);
     }
 
     /**
@@ -53,7 +79,7 @@ public class LazyAutoTanner extends TaskScript implements PaintListener, Invento
      */
     @Override
     public void onItemAdded(ItemEvent arg0) {
-        if (arg0.getItem().getDefinition().getName().equals(Constants.TANNED_HIDE)) {
+        if (arg0.getItem().getDefinition().getName().equals(Constants.leather)) {
             Constants.hidesTanned++;
         }
     }
@@ -89,7 +115,7 @@ public class LazyAutoTanner extends TaskScript implements PaintListener, Invento
 
         g.drawString(getMetaData().getName() + " - Version " + getMetaData().getVersion(), TextXLocation, TextYLocation += 10);
         g.drawString("Run time: " + Constants.runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
-        g.drawString("Status: " + Constants.STATUS, TextXLocation, TextYLocation += 15);
+        g.drawString("Status: " + Constants.status, TextXLocation, TextYLocation += 15);
         g.drawString("Exp gained: " + Methods.formatNumber(Constants.xpGained) + " (" + Methods.formatNumber(Methods.getHourly(Constants.xpGained, Constants.runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
         g.drawString("Hides tanned: " + Methods.formatNumber(Constants.hidesTanned / 2) + " (" + Methods.formatNumber(Methods.getHourly(Constants.hidesTanned / 2, Constants.runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
         g.drawString("Profit made: " + Methods.formatNumber(Constants.profitMade) + " (" + Methods.formatNumber(Methods.getHourly(Constants.profitMade, Constants.runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);

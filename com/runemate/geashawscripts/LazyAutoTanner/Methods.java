@@ -43,7 +43,7 @@ public class Methods {
      *
      * @param text The text to send to the console.
      */
-    private static void debug(String text) {
+    public static void debug(String text) {
         System.out.println(text);
     }
 
@@ -59,7 +59,7 @@ public class Methods {
      * @return Whether or not the spell is selected.
      */
     public static boolean spellIsSelected() {
-        SlotAction action = ActionBar.getFirstAction(Constants.MAKE_LEATHER_ACTION);
+        SlotAction action = ActionBar.getFirstAction(Constants.makeLeatherAction);
 
         if (action != null) {
             if (action.isSelected()) {

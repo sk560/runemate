@@ -21,7 +21,7 @@ public class Update extends Task {
         Constants.profitMadeSoFar = Constants.profitMade - Constants.lastProfitMade;
         Constants.hidesTannedSoFar = Constants.hidesTanned - Constants.lastHidesTanned;
 
-        Methods.updateDatabase(Constants.USER_ID, Constants.USERNAME, Constants.timeRanSoFar, Constants.expGainedSoFar, Constants.profitMadeSoFar, Constants.hidesTannedSoFar);
+        Methods.updateDatabase(Constants.userId, Constants.username, Constants.timeRanSoFar, Constants.expGainedSoFar, Constants.profitMadeSoFar, Constants.hidesTannedSoFar);
 
         Constants.updateTimer.reset();
 

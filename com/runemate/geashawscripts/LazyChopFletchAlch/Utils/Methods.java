@@ -13,7 +13,7 @@ import com.runemate.game.api.script.Execution;
 import java.text.NumberFormat;
 
 /**
- * Created by Deka on 6-2-2015.
+ * Created by Geashaw on 6-2-2015.
  */
 public class Methods {
     /**
@@ -56,11 +56,9 @@ public class Methods {
      */
     public static boolean pressSpacebar() {
         Constants.status = "Pressing spacebar.";
-        if(Methods.fletchInterfaceIsVisible()) {
-            if (Keyboard.typeKey(" ")) {
-                Constants.status = "Pressing spacebar.";
-                return true;
-            }
+        if (Keyboard.typeKey(" ")) {
+            Constants.status = "Pressing spacebar.";
+            return true;
         }
         return false;
     }
@@ -75,35 +73,34 @@ public class Methods {
      * Check if the fletching interface is visible.
      */
     public static boolean fletchInterfaceIsVisible() {
-
-        return interfaceTextIsVisible("Fletch");
-
-        /*InterfaceComponent fletch = Interfaces.getAt(1370, 59, 3);
-        Methods.debug("Fletch interface is visible.");
-        return fletch != null && fletch.isValid() && fletch.isVisible();*/
+        InterfaceComponent fletch = Interfaces.getAt(1370, 40, 0);
+        if (fletch != null) {
+            if (fletch.isValid() && fletch.isVisible()) {
+                debug("Fletch interface visible");
+                return true;
+            }
+        }
+        return false;
     }
     /**
      * Check if the toolbelt interface is visible.
      */
     public static boolean toolbeltInterfaceIsVisible() {
-        Methods.debug("Toolbelt interface is visible.");
-        InterfaceComponent knife = Interfaces.getAt(1179, 33, 1);
+        InterfaceComponent knife = Interfaces.getAt(1179, 33);
         return knife != null && knife.isValid() && knife.isVisible();
     }
     /**
      * Check if player has logs.
      */
     public static boolean gotLogs() {
-        return Inventory.getQuantity("Yew logs") > 0;
+        return Inventory.getQuantity(Constants.logs) > 0;
     }
-
     /**
      * Check if player has any Yew Shieldbows (u).
      */
     public static boolean gotShieldBows() {
         return Inventory.getQuantity(Constants.shieldBow) > 0;
     }
-
     /**
      * @return Whether or not the spell is selected.
      */
@@ -140,7 +137,7 @@ public class Methods {
             Constants.status = "Activating " + Constants.spell + ".";
             if (Keyboard.typeKey(action.getSlot().getKeyBind())) {
                 if (!action.isSelected()) {
-                    Execution.delayUntil(() -> action.isSelected(), 0, 500);
+                    Execution.delayUntil(() -> action.isSelected(), 500, 800);
                 }
                 return true;
             }

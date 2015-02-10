@@ -41,23 +41,23 @@ public class Cast extends com.runemate.game.api.script.framework.task.Task {
      * Check if the inventory contains at least 5 hides.
      */
     private boolean gotHides() {
-        return (Inventory.contains(Constants.DRAGON_HIDE) && Inventory.getQuantity(Constants.DRAGON_HIDE) >= 5);
+        return (Inventory.contains(Constants.hide) && Inventory.getQuantity(Constants.hide) >= 5);
     }
 
     /**
      * Check if the inventory contains at least 23 hides.
      */
     private boolean gotAllHides() {
-        return (Inventory.contains(Constants.DRAGON_HIDE) && Inventory.getQuantity(Constants.DRAGON_HIDE) >= 23);
+        return (Inventory.contains(Constants.hide) && Inventory.getQuantity(Constants.hide) >= 23);
     }
 
     /**
      * Click the dragon hide in the inventory.
      */
     private boolean clickHide() {
-        final SpriteItem hide = Inventory.getItems(Constants.DRAGON_HIDE).random();
+        final SpriteItem hide = Inventory.getItems(Constants.hide).random();
         if (hide != null) {
-            Constants.STATUS = "Interacting Make Leather.";
+            Constants.status = "Interacting Make Leather.";
             if (hide.interact("Cast")) {
                 Execution.delayUntil(() -> Methods.interfaceTextIsVisible("Tan"), 500, 1000);
             }
@@ -70,10 +70,10 @@ public class Cast extends com.runemate.game.api.script.framework.task.Task {
      * Presses space bar.
      */
     private boolean pressSpacebar() {
-        Constants.STATUS = "Pressing spacebar.";
+        Constants.status = "Pressing spacebar.";
         if (Keyboard.typeKey(" ")) {
             if (Methods.interfaceTextIsVisible("Tan")) {
-                Constants.STATUS = "Tanning hides.";
+                Constants.status = "Tanning " + Constants.hide;
                 Execution.delayUntil(() -> !Methods.interfaceTextIsVisible("Tan"), 0, 500);
             }
             return true;
@@ -86,10 +86,10 @@ public class Cast extends com.runemate.game.api.script.framework.task.Task {
      * Select the Make Leather spell from the ability bar.
      */
     private boolean selectSpell() {
-        SlotAction action = ActionBar.getFirstAction(Constants.MAKE_LEATHER_ACTION);
+        SlotAction action = ActionBar.getFirstAction(Constants.makeLeatherAction);
 
         if (action != null) {
-            Constants.STATUS = "Activating Make Leather.";
+            Constants.status = "Activating Make Leather.";
             if (Keyboard.typeKey(action.getSlot().getKeyBind())) {
                 if (!action.isSelected()) {
                     Execution.delayUntil(() -> action.isSelected(), 0, 500);

@@ -30,7 +30,7 @@ public class LazyChopFetchAlch extends TaskScript implements PaintListener, Mous
         Constants.runtime.start();
         Constants.naturePrice = GrandExchange.lookup(561).getPrice();
         Constants.shieldbowPrice = GrandExchange.lookup(66).getPrice();
-        Methods.debug("Test 12345");
+        Methods.debug("Interface.");
     }
     /**
      * Count items that are removed from inventory.

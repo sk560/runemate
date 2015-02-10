@@ -8,11 +8,20 @@ import com.runemate.game.api.hybrid.util.StopWatch;
  * Created by Geashaw on 6-2-2015.
  */
 public class Constants {
-    public static String STATUS = "Loading...";
-    public static String USERNAME = "Loading...";
-    public static final String MAKE_LEATHER_ACTION = "Make Leather";
-    public static final String DRAGON_HIDE = "Green dragonhide";
-    public static final String TANNED_HIDE = "Green dragon leather";
+
+    // this class is created right away before they choose a hide, so the name you set here before is decided before it changes to their choice if you get me.
+    // So how would I initiate that the correct way?
+    // since you are using this class to store constants and not to instantiate it anyway you would just do it like this
+
+    public static String status = "Loading...";
+    public static String username = "Loading..."; // Lol wut?
+    public static final String makeLeatherAction = "Make Leather";
+
+    public static String hide = "";
+    public static String leather = "";
+
+    public static int hideId;
+    public static int leatherId;
 
     public static final StopWatch runtime = new StopWatch();
     public static StopWatch updateTimer = new StopWatch();
@@ -24,7 +33,7 @@ public class Constants {
     public static int hidesTanned = 0, hidesTannedSoFar = 0, lastHidesTanned = 0;
     public static int profitMade = 0, profitMadeSoFar = 0, lastProfitMade = 0;
     public static int hidePrice = 0, leatherPrice = 0, runeCostPerHide = 0, bodyRunePrice = 0, astralRunePrice = 0, profitPerHide = 0;
-    public static int USER_ID;
+    public static int userId;
 
     public static int startX, startY = 0;
     public static int relativeX, relativeY;

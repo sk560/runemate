@@ -18,6 +18,7 @@ public class Chop extends Task {
 
     @Override
     public void execute() {
+        Methods.debug("Executing the Chop Task.");
         GameObject tree = GameObjects.newQuery().names("Yew").actions("Chop down").results().nearest();
 
         if (tree != null) {
