@@ -1,0 +1,15 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.LazySuicideThiever.LazySuicideThiever</main-class>
+    <name>Lazy Suicide Thiever</name>
+    <description>Pickpocket men in lumbridge 'till you die and spawn there again.</description>
+    <version>1.0</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>OSRS</game-type>
+    </compatibility>
+    <categories>
+        <category>THIEVING</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>lazysuicidethiever</internal-id>
+</manifest>
