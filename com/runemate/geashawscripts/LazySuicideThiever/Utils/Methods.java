@@ -1,8 +1,9 @@
 package com.runemate.geashawscripts.LazySuicideThiever.Utils;
 
 import com.runemate.game.api.hybrid.entities.Player;
+import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
 import com.runemate.game.api.hybrid.region.Players;
-import com.runemate.geashawscripts.LazyAlcoholic.Utils.Constants;
 
 import java.text.NumberFormat;
 
@@ -39,13 +40,6 @@ public class Methods {
      */
     public static void debug(String text) {
         System.out.println(text);
-    }
-
-    /**
-     * Checks if the player is busy.
-     */
-    public static boolean isBusy() {
-        return Constants.player.isMoving() || Constants.player.getAnimationId() != -1;
     }
 
     /**

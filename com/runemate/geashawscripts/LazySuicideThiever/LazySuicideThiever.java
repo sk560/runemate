@@ -5,6 +5,7 @@ import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.local.Skill;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
+import com.runemate.game.api.script.framework.listeners.events.MessageEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
 import com.runemate.geashawscripts.LazySuicideThiever.Tasks.StealTask;
 import com.runemate.geashawscripts.LazySuicideThiever.Utils.Methods;
