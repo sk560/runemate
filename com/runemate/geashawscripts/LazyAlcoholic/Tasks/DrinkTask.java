@@ -13,7 +13,7 @@ import com.runemate.geashawscripts.LazyAlcoholic.Utils.Methods;
 /**
  * Created by Geashaw on 11-2-2015.
  */
-public class Drink extends Task {
+public class DrinkTask extends Task {
 
     @Override
     public boolean validate() {

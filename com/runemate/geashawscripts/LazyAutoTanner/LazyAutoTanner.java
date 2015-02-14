@@ -8,10 +8,10 @@ import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
-import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Bank;
-import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Cast;
-import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Exit;
-import com.runemate.geashawscripts.LazyAutoTanner.Tasks.Update;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.BankTask;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.CastTask;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.ExitTask;
+import com.runemate.geashawscripts.LazyAutoTanner.Tasks.UpdateTask;
 import com.runemate.geashawscripts.LazyAutoTanner.gui.Loader;
 import javafx.application.Platform;
 
@@ -33,7 +33,7 @@ public class LazyAutoTanner extends TaskScript implements PaintListener, Invento
         guiOpen = true;
 
         // Add all tasks.
-        add(new Cast(), new Bank(), new Update(), new Exit());
+        add(new CastTask(), new BankTask(), new UpdateTask(), new ExitTask());
 
         Constants.bodyRunePrice = GrandExchange.lookup(559).getPrice();
         Constants.astralRunePrice = GrandExchange.lookup(9075).getPrice();

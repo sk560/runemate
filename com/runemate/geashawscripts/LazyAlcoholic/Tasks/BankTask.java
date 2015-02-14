@@ -1,8 +1,6 @@
 package com.runemate.geashawscripts.LazyAlcoholic.Tasks;
 
-import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
-import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
-import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
+import com.runemate.game.api.hybrid.local.hud.interfaces.*;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyAlcoholic.Utils.*;
@@ -10,21 +8,23 @@ import com.runemate.geashawscripts.LazyAlcoholic.Utils.*;
 /**
  * Created by Geashaw on 11-2-2015.
  */
-public class Bank extends Task {
+public class BankTask extends Task {
 
     @Override
     public boolean validate() {
-        return Inventory.getQuantity(Constants.wine) == 0;
+        return gotAllJugs();
     }
 
     @Override
     public void execute() {
-        if (!com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen()) {
-            openBank();
-        } else {
+        if (Bank.isOpen()) {
+            Methods.debug("Bank is open");
             performBankPreset();
+        } else {
+            openBank();
         }
     }
+
     /**
      * Perform quick banking with a bank preset.
      */
@@ -33,26 +33,39 @@ public class Bank extends Task {
 
         if (component != null && component.isVisible()) {
             if (component.click()) {
-                com.runemate.geashawscripts.LazyAutoTanner.Constants.status = "Performing bank preset";
-                Execution.delayUntil(() -> !com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen(), 0, 1000);
+                Constants.status = "Performing bank preset";
+                Execution.delayUntil(() -> !Bank.isOpen(), 0, 1000);
                 return true;
             }
         }
 
         return false;
     }
+
     /**
      * Open the bank.
      */
     private boolean openBank() {
         Constants.status = "Opening the bank.";
-        if (!com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen()) {
-            if (com.runemate.game.api.hybrid.local.hud.interfaces.Bank.open()) {
-                Execution.delayUntil(() -> com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen(), 500);
+        if (!Bank.isOpen()) {
+            if (Bank.open()) {
+                Execution.delayUntil(() -> Bank.isOpen(), 500);
             }
 
             return true;
         }
+        return false;
+    }
+
+    /**
+     * Check if full inventory of empty jugs.
+     */
+    private boolean gotAllJugs() {
+
+        if (Inventory.containsAllOf("Jug")) {
+            return true;
+        }
+
         return false;
     }
 }

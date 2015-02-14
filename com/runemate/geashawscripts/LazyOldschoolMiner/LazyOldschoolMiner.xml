@@ -1,0 +1,15 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.LazyOldschoolMiner.LazyOldschoolMiner</main-class>
+    <name>Lazy Oldschool Miner</name>
+    <description>Powermines ores in various locations.</description>
+    <version>1.0</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>OSRS</game-type>
+    </compatibility>
+    <categories>
+        <category>MINING</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>oldschoolminer</internal-id>
+</manifest>

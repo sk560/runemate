@@ -7,7 +7,7 @@ import com.runemate.geashawscripts.LazyAutoTanner.Methods;
 /**
  * Created by Deka on 6-2-2015.
  */
-public class Update extends Task {
+public class UpdateTask extends Task {
 
     @Override
     public boolean validate() {

@@ -1,6 +1,7 @@
 package com.runemate.geashawscripts.LazyAutoTanner.Tasks;
 
 import com.runemate.game.api.hybrid.input.Keyboard;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Bank;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
 import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
@@ -12,11 +13,11 @@ import com.runemate.geashawscripts.LazyAutoTanner.Methods;
 /**
  * Created by Geashaw on 6-2-2015.
  */
-public class Cast extends com.runemate.game.api.script.framework.task.Task {
+public class CastTask extends com.runemate.game.api.script.framework.task.Task {
 
     @Override
     public boolean validate() {
-        return gotAllHides() && !com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen();
+        return gotAllHides() && !Bank.isOpen();
     }
 
     @Override

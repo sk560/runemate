@@ -1,5 +1,6 @@
 package com.runemate.geashawscripts.LazyAutoTanner.Tasks;
 
+import com.runemate.game.api.hybrid.local.hud.interfaces.Bank;
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
@@ -10,7 +11,7 @@ import com.runemate.geashawscripts.LazyAutoTanner.Constants;
 /**
  * Created by Geashaw on 6-2-2015.
  */
-public class Bank extends Task {
+public class BankTask extends Task {
 
     @Override
     public boolean validate() {
@@ -19,7 +20,7 @@ public class Bank extends Task {
 
     @Override
     public void execute() {
-        if (com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen()) {
+        if (Bank.isOpen()) {
             performBankPreset();
         } else {
             openBank();
@@ -35,7 +36,7 @@ public class Bank extends Task {
         if (component != null && component.isVisible()) {
             if (component.click()) {
                 Constants.status = "Performing bank preset";
-                Execution.delayUntil(() -> !com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen(), 0, 1000);
+                Execution.delayUntil(() -> !Bank.isOpen(), 0, 1000);
                 return true;
             }
         }
@@ -55,9 +56,9 @@ public class Bank extends Task {
      */
     private boolean openBank() {
         Constants.status = "Opening the bank.";
-        if (!com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen()) {
-            if (com.runemate.game.api.hybrid.local.hud.interfaces.Bank.open()) {
-                Execution.delayUntil(() -> com.runemate.game.api.hybrid.local.hud.interfaces.Bank.isOpen(), 500);
+        if (!Bank.isOpen()) {
+            if (Bank.open()) {
+                Execution.delayUntil(() -> Bank.isOpen(), 500);
             }
 
             return true;

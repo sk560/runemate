@@ -9,7 +9,7 @@ import com.runemate.geashawscripts.LazyAutoTanner.Methods;
 /**
  * Created by Geashaw on 6-2-2015.
  */
-public class Exit extends Task {
+public class ExitTask extends Task {
 
     @Override
     public boolean validate() {

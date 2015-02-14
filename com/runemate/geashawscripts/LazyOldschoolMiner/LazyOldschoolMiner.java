@@ -1,13 +1,12 @@
-package com.runemate.geashawscripts.LazyAlcoholic;
+package com.runemate.geashawscripts.LazyOldschoolMiner;
 
 import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
-import com.runemate.game.api.rs3.net.GrandExchange;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
-import com.runemate.geashawscripts.LazyAlcoholic.Tasks.*;
-import com.runemate.geashawscripts.LazyAlcoholic.Utils.*;
+import com.runemate.geashawscripts.LazyOldschoolMiner.Utils.*;
+import com.runemate.geashawscripts.LazyOldschoolMiner.Tasks.*;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -15,18 +14,14 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * Created by Geashaw on 11-2-2015.
+ * Created by Geashaw on 14-2-2015.
  */
-public class LazyAlcoholic extends TaskScript implements PaintListener, InventoryListener, MouseListener, MouseMotionListener {
+public class LazyOldschoolMiner extends TaskScript implements PaintListener, InventoryListener, MouseListener, MouseMotionListener {
 
     public void onStart(String... args) {
 
         // Add the new tasks from the Tasks folder.
-        add(new DrinkTask(), new BankTask());
-
-        // Get the prices of the Jug and the Jug of wine.
-        Constants.jugPrice = GrandExchange.lookup(1935).getPrice();
-        Constants.winePrice = GrandExchange.lookup(1993).getPrice();
+        add(new MineTask(), new DropTask());
 
         // Add the listener for the paint.
         getEventDispatcher().addListener(this);
@@ -46,9 +41,9 @@ public class LazyAlcoholic extends TaskScript implements PaintListener, Inventor
     @Override
     public void onItemRemoved(ItemEvent arg0) {
         // If the item name equals the String for wine.
-        if (arg0.getItem().getDefinition().getName().equals(Constants.wine)) {
+        if (arg0.getItem().getDefinition().getName().equals(Constants.ore)) {
             // Increment the wineDrunk counter by one.
-            Constants.wineDrunk++;
+            Constants.oresMined++;
         }
     }
 
@@ -66,12 +61,7 @@ public class LazyAlcoholic extends TaskScript implements PaintListener, Inventor
         final BasicStroke stroke1 = new BasicStroke(1);
         final Font font1 = new Font("Tahoma", 0, 12);
 
-        // Calculate the profit by subtracting the wine price from the jug price.
-        Constants.profitPerJug = Constants.jugPrice - Constants.winePrice;
-
-        // Calculate the profit made by multiplying the profit per jug with the wine drunk.
-        Constants.profitMade = Constants.profitPerJug * Constants.wineDrunk;
-
+        // Create the draggable blue rectangle
         g.setColor(color1);
         g.fillRect(Constants.startX + 1, Constants.startY + 1, Constants.paintWidth, Constants.paintHeight);
         g.fillRect(Constants.startX + 1, Constants.startY + 1, Constants.paintWidth, Constants.paintHeight);
@@ -84,8 +74,6 @@ public class LazyAlcoholic extends TaskScript implements PaintListener, Inventor
         g.drawString(getMetaData().getName() + " - Version " + getMetaData().getVersion(), TextXLocation, TextYLocation += 10);
         g.drawString("Run time: " + Constants.runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
         g.drawString("Status: " + Constants.status, TextXLocation, TextYLocation += 15);
-        g.drawString("Wine drunk: " + Methods.formatNumber(Constants.wineDrunk) + " (" + Methods.formatNumber(Methods.getHourly(Constants.wineDrunk, Constants.runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
-        g.drawString("Profit made: " + Methods.formatNumber(Constants.profitMade) + " (" + Methods.formatNumber(Methods.getHourly(Constants.profitMade, Constants.runtime.getRuntime())) + ")", TextXLocation, TextYLocation += 15);
 
         //Username Coverupper
         g.setColor(Color.black);
