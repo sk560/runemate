@@ -20,7 +20,7 @@ public class Controller {
 
     public void startController() {
         // Create a new String array for the hide names.
-        String[] cmbHideItems = new String[]{"Cowhide", "Snake hide", "Green", "Blue", "Red", "Black", "Royal"};
+        String[] cmbHideItems = new String[]{"Cowhide", "Snake hide", "Green dragonhide", "Blue dragonhide", "Red dragonhide", "Black dragonhide", "Royal dragonhide"};
         // Add the above strings to the cmbHide ComboBox.
         cmbHide.getItems().addAll(cmbHideItems);
 

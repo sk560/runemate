@@ -1,0 +1,16 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids</main-class>
+    <name>Lazy Chaos Druids</name>
+    <description>Fights Chaos Druids in Taverly dungeon.</description>
+    <version>1.0</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>OSRS</game-type>
+    </compatibility>
+    <categories>
+        <category>MONEYMAKING</category>
+        <category>COMBAT</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>chaosdruids</internal-id>
+</manifest>
