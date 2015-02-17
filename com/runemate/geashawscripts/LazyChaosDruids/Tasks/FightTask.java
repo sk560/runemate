@@ -34,7 +34,7 @@ public class FightTask extends Task {
                     if (druid.interact("Attack")) {
                         Execution.delayUntil(() -> Players.getLocal().getTarget() != null, 1500, 2000);
                     }
-                } else if (Distance.to(druid) > 2) {
+                } else if (Distance.to(druid) > 5) {
                     BresenhamPath.buildTo(druid).step(true);
                 } else {
                     Camera.turnTo(druid);
