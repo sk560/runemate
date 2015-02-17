@@ -27,7 +27,7 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
     public static String status = "Loading...";
     public static final StopWatch runtime = new StopWatch();
 
-    public static Food food;
+    public static Food food = Food.TRIANGLE_SANDWICH;
     public static Loot loot;
 
     ExpTracker constiution, strength;
@@ -60,7 +60,7 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
         int TextXLocation = startX + 5;
         int TextYLocation = startY + 5;
 
-        final Font small = new Font("Century Gothic", 0, 7);
+        final Font small = new Font("Tahoma", 0, 9);
 
         // Test xp tracker.
         if (expTrackerContainer != null) {
@@ -68,7 +68,7 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
         }
 
         // Trying to paint on the inventory.
-        g.setColor(Color.CYAN);
+        g.setColor(Color.WHITE);
         g.setFont(small);
 
         // Credits to SlashNHax

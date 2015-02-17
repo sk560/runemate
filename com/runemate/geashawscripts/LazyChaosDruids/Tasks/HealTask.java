@@ -6,7 +6,6 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
-import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
 
 /**
  * Created by Geashaw on 11-2-2015.
@@ -17,7 +16,7 @@ public class HealTask extends Task {
 
     @Override
     public boolean validate() {
-        return Methods.lootIsVisible() || Health.getCurrentPercent() <= healPercentage;
+        return Health.getCurrentPercent() <= healPercentage;
     }
 
     @Override

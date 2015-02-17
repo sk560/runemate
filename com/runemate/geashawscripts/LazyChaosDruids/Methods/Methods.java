@@ -1,13 +1,21 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Methods;
 
 import com.runemate.game.api.hybrid.entities.GroundItem;
+import com.runemate.game.api.hybrid.location.Area;
+import com.runemate.game.api.hybrid.location.Coordinate;
+import com.runemate.game.api.hybrid.queries.GroundItemQueryBuilder;
 import com.runemate.game.api.hybrid.region.GroundItems;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.hybrid.util.Filter;
+import com.runemate.game.api.script.Execution;
+import com.runemate.geashawscripts.LazyChaosDruids.Data.Loot;
+import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.text.NumberFormat;
+import java.util.Arrays;
 
 /**
  * Created by Geashaw on 11-2-2015.
@@ -60,15 +68,6 @@ public class Methods {
     }
 
     /**
-     * Check if loot is on the ground.
-     */
-    public static boolean lootIsVisible() {
-        String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
-        GroundItem loot = GroundItems.newQuery().names(possibleLoot).reachable().results().first();
-        return loot != null && loot.isVisible();
-    }
-
-    /**
      * Method to rotate text
      * @param text
      *   The text to display.
@@ -117,5 +116,14 @@ public class Methods {
         AffineTransform affinetransform = new AffineTransform();
         FontRenderContext frc = new FontRenderContext(affinetransform,true,true);
         return (int)(font.getStringBounds(text, frc).getHeight());
+    }
+
+    /**
+     * Check if player can loot.
+     */
+    public static boolean canLoot() {
+        String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
+        GroundItem loot = GroundItems.newQuery().names(possibleLoot).results().nearest();
+        return loot != null;
     }
 }

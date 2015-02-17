@@ -53,8 +53,7 @@ public class ExpTracker {
     }
 
     private String getProgressBarInfo () {
-        String info = skill.name() + ": " + formatNumber(getExpGained()) + " (" + getFormattedExpPerHour()
-                + " P/H) - " + formatTime(getTimeToNextLevel());
+        String info = skill.name() + ": " + formatNumber(getExpGained()) + " (" + getFormattedExpPerHour() + " P/H) - " + formatTime(getTimeToNextLevel());
         return info;
     }
 
@@ -79,15 +78,14 @@ public class ExpTracker {
     }
 
     private String formatTime(long time) {
-        String hms = String.format(
-                "%02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(time),
-                TimeUnit.MILLISECONDS.toMinutes(time)
-                        - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS
-                        .toHours(time)),
-                TimeUnit.MILLISECONDS.toSeconds(time)
-                        - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
-                        .toMinutes(time)));
+        String hms = String.format("%02d:%02d:%02d",
+        TimeUnit.MILLISECONDS.toHours(time),
+        TimeUnit.MILLISECONDS.toMinutes(time)
+        - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS
+        .toHours(time)),
+        TimeUnit.MILLISECONDS.toSeconds(time)
+        - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
+        .toMinutes(time)));
         return hms;
     }
 
