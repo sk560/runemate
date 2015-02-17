@@ -1,11 +1,11 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
-import com.runemate.game.api.hybrid.entities.status.CombatGauge;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Health;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
 import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
-import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
+import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 
 /**
  * Created by Geashaw on 11-2-2015.
@@ -14,28 +14,27 @@ public class HealTask extends Task {
 
     @Override
     public boolean validate() {
-        final CombatGauge health = Players.getLocal().getHealthGauge();
-        return health != null  && health.getPercent() <= 60;
+        return Health.getCurrentPercent() <= 30;
     }
 
     @Override
     public void execute() {
-        heal();
-    }
-
-    /**
-     * Method for healing.
-     */
-    private boolean heal() {
-        SpriteItem food = Inventory.getItems("Salmon").last();
-        final CombatGauge health = Players.getLocal().getHealthGauge();
-
+        /*SpriteItem food = Inventory.getItems("Salmon").last();
         if (food != null) {
             if (food.interact("Eat")) {
-                Execution.delayUntil(() -> health.getPercent() >= 70);
+                LazyChaosDruids.status = "Eating";
+                Execution.delayUntil(() -> Health.getCurrentPercent() > 30);
+            }
+        }*/
+
+        if (Inventory.contains(LazyChaosDruids.food.getName())) {
+            final int startHealth = Health.getCurrent();
+            SpriteItem i = Inventory.getItems(LazyChaosDruids.food.getName()).random();
+            if (i != null) {
+                if (i.interact("Eat")) {
+                    Execution.delayUntil(() -> Health.getCurrent() != startHealth, 1600,2000);
+                }
             }
         }
-
-        return false;
     }
 }

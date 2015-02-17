@@ -1,14 +1,16 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
-import com.runemate.game.api.hybrid.input.Keyboard;
-import com.runemate.game.api.hybrid.local.hud.interfaces.Bank;
+import com.runemate.game.api.hybrid.entities.GroundItem;
+import com.runemate.game.api.hybrid.local.Camera;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
-import com.runemate.game.api.rs3.local.hud.interfaces.eoc.ActionBar;
-import com.runemate.game.api.rs3.local.hud.interfaces.eoc.SlotAction;
+import com.runemate.game.api.hybrid.location.navigation.Path;
+import com.runemate.game.api.hybrid.location.navigation.Traversal;
+import com.runemate.game.api.hybrid.region.GroundItems;
+import com.runemate.game.api.hybrid.util.calculations.Distance;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.geashawscripts.LazyAlcoholic.Utils.Constants;
-import com.runemate.geashawscripts.LazyAlcoholic.Utils.Methods;
+import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
+import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
 
 /**
  * Created by Geashaw on 11-2-2015.
@@ -17,28 +19,26 @@ public class LootTask extends Task {
 
     @Override
     public boolean validate() {
-        return !Bank.isOpen() && Inventory.getQuantity(Constants.wine) > 0;
+        return Methods.lootIsVisible() && !Inventory.isFull();
     }
 
     @Override
     public void execute() {
-        drinkWine();
-    }
+        String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
+        GroundItem loot = GroundItems.newQuery().names(possibleLoot).reachable().results().first();
+        Path lootSpot = Traversal.getDefaultWeb().getPathBuilder().buildTo(loot);
 
-    /**
-     * Activate the drink wine from the actionbar.
-     */
-    private boolean drinkWine() {
-        SlotAction action = ActionBar.getFirstAction(Constants.drinkAction);
-
-        if (action != null) {
-            Constants.status = "Drinking wine.";
-            if (Keyboard.typeKey(action.getSlot().getKeyBind())) {
-                Execution.delayUntil(() -> !Methods.isBusy(), 1000, 1500);
+        if (loot != null) {
+            if (loot.isVisible()) {
+                if (loot.interact("Take")) {
+                    LazyChaosDruids.status = "Looting";
+                    Execution.delayUntil(() -> !loot.isVisible(), 1500, 2000);
+                } else if (Distance.to(loot) > 2) {
+                    lootSpot.step(true);
+                } else {
+                    Camera.turnTo(loot);
+                }
             }
-
-            return true;
         }
-        return false;
     }
 }

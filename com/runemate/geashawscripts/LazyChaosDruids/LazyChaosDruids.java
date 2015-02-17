@@ -2,13 +2,21 @@ package com.runemate.geashawscripts.LazyChaosDruids;
 
 import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
+import com.runemate.game.api.hybrid.local.Skill;
+import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceWindows;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
+import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.task.TaskScript;
+import com.runemate.geashawscripts.LazyChaosDruids.Data.Food;
+import com.runemate.geashawscripts.LazyChaosDruids.Data.Herb;
+import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
 import com.runemate.geashawscripts.LazyChaosDruids.Tasks.FightTask;
 import com.runemate.geashawscripts.LazyChaosDruids.Tasks.HealTask;
 import com.runemate.geashawscripts.LazyChaosDruids.Tasks.LootTask;
-import com.runemate.geashawscripts.LazyChaosDruids.Utils.Methods;
+import com.runemate.geashawscripts.LazyChaosDruids.Utilities.ExpTracker;
+import com.runemate.geashawscripts.LazyChaosDruids.Utilities.ExpTrackerContainer;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -23,15 +31,25 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
     public static String status = "Loading...";
     public static final StopWatch runtime = new StopWatch();
 
+    public static Food food = Food.TROUT;
+    public static Herb herb;
+
+    ExpTracker constiution, strength;
+    ExpTrackerContainer expTrackerContainer;
+
     public void onStart(String... args) {
         // Add the new tasks from the Tasks folder.
-        add(new FightTask(), new LootTask(), new HealTask());
+        add(new FightTask(), new HealTask(), new LootTask());
         // Add the listener for the paint.
         getEventDispatcher().addListener(this);
         // Set the default script loop delay.
         setLoopDelay(100, 300);
         // Start the timer.
         runtime.start();
+
+        constiution = new ExpTracker(Skill.CONSTITUTION, Color.BLACK, new Color(0, 0, 0, 150), new Color(65, 4, 9), Color.WHITE);
+        strength = new ExpTracker(Skill.STRENGTH, Color.BLACK, new Color(0,0,0, 150), new Color(0, 6, 73), Color.WHITE);
+        expTrackerContainer = new ExpTrackerContainer(strength, constiution);
     }
     /**
      * This is where we put everything that we want to draw to the screen.
@@ -50,10 +68,10 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
         final Color color2 = new Color(0, 0, 0);
         final Color color3 = new Color(255, 255, 255);
         final BasicStroke stroke1 = new BasicStroke(1);
-        final Font font1 = new Font("Tahoma", 0, 12);
+        final Font small = new Font("Tahoma", 0, 9);
 
         // Create the draggable blue rectangle
-        g.setColor(color1);
+        /*g.setColor(color1);
         g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
         g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
         g.setColor(color2);
@@ -64,10 +82,37 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
 
         g.drawString(getMetaData().getName() + " - Version " + getMetaData().getVersion(), TextXLocation, TextYLocation += 10);
         g.drawString("Run time: " + runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
-        g.drawString("Status: " + status, TextXLocation, TextYLocation += 15);
+        g.drawString("Status: " + status, TextXLocation, TextYLocation += 15);*/
+
+        // Test xp tracker.
+        if (expTrackerContainer != null) {
+            expTrackerContainer.draw(g, TextXLocation, TextYLocation);
+        }
+
+        // Trying to paint on the inventory.
+        g.setColor(Color.WHITE);
+        g.setFont(small);
+
+        // Credits to SlashNHax
+        if(InterfaceWindows.getInventory().isOpen()){
+            for(SpriteItem item:Inventory.getItems()){
+                Rectangle bounds = item.getBounds();
+                String herbName = "";
+                for(Herb herb:Herb.values()){
+                    if(item.getDefinition().getUnnotedId() == herb.getId()){
+                        herbName = herb.getName();
+                        break;
+                    }
+                }
+                //Methods.drawRotate(herbName, bounds.x + (bounds.width / 2), bounds.y + (bounds.height / 2), 0, g);
+                int x = bounds.x - (bounds.width-Methods.getWidth(small, herbName)) / 2;
+                int y = bounds.y - (bounds.width-Methods.getWidth(small, herbName)) / 2;
+                g.drawString(herbName, x, y);
+            }
+        }
 
         //Username Coverupper
-        g.setColor(Color.black);
+        g.setColor(Color.BLACK);
         g.fillRect(7, ClientUI.getFrame().getHeight() - 126, userCoverWith, userCoverHeight);
     }
 
@@ -92,4 +137,6 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
             startY = e.getY() - relativeY;
         }
     }
+
+
 }
