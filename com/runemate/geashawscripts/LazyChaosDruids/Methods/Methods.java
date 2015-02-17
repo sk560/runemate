@@ -1,21 +1,18 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Methods;
 
 import com.runemate.game.api.hybrid.entities.GroundItem;
-import com.runemate.game.api.hybrid.location.Area;
-import com.runemate.game.api.hybrid.location.Coordinate;
-import com.runemate.game.api.hybrid.queries.GroundItemQueryBuilder;
+import com.runemate.game.api.hybrid.entities.Npc;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Health;
 import com.runemate.game.api.hybrid.region.GroundItems;
+import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
-import com.runemate.game.api.hybrid.util.Filter;
 import com.runemate.game.api.script.Execution;
-import com.runemate.geashawscripts.LazyChaosDruids.Data.Loot;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.text.NumberFormat;
-import java.util.Arrays;
 
 /**
  * Created by Geashaw on 11-2-2015.
@@ -50,14 +47,6 @@ public class Methods {
      */
     public static void debug(String text) {
         System.out.println(text);
-    }
-
-    /**
-     * Check if an interface with a specific text is visible.
-     */
-    public static boolean isInCombat() {
-
-        return false;
     }
 
     /**
@@ -122,8 +111,40 @@ public class Methods {
      * Check if player can loot.
      */
     public static boolean canLoot() {
-        String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
+        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
         GroundItem loot = GroundItems.newQuery().names(possibleLoot).results().nearest();
         return loot != null;
+    }
+
+    /**
+     * Check if player can fight.
+     */
+    public static boolean canFight() {
+        Npc druid = Npcs.newQuery().names("Chaos druid").results().nearest();
+        return Health.getCurrentPercent() >= 60 && druid != null;
+    }
+
+    /**
+     * Check if player can fight.
+     */
+    public static boolean canHeal() {
+        return Health.getCurrentPercent() <= 60;
+    }
+
+    /**
+     * Method to loot items.
+     */
+    public static boolean lootItems() {
+        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
+        GroundItem loot = GroundItems.newQuery().names(possibleLoot).results().nearest();
+        if (loot != null) {
+            if (loot.interact("Take", loot.getDefinition().getName())) {
+                LazyChaosDruids.status = "Looting";
+                Execution.delayUntil(() -> !loot.isVisible(), 1000, 1200);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

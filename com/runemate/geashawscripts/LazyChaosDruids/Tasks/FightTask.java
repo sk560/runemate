@@ -2,7 +2,6 @@ package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.entities.Player;
-import com.runemate.game.api.hybrid.local.hud.interfaces.Health;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.script.Execution;
@@ -17,8 +16,7 @@ public class FightTask extends Task {
 
     @Override
     public boolean validate() {
-        Npc druid = Npcs.newQuery().names("Chaos druid").reachable().results().nearest();
-        return druid != null && !Methods.canLoot() && Health.getCurrentPercent() > 30;
+        return Methods.canFight() && !Methods.canLoot();
     }
 
     @Override
