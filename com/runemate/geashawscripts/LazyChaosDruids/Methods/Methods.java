@@ -63,7 +63,8 @@ public class Methods {
      * Check if loot is on the ground.
      */
     public static boolean lootIsVisible() {
-        GroundItem loot = GroundItems.newQuery().names("Herb").reachable().results().first();
+        String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
+        GroundItem loot = GroundItems.newQuery().names(possibleLoot).reachable().results().first();
         return loot != null && loot.isVisible();
     }
 

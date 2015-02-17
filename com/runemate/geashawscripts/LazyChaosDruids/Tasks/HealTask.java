@@ -6,34 +6,27 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
+import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
 
 /**
  * Created by Geashaw on 11-2-2015.
  */
 public class HealTask extends Task {
 
+    int healPercentage = 60;
+
     @Override
     public boolean validate() {
-        return Health.getCurrentPercent() <= 30;
+        return Methods.lootIsVisible() || Health.getCurrentPercent() <= healPercentage;
     }
 
     @Override
     public void execute() {
-        /*SpriteItem food = Inventory.getItems("Salmon").last();
+        SpriteItem food = Inventory.getItems("Trout").last();
         if (food != null) {
             if (food.interact("Eat")) {
                 LazyChaosDruids.status = "Eating";
-                Execution.delayUntil(() -> Health.getCurrentPercent() > 30);
-            }
-        }*/
-
-        if (Inventory.contains(LazyChaosDruids.food.getName())) {
-            final int startHealth = Health.getCurrent();
-            SpriteItem i = Inventory.getItems(LazyChaosDruids.food.getName()).random();
-            if (i != null) {
-                if (i.interact("Eat")) {
-                    Execution.delayUntil(() -> Health.getCurrent() != startHealth, 1600,2000);
-                }
+                Execution.delayUntil(() -> Health.getCurrentPercent() >= healPercentage, 1600,2000);
             }
         }
     }

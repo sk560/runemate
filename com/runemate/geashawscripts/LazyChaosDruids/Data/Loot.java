@@ -1,6 +1,6 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Data;
 
-public enum Herb {
+public enum Loot {
 
     GUAM("Guam", 199),
     MARRENTILL("Marrentill", 201),
@@ -12,11 +12,15 @@ public enum Herb {
     KWUARM("Kwuarm", 213),
     CADANTINE("Cadantine", 215),
     DWARF_WEED("Dwarf weed", 217),
-    TORSTOL("Torstol", 219);
+    TORSTOL("Torstol", 219),
+    LANTADYME("Lantadyme", 2485),
+    AIR_RUNE("Air rune", 556),
+    WATER_RUNE("Water rune", 555),
+    LAW_RUNE("Law rune", 563);
 
     private String name;
     private int	id;
-    private Herb(String name, int id) {
+    private Loot(String name, int id) {
         this.name = name;
         this.id = id;
     }

@@ -26,12 +26,11 @@ public class FightTask extends Task {
     public void execute() {
         final Player me = Players.getLocal();
         Npc druid = Npcs.newQuery().names("Chaos druid").reachable().results().nearestTo(me);
-        if (druid != null) {
-            if (!isInCombat()) {
-                LazyChaosDruids.status = "Fighting";
-                if (druid.interact("Attack")) {
-                    Execution.delayUntil(() -> isInCombat(), 3000, 5000);
-                }
+
+        if (!isInCombat()) {
+            LazyChaosDruids.status = "Fighting";
+            if (druid.interact("Attack")) {
+                Execution.delayUntil(() -> isInCombat(), 1500, 2000);
             }
         }
     }
