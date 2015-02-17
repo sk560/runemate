@@ -2,8 +2,11 @@ package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.entities.Player;
+import com.runemate.game.api.hybrid.local.Camera;
+import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.hybrid.util.calculations.Distance;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
@@ -16,7 +19,7 @@ public class FightTask extends Task {
 
     @Override
     public boolean validate() {
-        return Methods.canFight() && !Methods.canLoot();
+        return Methods.canFight() && !Methods.canLoot() && !Methods.canTeleport();
     }
 
     @Override
@@ -26,10 +29,18 @@ public class FightTask extends Task {
 
         if (Players.getLocal().getTarget() == null) {
             if (druid.getTarget() == null) {
-                LazyChaosDruids.status = "Fighting";
-                if (druid.interact("Attack")) {
-                    Execution.delayUntil(() -> Players.getLocal().getTarget() != null, 1500, 2000);
+                if (druid.isVisible()) {
+                    LazyChaosDruids.status = "Fighting";
+                    if (druid.interact("Attack")) {
+                        Execution.delayUntil(() -> Players.getLocal().getTarget() != null, 1500, 2000);
+                    }
+                } else if (Distance.to(druid) > 2) {
+                    BresenhamPath.buildTo(druid).step(true);
+                } else {
+                    Camera.turnTo(druid);
                 }
+
+
             }
         }
     }

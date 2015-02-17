@@ -14,9 +14,11 @@ public enum Loot {
     DWARF_WEED("Dwarf weed", 217),
     TORSTOL("Torstol", 219),
     LANTADYME("Lantadyme", 2485),
+    SNAPDRAGON("Snapdragon", 3051),
     AIR_RUNE("Air rune", 556),
     WATER_RUNE("Water rune", 555),
-    LAW_RUNE("Law rune", 563);
+    LAW_RUNE("Law rune", 563),
+    NATURE_RUNE("Nature rune", 561);
 
     private String name;
     private int	id;

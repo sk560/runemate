@@ -13,11 +13,11 @@ import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
  */
 public class HealTask extends Task {
 
-    int healPercentage = 60;
+    int healPercentage = 30;
 
     @Override
     public boolean validate() {
-        return Methods.canHeal();
+        return Methods.canHeal() && !Methods.canTeleport();
     }
 
     @Override

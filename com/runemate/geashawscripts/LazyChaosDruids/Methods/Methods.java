@@ -3,6 +3,10 @@ package com.runemate.geashawscripts.LazyChaosDruids.Methods;
 import com.runemate.game.api.hybrid.entities.GroundItem;
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Health;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
+import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
+import com.runemate.game.api.hybrid.location.Area;
+import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.region.GroundItems;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
@@ -111,9 +115,24 @@ public class Methods {
      * Check if player can loot.
      */
     public static boolean canLoot() {
-        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
+        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune", "Nature rune"};
         GroundItem loot = GroundItems.newQuery().names(possibleLoot).results().nearest();
-        return loot != null;
+        if (loot != null) {
+            int id = loot.getDefinition().getUnnotedId();
+
+            if (id != 199 && id != 201 && id != 203 && id != 205) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the player has food.
+     */
+    public static boolean gotFood() {
+        SpriteItem food = Inventory.getItems(LazyChaosDruids.food.getName()).random();
+        return food != null;
     }
 
     /**
@@ -121,30 +140,76 @@ public class Methods {
      */
     public static boolean canFight() {
         Npc druid = Npcs.newQuery().names("Chaos druid").results().nearest();
-        return Health.getCurrentPercent() >= 60 && druid != null;
+        return Players.getLocal().getTarget() == null && Health.getCurrentPercent() >= 60 && druid != null;
     }
 
     /**
-     * Check if player can fight.
+     * Check if player can heal.
      */
     public static boolean canHeal() {
         return Health.getCurrentPercent() <= 60;
     }
 
     /**
+     * Check if player can teleport.
+     */
+    public static boolean canTeleport() {
+        return hasTeleportRunes() && (Inventory.isFull() || Health.getCurrentPercent() <= 30 || !gotFood() && !atFalador());
+    }
+
+    /**
+     * Check if player has teleport runes.
+     */
+    public static boolean hasTeleportRunes() {
+        return Inventory.getQuantity("Law rune") >= 1 && Inventory.getQuantity("Water rune") >= 1 && Inventory.getQuantity("Air rune") >= 3;
+    }
+
+    /**
+     * Check if player can walk to bank.
+     */
+    public static boolean canWalkToBank() {
+        return !gotFood() && atFalador();
+    }
+
+    /**
+     * Check if the player is walking to the bank.
+     */
+    public static boolean isWalkingToBank() {
+        return LazyChaosDruids.isWalkingToBank;
+    }
+
+    /**
+     * Check if player can walk to bank.
+     */
+    public static boolean canWalkToDruids() {
+        return false; //TODO: Create the check.
+    }
+
+    /**
      * Method to loot items.
      */
     public static boolean lootItems() {
-        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune"};
+        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune", "Nature rune"};
         GroundItem loot = GroundItems.newQuery().names(possibleLoot).results().nearest();
         if (loot != null) {
-            if (loot.interact("Take", loot.getDefinition().getName())) {
-                LazyChaosDruids.status = "Looting";
-                Execution.delayUntil(() -> !loot.isVisible(), 1000, 1200);
-                return true;
+            int id = loot.getDefinition().getUnnotedId();
+            if (id != 199 && id != 201 && id != 203 && id != 205) {
+                if (loot.interact("Take", loot.getDefinition().getName())) {
+                    LazyChaosDruids.status = "Looting";
+                    Execution.delayUntil(() -> !loot.isVisible(), 1000, 1200);
+                    return true;
+                }
             }
         }
 
         return false;
+    }
+
+    /**
+     * Check if player is at Falador.
+     */
+    public static boolean atFalador() {
+        final Area FALADOR = new Area.Rectangular(new Coordinate(2961, 3376, 0), new Coordinate(2970, 3386, 0));
+        return FALADOR.contains(Players.getLocal());
     }
 }

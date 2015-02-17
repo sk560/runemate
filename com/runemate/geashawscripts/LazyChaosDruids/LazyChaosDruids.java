@@ -9,12 +9,9 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.task.TaskScript;
-import com.runemate.geashawscripts.LazyChaosDruids.Data.Food;
-import com.runemate.geashawscripts.LazyChaosDruids.Data.Loot;
+import com.runemate.geashawscripts.LazyChaosDruids.Data.*;
 import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
-import com.runemate.geashawscripts.LazyChaosDruids.Tasks.FightTask;
-import com.runemate.geashawscripts.LazyChaosDruids.Tasks.HealTask;
-import com.runemate.geashawscripts.LazyChaosDruids.Tasks.LootTask;
+import com.runemate.geashawscripts.LazyChaosDruids.Tasks.*;
 import com.runemate.geashawscripts.LazyChaosDruids.Utilities.ExpTracker;
 import com.runemate.geashawscripts.LazyChaosDruids.Utilities.ExpTrackerContainer;
 
@@ -30,6 +27,7 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
 
     public static String status = "Loading...";
     public static final StopWatch runtime = new StopWatch();
+    public static boolean isWalkingToBank = false;
 
     public static Food food = Food.TRIANGLE_SANDWICH;
     public static Loot loot;
@@ -39,7 +37,7 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
 
     public void onStart(String... args) {
         // Add the new tasks from the Tasks folder.
-        add(new FightTask(), new HealTask(), new LootTask());
+        add(new FightTask(), new HealTask(), new LootTask(), new TeleportTask()/*, new WalkToBank()*/);
         // Add the listener for the paint.
         getEventDispatcher().addListener(this);
         // Set the default script loop delay.
