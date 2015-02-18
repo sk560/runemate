@@ -28,6 +28,10 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
     public static String status = "Loading...";
     public static final StopWatch runtime = new StopWatch();
     public static boolean isWalkingToBank = false;
+    public static int ranarrPrice, iritPrice, avantoePrice, kwuarmPrice, cadantinePrice, dwarfWeedPrice, torstolPrice, lantadymePrice, snapdragonPrice;
+
+    public static int healPercentage = 80;
+    public static int teleportHpPercentage = 20;
 
     public static Food food = Food.TRIANGLE_SANDWICH;
     public static Loot loot;
@@ -37,16 +41,23 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
 
     public void onStart(String... args) {
         // Add the new tasks from the Tasks folder.
-        add(new FightTask(), new HealTask(), new LootTask(), new TeleportTask()/*, new WalkToBank()*/);
+        add(
+        new FightTask(),
+        new HealTask(),
+        new LootTask(),
+        new DropTask(),
+        new TeleportTask()/*,
+        new WalkToBank(),
+        new WalkToDruids()*/
+        );
+
         // Add the listener for the paint.
         getEventDispatcher().addListener(this);
         // Set the default script loop delay.
         setLoopDelay(100, 300);
         // Start the timer.
         runtime.start();
-
-        Methods.debug("Koekje");
-
+        Methods.getItemPrices();
         constiution = new ExpTracker(Skill.CONSTITUTION, Color.BLACK, new Color(0, 0, 0, 150), new Color(65, 4, 9), Color.WHITE);
         strength = new ExpTracker(Skill.STRENGTH, Color.BLACK, new Color(0,0,0, 150), new Color(0, 6, 73), Color.WHITE);
         expTrackerContainer = new ExpTrackerContainer(strength, constiution);

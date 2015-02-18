@@ -10,6 +10,7 @@ import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.region.GroundItems;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.rs3.net.GrandExchange;
 import com.runemate.game.api.script.Execution;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 
@@ -147,14 +148,14 @@ public class Methods {
      * Check if player can heal.
      */
     public static boolean canHeal() {
-        return Health.getCurrentPercent() <= 60;
+        return Health.getCurrentPercent() <= LazyChaosDruids.healPercentage;
     }
 
     /**
      * Check if player can teleport.
      */
     public static boolean canTeleport() {
-        return hasTeleportRunes() && (Inventory.isFull() || Health.getCurrentPercent() <= 30 || !gotFood() && !atFalador());
+        return hasTeleportRunes() && (Inventory.isFull() || Health.getCurrentPercent() <= LazyChaosDruids.teleportHpPercentage || !gotFood()) && !atFalador();
     }
 
     /**
@@ -182,7 +183,7 @@ public class Methods {
      * Check if player can walk to bank.
      */
     public static boolean canWalkToDruids() {
-        return false; //TODO: Create the check.
+        return Inventory.containsAnyOf(LazyChaosDruids.food.getName()) && hasTeleportRunes() && !Inventory.containsAnyOf("Herb");
     }
 
     /**
@@ -211,5 +212,20 @@ public class Methods {
     public static boolean atFalador() {
         final Area FALADOR = new Area.Rectangular(new Coordinate(2961, 3376, 0), new Coordinate(2970, 3386, 0));
         return FALADOR.contains(Players.getLocal());
+    }
+
+    /**
+     * Look up Grand exchange prices for herbs.
+     */
+    public static void getItemPrices() {
+        LazyChaosDruids.ranarrPrice = GrandExchange.lookup(207).getPrice();
+        LazyChaosDruids.iritPrice = GrandExchange.lookup(209).getPrice();
+        LazyChaosDruids.avantoePrice = GrandExchange.lookup(211).getPrice();
+        LazyChaosDruids.kwuarmPrice = GrandExchange.lookup(213).getPrice();
+        LazyChaosDruids.cadantinePrice = GrandExchange.lookup(215).getPrice();
+        LazyChaosDruids.dwarfWeedPrice = GrandExchange.lookup(217).getPrice();
+        LazyChaosDruids.torstolPrice = GrandExchange.lookup(219).getPrice();
+        LazyChaosDruids.lantadymePrice = GrandExchange.lookup(2485).getPrice();
+        LazyChaosDruids.snapdragonPrice = GrandExchange.lookup(3051).getPrice();
     }
 }

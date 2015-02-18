@@ -2,6 +2,7 @@ package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.GameObject;
 import com.runemate.game.api.hybrid.entities.Npc;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Bank;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
@@ -18,18 +19,21 @@ public class WalkToBank extends Task {
 
     @Override
     public boolean validate() {
-        return Methods.canWalkToBank();
+        return Methods.canWalkToBank() && !Methods.canWalkToDruids();
     }
 
     @Override
     public void execute() {
-        final Area BANK_AREA = new Area.Rectangular(new Coordinate(2945, 3365, 0), new Coordinate(2947, 3369, 0));
-        GameObject bank = GameObjects.newQuery().names("Bank booth").within(BANK_AREA).results().nearest();
+        final Area FALADOR_AREA = new Area.Rectangular(new Coordinate(2942, 3366, 0), new Coordinate(2947, 3369, 0));
+        GameObject bank = GameObjects.newQuery().names("Bank booth").within(FALADOR_AREA).results().nearest();
 
-        if (bank != null) {
+        if (!bank.isVisible()) {
+            Methods.debug("Bank not visible");
             LazyChaosDruids.isWalkingToBank = true;
-            BresenhamPath.buildTo(bank).step(true);
+            BresenhamPath.buildTo(new Coordinate(2946, 3368, 0)).step(true);
+        } else {
+            Methods.debug("Bank not visible");
+            Bank.open();
         }
     }
-
 }

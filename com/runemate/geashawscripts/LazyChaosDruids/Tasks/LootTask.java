@@ -11,7 +11,7 @@ public class LootTask extends Task {
 
     @Override
     public boolean validate() {
-        return !Methods.isWalkingToBank() && !Methods.atFalador() && !Inventory.isFull() && Methods.canLoot() && !Methods.canTeleport();
+        return !Methods.atFalador() && !Inventory.isFull() && Methods.canLoot() && !Methods.canTeleport();
     }
 
     @Override

@@ -13,8 +13,6 @@ import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
  */
 public class HealTask extends Task {
 
-    int healPercentage = 30;
-
     @Override
     public boolean validate() {
         return Methods.canHeal() && !Methods.canTeleport();
@@ -26,7 +24,7 @@ public class HealTask extends Task {
         if (food != null) {
             if (food.interact("Eat")) {
                 LazyChaosDruids.status = "Eating";
-                Execution.delayUntil(() -> Health.getCurrentPercent() >= healPercentage, 1600, 2000);
+                Execution.delayUntil(() -> Health.getCurrentPercent() >= LazyChaosDruids.healPercentage, 1600, 2000);
             }
         }
     }
