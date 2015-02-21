@@ -112,7 +112,7 @@ public class Methods {
      */
     public static boolean canFight() {
         Npc druid = Npcs.newQuery().names("Chaos druid").results().nearest();
-        return !canLoot() && Players.getLocal().getTarget() == null && Health.getCurrentPercent() >= LazyChaosDruids.healPercentage && druid != null;
+        return Players.getLocal().getTarget() == null && Health.getCurrentPercent() >= LazyChaosDruids.healPercentage && druid != null;
     }
 
     /**
@@ -127,21 +127,28 @@ public class Methods {
      */
     public static boolean canLoot() {
 
-        /*for(String s:LazyChaosDruids.lootList){
+        for(String s:LazyChaosDruids.lootList){
             Loot loot = Loot.valueOf(s.toUpperCase().replace(" ", "_"));
             if(loot != null) {
                 int id = loot.getId();
                 String name = loot.getName();
-            }
-        }*/
 
-        GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
+                GroundItem item = GroundItems.newQuery().names(name).results().nearest();
+
+                if (item != null) {
+                    System.out.println(item);
+                    return true;
+                }
+            }
+        }
+
+        /*GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
 
         if (loot != null) {
             int unnoted = loot.getDefinition().getUnnotedId();
             String name = loot.getDefinition().getName();
             return unnoted == 207 || name.equals("Air rune") || name.equals("Law rune") || name.equals("Nature rune");
-        }
+        }*/
         return false;
     }
 }

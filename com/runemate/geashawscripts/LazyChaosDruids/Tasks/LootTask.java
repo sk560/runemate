@@ -28,16 +28,29 @@ public class LootTask extends Task {
      */
     private boolean lootItems() {
 
-        /*for(String s:LazyChaosDruids.lootList){
+        for(String s:LazyChaosDruids.lootList){
             Loot loot = Loot.valueOf(s.toUpperCase().replace(" ", "_"));
+
             if(loot != null) {
                 int id = loot.getId();
                 String name = loot.getName();
-                System.out.println(name);
-            }
-        }*/
+                GroundItem item = GroundItems.newQuery().names(name).results().first();
 
-        GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
+                if (item != null) {
+                    System.out.println(item);
+                    if (item.interact("Take", item.getDefinition().getName())) {
+                        LazyChaosDruids.status = "Looting";
+                        Execution.delayUntil(() -> !item.isVisible(), 1500, 2000);
+                        System.out.println("Picked up" + item + ".");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /*GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
 
         if (loot != null) {
             int unnoted = loot.getDefinition().getUnnotedId();
@@ -51,8 +64,7 @@ public class LootTask extends Task {
                 }
             }
         }
-        return false;
-    }
+        return false;*/
 
     /*int id = loot.getDefinition().getUnnotedId();
     if (id != 199 && id != 201 && id != 203 && id != 205) {
