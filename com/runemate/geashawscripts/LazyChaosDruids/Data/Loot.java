@@ -1,7 +1,6 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Data;
 
 public enum Loot {
-
     GUAM("Guam", 199),
     MARRENTILL("Marrentill", 201),
     TARROMIN("Tarromin", 203),

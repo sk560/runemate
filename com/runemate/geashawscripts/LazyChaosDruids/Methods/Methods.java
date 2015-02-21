@@ -4,14 +4,10 @@ import com.runemate.game.api.hybrid.entities.GroundItem;
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Health;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
-import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
-import com.runemate.game.api.hybrid.location.Area;
-import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.region.GroundItems;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
-import com.runemate.game.api.rs3.net.GrandExchange;
-import com.runemate.game.api.script.Execution;
+import com.runemate.geashawscripts.LazyChaosDruids.Data.Loot;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 
 import java.awt.*;
@@ -63,77 +59,52 @@ public class Methods {
 
     /**
      * Method to rotate text
-     * @param text
-     *   The text to display.
-     * @param x
-     *   The x position
-     * @param y
-     *   The y position
-     * @param angle
-     *   The angle in degrees
-     * @param g
-     *   The graphics.
+     *
+     * @param text  The text to display.
+     * @param x     The x position
+     * @param y     The y position
+     * @param angle The angle in degrees
+     * @param g     The graphics.
      */
     public static void drawRotate(String text, double x, double y, int angle, Graphics2D g) {
-        g.translate((float)x,(float)y);
+        g.translate((float) x, (float) y);
         g.rotate(Math.toRadians(angle));
-        g.drawString(text,0,0);
+        g.drawString(text, 0, 0);
         g.rotate(-Math.toRadians(angle));
-        g.translate(-(float)x,-(float)y);
+        g.translate(-(float) x, -(float) y);
     }
 
     /**
      * Method to get the width of a string of text.
-     * @param font
-     *   The font type.
-     * @param text
-     *   The text String.
-     * @return
-     *   Returns an integer for the width.
+     *
+     * @param font The font type.
+     * @param text The text String.
+     * @return Returns an integer for the width.
      */
-    public static int getWidth(Font font, String text){
+    public static int getWidth(Font font, String text) {
         AffineTransform affinetransform = new AffineTransform();
-        FontRenderContext frc = new FontRenderContext(affinetransform,true,true);
-        return (int)(font.getStringBounds(text, frc).getWidth());
+        FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
+        return (int) (font.getStringBounds(text, frc).getWidth());
     }
 
     /**
      * Method to get the height of a string of text.
-     * @param font
-     *   The font type.
-     * @param text
-     *   The text String.
-     * @return
-     *   Returns an integer for the height.
+     *
+     * @param font The font type.
+     * @param text The text String.
+     * @return Returns an integer for the height.
      */
-    public static int getHeight(Font font, String text){
+    public static int getHeight(Font font, String text) {
         AffineTransform affinetransform = new AffineTransform();
-        FontRenderContext frc = new FontRenderContext(affinetransform,true,true);
-        return (int)(font.getStringBounds(text, frc).getHeight());
-    }
-
-    /**
-     * Check if player can loot.
-     */
-    public static boolean canLoot() {
-        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune", "Nature rune"};
-        GroundItem loot = GroundItems.newQuery().names(possibleLoot).results().nearest();
-        if (loot != null) {
-            int id = loot.getDefinition().getUnnotedId();
-
-            if (id != 199 && id != 201 && id != 203 && id != 205) {
-                return true;
-            }
-        }
-        return false;
+        FontRenderContext frc = new FontRenderContext(affinetransform, true, true);
+        return (int) (font.getStringBounds(text, frc).getHeight());
     }
 
     /**
      * Check if the player has food.
      */
     public static boolean gotFood() {
-        SpriteItem food = Inventory.getItems(LazyChaosDruids.food.getName()).random();
-        return food != null;
+        return Inventory.containsAnyOf(LazyChaosDruids.foodName);
     }
 
     /**
@@ -141,91 +112,36 @@ public class Methods {
      */
     public static boolean canFight() {
         Npc druid = Npcs.newQuery().names("Chaos druid").results().nearest();
-        return Players.getLocal().getTarget() == null && Health.getCurrentPercent() >= 60 && druid != null;
+        return !canLoot() && Players.getLocal().getTarget() == null && Health.getCurrentPercent() >= LazyChaosDruids.healPercentage && druid != null;
     }
 
     /**
      * Check if player can heal.
      */
     public static boolean canHeal() {
-        return Health.getCurrentPercent() <= LazyChaosDruids.healPercentage;
+        return Health.getCurrentPercent() <= LazyChaosDruids.healPercentage && gotFood();
     }
 
     /**
-     * Check if player can teleport.
+     * Check if player can loot.
      */
-    public static boolean canTeleport() {
-        return hasTeleportRunes() && (Inventory.isFull() || Health.getCurrentPercent() <= LazyChaosDruids.teleportHpPercentage || !gotFood()) && !atFalador();
-    }
+    public static boolean canLoot() {
 
-    /**
-     * Check if player has teleport runes.
-     */
-    public static boolean hasTeleportRunes() {
-        return Inventory.getQuantity("Law rune") >= 1 && Inventory.getQuantity("Water rune") >= 1 && Inventory.getQuantity("Air rune") >= 3;
-    }
-
-    /**
-     * Check if player can walk to bank.
-     */
-    public static boolean canWalkToBank() {
-        return !gotFood() && atFalador();
-    }
-
-    /**
-     * Check if the player is walking to the bank.
-     */
-    public static boolean isWalkingToBank() {
-        return LazyChaosDruids.isWalkingToBank;
-    }
-
-    /**
-     * Check if player can walk to bank.
-     */
-    public static boolean canWalkToDruids() {
-        return Inventory.containsAnyOf(LazyChaosDruids.food.getName()) && hasTeleportRunes() && !Inventory.containsAnyOf("Herb");
-    }
-
-    /**
-     * Method to loot items.
-     */
-    public static boolean lootItems() {
-        final String[] possibleLoot = new String[]{"Herb", "Law rune", "Air rune", "Nature rune"};
-        GroundItem loot = GroundItems.newQuery().names(possibleLoot).results().nearest();
-        if (loot != null) {
-            int id = loot.getDefinition().getUnnotedId();
-            if (id != 199 && id != 201 && id != 203 && id != 205) {
-                if (loot.interact("Take", loot.getDefinition().getName())) {
-                    LazyChaosDruids.status = "Looting";
-                    Execution.delayUntil(() -> !loot.isVisible(), 1000, 1200);
-                    return true;
-                }
+        /*for(String s:LazyChaosDruids.lootList){
+            Loot loot = Loot.valueOf(s.toUpperCase().replace(" ", "_"));
+            if(loot != null) {
+                int id = loot.getId();
+                String name = loot.getName();
             }
+        }*/
+
+        GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
+
+        if (loot != null) {
+            int unnoted = loot.getDefinition().getUnnotedId();
+            String name = loot.getDefinition().getName();
+            return unnoted == 207 || name.equals("Air rune") || name.equals("Law rune") || name.equals("Nature rune");
         }
-
         return false;
-    }
-
-    /**
-     * Check if player is at Falador.
-     */
-    public static boolean atFalador() {
-        final Area FALADOR = new Area.Rectangular(new Coordinate(2961, 3376, 0), new Coordinate(2970, 3386, 0));
-        return FALADOR.contains(Players.getLocal());
-    }
-
-    /**
-     * Look up Grand exchange prices for herbs.
-     */
-    public static void getItemPrices() {
-        LazyChaosDruids.ranarrPrice = GrandExchange.lookup(207).getPrice();
-        LazyChaosDruids.iritPrice = GrandExchange.lookup(209).getPrice();
-        LazyChaosDruids.avantoePrice = GrandExchange.lookup(211).getPrice();
-        LazyChaosDruids.kwuarmPrice = GrandExchange.lookup(213).getPrice();
-        LazyChaosDruids.cadantinePrice = GrandExchange.lookup(215).getPrice();
-        LazyChaosDruids.dwarfWeedPrice = GrandExchange.lookup(217).getPrice();
-        LazyChaosDruids.torstolPrice = GrandExchange.lookup(219).getPrice();
-        LazyChaosDruids.lantadymePrice = GrandExchange.lookup(2485).getPrice();
-        LazyChaosDruids.snapdragonPrice = GrandExchange.lookup(3051).getPrice();
     }
 }

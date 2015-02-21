@@ -15,16 +15,17 @@ public class HealTask extends Task {
 
     @Override
     public boolean validate() {
-        return Methods.canHeal() && !Methods.canTeleport();
+        return Methods.canHeal();
     }
 
     @Override
     public void execute() {
-        SpriteItem food = Inventory.getItems(LazyChaosDruids.food.getName()).last();
+        SpriteItem food = Inventory.getItems(LazyChaosDruids.foodName).last();
+
         if (food != null) {
             if (food.interact("Eat")) {
                 LazyChaosDruids.status = "Eating";
-                Execution.delayUntil(() -> Health.getCurrentPercent() >= LazyChaosDruids.healPercentage, 1600, 2000);
+                Execution.delayUntil(() -> Health.getCurrentPercent() >= LazyChaosDruids.healPercentage, 900, 1500);
             }
         }
     }

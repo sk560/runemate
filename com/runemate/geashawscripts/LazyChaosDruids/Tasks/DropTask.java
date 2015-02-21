@@ -1,6 +1,8 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
+import com.runemate.game.api.hybrid.queries.results.SpriteItemQueryResults;
+import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 
 /**
@@ -11,6 +13,18 @@ public class DropTask extends Task {
     public boolean validate() {
         final String[] possibleJunk = new String[]{"Bones"};
         return Inventory.containsAnyOf(possibleJunk);
+
+        /*SpriteItemQueryResults inv = Inventory.getItems();
+        String[] keep = new String[]{"Herb", "Law rune", "Air rune", "Nature rune", "Trout", "Salmon", "Tuna", "Lobster"};
+
+        for (int i = 0; i < inv.size(); i++) {
+            if (inv.get(i) != null) {
+                if (!inv.get(i).getDefinition().getName().equals(keep)) {
+                    return true;
+                }
+            }
+        }
+        return false;*/
     }
 
     @Override
@@ -20,5 +34,19 @@ public class DropTask extends Task {
         if (Inventory.containsAnyOf(possibleJunk)) {
             Inventory.getItems(possibleJunk).first();
         }
+
+        /*SpriteItemQueryResults inv = Inventory.getItems();
+        String[] keep = new String[]{"Herb", "Law rune", "Air rune", "Nature rune", "Trout", "Salmon", "Tuna", "Lobster"};
+
+        for (int i = 0; i < inv.size(); i++){
+            if (inv.get(i) != null) {
+                if (!inv.get(i).getDefinition().getName().equals(keep)) {
+                    if (inv.get(i).interact("Drop")) {
+                        Execution.delay(1000, 1500);
+                    }
+                }
+            }
+        }*/
     }
+
 }

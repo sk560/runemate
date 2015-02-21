@@ -2,21 +2,31 @@ package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.region.Npcs;
+import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 
 /**
- * Created by Deka on 18-2-2015.
+ * Created by Geashaw on 18-2-2015.
  */
 public class DismissTask extends Task {
 
+    final String[] dudes = new String[]{"Genie", "Flippa", "Leo", "Evil Bob", "Mysterious Old Man", "Freaky Forester"};
+
     @Override
     public boolean validate() {
-        Npc random = Npcs.newQuery().names("").reachable().results().first();
-        return random != null && random.isVisible();
+        Npc random = Npcs.newQuery().names(dudes).reachable().results().first();
+        return random != null && random.isVisible() && random.getTarget().equals(Players.getLocal());
     }
 
     @Override
     public void execute() {
+        Npc random = Npcs.newQuery().names(dudes).reachable().results().first();
 
+        if (random != null) {
+            if (random.interact("Dismiss")) {
+                Execution.delayUntil(() -> !random.isVisible(), 1000, 1500);
+            }
+        }
     }
 }
