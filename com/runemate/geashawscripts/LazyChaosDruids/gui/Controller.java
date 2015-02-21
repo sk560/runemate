@@ -47,51 +47,67 @@ public class Controller {
             }
             if (chkAirRune.isSelected()) {
                 LazyChaosDruids.lootList.add("Air rune");
+                LazyChaosDruids.lootAirRune = true;
             }
             if (chkLawRune.isSelected()) {
                 LazyChaosDruids.lootList.add("Law rune");
+                LazyChaosDruids.lootLawRune = true;
             }
             if (chkNatureRune.isSelected()) {
                 LazyChaosDruids.lootList.add("Nature rune");
+                LazyChaosDruids.lootNatureRune = true;
             }
             if (chkGuam.isSelected()) {
                 LazyChaosDruids.lootList.add("Guam");
+                LazyChaosDruids.lootGuam = true;
             }
             if (chkMarrentill.isSelected()) {
                 LazyChaosDruids.lootList.add("Marrentill");
+                LazyChaosDruids.lootMarrentill = true;
             }
             if (chkTarromin.isSelected()) {
                 LazyChaosDruids.lootList.add("Tarromin");
+                LazyChaosDruids.lootTarromin = true;
             }
             if (chkHarralander.isSelected()) {
                 LazyChaosDruids.lootList.add("Harralander");
+                LazyChaosDruids.lootHarralander = true;
             }
             if (chkRanarr.isSelected()) {
                 LazyChaosDruids.lootList.add("Ranarr");
+                LazyChaosDruids.lootRanarr = true;
             }
             if (chkToadflax.isSelected()) {
                 LazyChaosDruids.lootList.add("Toadflax");
+                LazyChaosDruids.lootToadflax = true;
             }
             if (chkIrit.isSelected()) {
                 LazyChaosDruids.lootList.add("Irit");
+                LazyChaosDruids.lootToadflax = true;
             }
             if (chkAvantoe.isSelected()) {
                 LazyChaosDruids.lootList.add("Avantoe");
+                LazyChaosDruids.lootAvantoe = true;
             }
             if (chkKwuarm.isSelected()) {
                 LazyChaosDruids.lootList.add("Kwuarm");
+                LazyChaosDruids.lootKwuarm = true;
             }
             if (chkSnapdragon.isSelected()) {
                 LazyChaosDruids.lootList.add("Snapdragon");
+                LazyChaosDruids.lootSnapdragon = true;
             }
             if (chkCadantine.isSelected()) {
                 LazyChaosDruids.lootList.add("Cadantine");
+                LazyChaosDruids.lootCadantine = true;
             }
             if (chkLantadyme.isSelected()) {
                 LazyChaosDruids.lootList.add("Lantadyme");
+                LazyChaosDruids.lootLantadyme = true;
             }
             if (chkDwarfweed.isSelected()) {
                 LazyChaosDruids.lootList.add("Dwarf weed");
+                LazyChaosDruids.lootDwarfWeed = true;
             }
 
             // Make the GUI disappear.

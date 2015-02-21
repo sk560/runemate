@@ -2,6 +2,7 @@ package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.local.Camera;
+import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.util.Filter;
@@ -22,7 +23,7 @@ public class FightTask extends Task {
 
     @Override
     public void execute() {
-        Npc npc = Npcs.newQuery().names("Chaos druid").visible().reachable().results().nearestTo(Players.getLocal());
+        Npc npc = Npcs.newQuery().names("Chaos druid").results().nearestTo(Players.getLocal());
 
         if (!isInCombat()) {
             if (Players.getLocal().getTarget() == null) {
@@ -33,6 +34,8 @@ public class FightTask extends Task {
                             Execution.delayUntil(() -> npc.getTarget() != null, 500, 1500);
                         }
                     }
+                } else if (npc.distanceTo(Players.getLocal()) > 6) {
+                    BresenhamPath.buildTo(npc).step(true);
                 } else {
                     if (Camera.turnTo(npc)) {
                         Execution.delayUntil(() -> npc.isVisible(), 1000, 2500);

@@ -22,11 +22,11 @@
       <CheckBox fx:id="chkToadflax" layoutX="127.0" layoutY="125.0" mnemonicParsing="false" text="Toadflax" />
       <CheckBox fx:id="chkIrit" layoutX="127.0" layoutY="145.0" mnemonicParsing="false" text="Irit" />
       <CheckBox fx:id="chkAvantoe" layoutX="127.0" layoutY="165.0" mnemonicParsing="false" text="Avantoe" />
-      <CheckBox fx:id="chkKwuarm" layoutX="127.0" layoutY="185.0" mnemonicParsing="false" text="Kwuarm" />
-      <CheckBox fx:id="chkSnapdragon" layoutX="127.0" layoutY="205.0" mnemonicParsing="false" text="Snapdragon" />
-      <CheckBox fx:id="chkCadantine" layoutX="127.0" layoutY="225.0" mnemonicParsing="false" text="Cadantine" />
-      <CheckBox fx:id="chkLantadyme" layoutX="127.0" layoutY="245.0" mnemonicParsing="false" text="Lantadyme" />
-      <CheckBox fx:id="chkDwarfweed" layoutX="127.0" layoutY="265.0" mnemonicParsing="false" text="Dwarf weed" />
+      <CheckBox fx:id="chkKwuarm" layoutX="127.0" layoutY="185.0" mnemonicParsing="false" selected="true" text="Kwuarm" />
+      <CheckBox fx:id="chkSnapdragon" layoutX="127.0" layoutY="205.0" mnemonicParsing="false" selected="true" text="Snapdragon" />
+      <CheckBox fx:id="chkCadantine" layoutX="127.0" layoutY="225.0" mnemonicParsing="false" selected="true" text="Cadantine" />
+      <CheckBox fx:id="chkLantadyme" layoutX="127.0" layoutY="245.0" mnemonicParsing="false" selected="true" text="Lantadyme" />
+      <CheckBox fx:id="chkDwarfweed" layoutX="127.0" layoutY="265.0" mnemonicParsing="false" selected="true" text="Dwarf weed" />
       <Button fx:id="btnStart" layoutX="17.0" layoutY="294.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Start" />
       <ComboBox fx:id="cmbFood" layoutX="15.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0" promptText="Select food" />
       <Slider fx:id="sliderHealPercentage" layoutX="15.0" layoutY="73.0" majorTickUnit="20.0" minorTickCount="10" prefHeight="38.0" prefWidth="200.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="30.0" />

@@ -7,6 +7,7 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
 import com.runemate.game.api.hybrid.region.GroundItems;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.script.Execution;
 import com.runemate.geashawscripts.LazyChaosDruids.Data.Loot;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 
@@ -125,30 +126,84 @@ public class Methods {
     /**
      * Check if player can loot.
      */
+
+    private static int note;
+    
     public static boolean canLoot() {
+        GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
 
-        for(String s:LazyChaosDruids.lootList){
-            Loot loot = Loot.valueOf(s.toUpperCase().replace(" ", "_"));
-            if(loot != null) {
-                int id = loot.getId();
-                String name = loot.getName();
+        if (loot != null) {
 
-                GroundItem item = GroundItems.newQuery().names(name).results().nearest();
+            note = loot.getDefinition().getUnnotedId();
+            String name = loot.getDefinition().getName();
 
-                if (item != null) {
-                    System.out.println(item);
+            if (LazyChaosDruids.lootAirRune) {
+                if (name.equals("Air rune")) {
+                    Methods.debug("Can loot Air rune.");
                     return true;
                 }
             }
+            if (LazyChaosDruids.lootLawRune) {
+                if (name.equals("Law rune")) {
+                    Methods.debug("Can loot Law rune.");
+                    return true;
+                }
+            }
+            if (LazyChaosDruids.lootNatureRune) {
+                if (name.equals("Nature rune")) {
+                    Methods.debug("Can loot Nature rune.");
+                    return true;
+                }
+            }
+            if (LazyChaosDruids.lootGuam && note == 199) {
+                Methods.debug("Can loot Guam.");
+                return true;
+            }
+            if (LazyChaosDruids.lootMarrentill && note == 201) {
+                Methods.debug("Can loot Marrentill.");
+                return true;
+            }
+            if (LazyChaosDruids.lootTarromin && note == 203) {
+                Methods.debug("Can loot Tarromin.");
+                return true;
+            }
+            if (LazyChaosDruids.lootHarralander && note == 205) {
+                Methods.debug("Can loot Harralander.");
+                return true;
+            }
+            if (LazyChaosDruids.lootRanarr && note == 207) {
+                Methods.debug("Can loot Ranarr.");
+                return true;
+            }
+            if (LazyChaosDruids.lootIrit && note == 209) {
+                Methods.debug("Can loot Irit.");
+                return true;
+            }
+            if (LazyChaosDruids.lootAvantoe && note == 211) {
+                Methods.debug("Can loot Avantoe.");
+                return true;
+            }
+            if (LazyChaosDruids.lootKwuarm && note == 213) {
+                Methods.debug("Can loot Kwuarm.");
+                return true;
+            }
+            if (LazyChaosDruids.lootCadantine && note == 215) {
+                Methods.debug("Can loot Cadantine.");
+                return true;
+            }
+            if (LazyChaosDruids.lootDwarfWeed && note == 217) {
+                Methods.debug("Can loot Dwarf weed.");
+                return true;
+            }
+            if (LazyChaosDruids.lootLantadyme && note == 2485) {
+                Methods.debug("Can loot Lantadyme.");
+                return true;
+            }
+            if (LazyChaosDruids.lootSnapdragon && note == 3051) {
+                Methods.debug("Can loot Snapdragon.");
+                return true;
+            }
         }
-
-        /*GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
-
-        if (loot != null) {
-            int unnoted = loot.getDefinition().getUnnotedId();
-            String name = loot.getDefinition().getName();
-            return unnoted == 207 || name.equals("Air rune") || name.equals("Law rune") || name.equals("Nature rune");
-        }*/
         return false;
     }
 }

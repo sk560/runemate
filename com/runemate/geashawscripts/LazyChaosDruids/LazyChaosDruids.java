@@ -37,6 +37,10 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
 
     public static Loot loot;
 
+    public static boolean lootAirRune, lootLawRune, lootNatureRune;
+    public static boolean lootGuam, lootMarrentill, lootTarromin, lootHarralander, lootRanarr, lootToadflax, lootIrit,
+                          lootAvantoe, lootKwuarm, lootCadantine, lootDwarfWeed, lootLantadyme, lootSnapdragon;
+
     public static int healPercentage;
     public static String foodName = "";
 
