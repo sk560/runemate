@@ -1,12 +1,10 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.GameObject;
-import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
 import com.runemate.game.api.hybrid.region.GameObjects;
-import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
@@ -24,8 +22,23 @@ public class WalkToDruidsTask extends Task {
 
     @Override
     public void execute() {
-        //Methods.debug("Executing walking to druids task.");
-        walkToDruids();
+        if (Methods.atFaladorBank()) {
+            walkToShortcut();
+        } else if (atWallShortcut()) {
+            if (!atTheOtherSide()) {
+                useWallShortcut();
+            }
+        } else if (canWalkToLadder() && !canWalkToDruids()) {
+            Methods.debug("Can walk to ladder");
+            walkToLadder();
+        } else if (canClimbDownLadder()) {
+            climbDownLadder();
+        } else if (canWalkToDruids()) {
+            Methods.debug("Can walk to Druids");
+            runToDruids();
+        } else {
+            Methods.debug("This is how far I got...");
+        }
     }
 
     /**
@@ -60,8 +73,8 @@ public class WalkToDruidsTask extends Task {
     /**
      * Check if player is at Falador teleport area.
      */
-    public static boolean atWallShortcut() {
-        final Area RIGHT_SIDE = new Area.Rectangular(new Coordinate(2936, 3354, 0), new Coordinate(2938, 3356, 0));
+    private boolean atWallShortcut() {
+        final Area RIGHT_SIDE = new Area.Rectangular(new Coordinate(2936, 3353, 0), new Coordinate(2939, 3358, 0));
         return RIGHT_SIDE.contains(Players.getLocal());
     }
 
@@ -70,16 +83,23 @@ public class WalkToDruidsTask extends Task {
      */
     private boolean walkToLadder() {
         final Area LADDER_AREA = new Area.Rectangular(new Coordinate(2882, 3395, 0), new Coordinate(2886, 3401, 0));
-        GameObject ladder = GameObjects.newQuery().names("Ladder").within(LADDER_AREA).results().nearest();
-        return ladder != null && BresenhamPath.buildTo(ladder).step(true);
+        return BresenhamPath.buildTo(LADDER_AREA.getCenter()).step(true);
+    }
+
+    /**
+     * Check if player can walk to ladder.
+     */
+    private boolean canWalkToLadder() {
+        return !atClimbDownLadder() && !Methods.atFaladorBank() && !canClimbDownLadder();
     }
 
     /**
      * Check if player is at the ladder
      */
-    private boolean atLadder() {
+    private boolean atClimbDownLadder() {
         final Area LADDER_AREA = new Area.Rectangular(new Coordinate(2882, 3395, 0), new Coordinate(2886, 3401, 0));
-        return LADDER_AREA.contains(Players.getLocal());
+        GameObject ladder = GameObjects.newQuery().names("Ladder").actions("Climb-down").within(LADDER_AREA).results().nearest();
+        return LADDER_AREA.contains(Players.getLocal()) && ladder != null;
     }
 
     /**
@@ -91,13 +111,16 @@ public class WalkToDruidsTask extends Task {
 
         if (ladder != null) {
             if (ladder.click()) {
-                Execution.delayUntil(() -> !atLadder(), 1000, 1500);
+                Execution.delayUntil(() -> !atClimbDownLadder(), 1000, 1500);
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * Check if player can climb down ladder.
+     */
     private boolean canClimbDownLadder() {
         final Area LADDER_AREA = new Area.Rectangular(new Coordinate(2882, 3395, 0), new Coordinate(2886, 3401, 0));
         GameObject ladder = GameObjects.newQuery().names("Ladder").actions("Climb-down").within(LADDER_AREA).results().nearest();
@@ -105,34 +128,28 @@ public class WalkToDruidsTask extends Task {
     }
 
     /**
-     * Method to finally run the last part to the Chaos druids.
+     * Check if player can climb up ladder.
      */
-    private boolean runToDruids() {
-        Npc npc = Npcs.newQuery().names("Chaos druid").results().nearestTo(Players.getLocal());
-        return npc != null && BresenhamPath.buildTo(npc).step(true);
+    private boolean canClimbUpLadder() {
+        final Area LADDER_AREA = new Area.Rectangular(new Coordinate(2882, 3395, 0), new Coordinate(2886, 3401, 0));
+        GameObject ladder = GameObjects.newQuery().names("Ladder").actions("Climb-up").within(LADDER_AREA).results().nearest();
+        return ladder != null && ladder.isVisible();
     }
 
     /**
-     * Method for walking to Chaos druids.
+     * Check if player can walk to druids.
      */
-    private boolean walkToDruids() {
-        if (Methods.atFaladorBank()) {
-            walkToShortcut();
-        } else if (atWallShortcut() && !atTheOtherSide()) {
-            if (!atTheOtherSide()) {
-                useWallShortcut();
-            }
-        } else {
-            if (!atLadder()) {
-                walkToLadder();
-            } else {
-                if (canClimbDownLadder()) {
-                    climbDownLadder();
-                } else {
-                    runToDruids();
-                }
-            }
-        }
-        return false;
+    private boolean canWalkToDruids() {
+        final Area LADDER_AREA = new Area.Rectangular(new Coordinate(2882, 9796, 0), new Coordinate(2886, 9799, 0));
+        GameObject ladder = GameObjects.newQuery().names("Ladder").actions("Climb-up").within(LADDER_AREA).results().nearest();
+        return ladder != null && ladder.isVisible();
+    }
+
+    /**
+     * Walk to Falador west bank method.
+     */
+    private boolean runToDruids() {
+        final Area DRUID_AREA = new Area.Rectangular(new Coordinate(2926, 9842, 0), new Coordinate(2940, 9854, 0));
+        return BresenhamPath.buildTo(DRUID_AREA.getCenter()).step(true);
     }
 }

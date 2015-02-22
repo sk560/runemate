@@ -79,7 +79,7 @@ public class LazyMudRuneCrusher extends TaskScript implements PaintListener, Inv
     public static int paintWidth = 210;
     public static int paintHeight = 65;
     public static int userCoverWith = 100;
-    public static int userCoverHeight = 19;
+    public static int userCoverHeight = 50;
     public static boolean isMouseDown = false;
 
     public void mouseClicked(MouseEvent arg0) {}

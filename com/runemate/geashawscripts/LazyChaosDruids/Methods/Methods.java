@@ -11,8 +11,6 @@ import com.runemate.game.api.hybrid.region.GameObjects;
 import com.runemate.game.api.hybrid.region.GroundItems;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
-import com.runemate.game.api.script.Execution;
-import com.runemate.geashawscripts.LazyChaosDruids.Data.Loot;
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 
 import java.awt.*;
@@ -147,65 +145,67 @@ public class Methods {
             note = loot.getDefinition().getUnnotedId();
             String name = loot.getDefinition().getName();
 
-            if (LazyChaosDruids.lootAirRune && name.equals("Air rune")) {
-                Methods.debug("Can loot Air rune.");
-                return true;
-            }
-            if (LazyChaosDruids.lootLawRune && name.equals("Law rune")) {
-                Methods.debug("Can loot Law rune.");
-                return true;
-            }
-            if (LazyChaosDruids.lootNatureRune && name.equals("Nature rune")) {
-                Methods.debug("Can loot Nature rune.");
-                return true;
-            }
-            if (LazyChaosDruids.lootGuam && note == 199) {
-                Methods.debug("Can loot Guam.");
-                return true;
-            }
-            if (LazyChaosDruids.lootMarrentill && note == 201) {
-                Methods.debug("Can loot Marrentill.");
-                return true;
-            }
-            if (LazyChaosDruids.lootTarromin && note == 203) {
-                Methods.debug("Can loot Tarromin.");
-                return true;
-            }
-            if (LazyChaosDruids.lootHarralander && note == 205) {
-                Methods.debug("Can loot Harralander.");
-                return true;
-            }
-            if (LazyChaosDruids.lootRanarr && note == 207) {
-                Methods.debug("Can loot Ranarr.");
-                return true;
-            }
-            if (LazyChaosDruids.lootIrit && note == 209) {
-                Methods.debug("Can loot Irit.");
-                return true;
-            }
-            if (LazyChaosDruids.lootAvantoe && note == 211) {
-                Methods.debug("Can loot Avantoe.");
-                return true;
-            }
-            if (LazyChaosDruids.lootKwuarm && note == 213) {
-                Methods.debug("Can loot Kwuarm.");
-                return true;
-            }
-            if (LazyChaosDruids.lootCadantine && note == 215) {
-                Methods.debug("Can loot Cadantine.");
-                return true;
-            }
-            if (LazyChaosDruids.lootDwarfWeed && note == 217) {
-                Methods.debug("Can loot Dwarf weed.");
-                return true;
-            }
-            if (LazyChaosDruids.lootLantadyme && note == 2485) {
-                Methods.debug("Can loot Lantadyme.");
-                return true;
-            }
-            if (LazyChaosDruids.lootSnapdragon && note == 3051) {
-                Methods.debug("Can loot Snapdragon.");
-                return true;
+            if (loot.distanceTo(Players.getLocal()) < LazyChaosDruids.maxLootTiles) {
+                if (LazyChaosDruids.lootAirRune && name.equals("Air rune")) {
+                    Methods.debug("Can loot Air rune.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootLawRune && name.equals("Law rune")) {
+                    Methods.debug("Can loot Law rune.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootNatureRune && name.equals("Nature rune")) {
+                    Methods.debug("Can loot Nature rune.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootGuam && note == 199) {
+                    Methods.debug("Can loot Guam.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootMarrentill && note == 201) {
+                    Methods.debug("Can loot Marrentill.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootTarromin && note == 203) {
+                    Methods.debug("Can loot Tarromin.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootHarralander && note == 205) {
+                    Methods.debug("Can loot Harralander.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootRanarr && note == 207) {
+                    Methods.debug("Can loot Ranarr.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootIrit && note == 209) {
+                    Methods.debug("Can loot Irit.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootAvantoe && note == 211) {
+                    Methods.debug("Can loot Avantoe.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootKwuarm && note == 213) {
+                    Methods.debug("Can loot Kwuarm.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootCadantine && note == 215) {
+                    Methods.debug("Can loot Cadantine.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootDwarfWeed && note == 217) {
+                    Methods.debug("Can loot Dwarf weed.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootLantadyme && note == 2485) {
+                    Methods.debug("Can loot Lantadyme.");
+                    return true;
+                }
+                if (LazyChaosDruids.lootSnapdragon && note == 3051) {
+                    Methods.debug("Can loot Snapdragon.");
+                    return true;
+                }
             }
         }
         return false;
@@ -243,8 +243,8 @@ public class Methods {
      * Check if player is at Chaos druids.
      */
     public static boolean atDruids() {
-        final Area DRUIDS = new Area.Rectangular(new Coordinate(2926, 9842, 0), new Coordinate(2940, 9854, 0));
-        return DRUIDS.contains(Players.getLocal());
+        final Area DRUID_AREA = new Area.Rectangular(new Coordinate(2926, 9842, 0), new Coordinate(2940, 9854, 0));
+        return DRUID_AREA.contains(Players.getLocal());
     }
 
     /**
@@ -259,7 +259,7 @@ public class Methods {
      * Check if player is at Falador teleport area.
      */
     public static boolean atFaladorBank() {
-        GameObject box = GameObjects.newQuery().names("Bank Deposit Box").results().nearest();
-        return box.distanceTo(Players.getLocal()) <= 5;
+        final Area BANK_AREA = new Area.Rectangular(new Coordinate(2944, 3367, 0), new Coordinate(2947, 3371, 0));
+        return BANK_AREA.contains(Players.getLocal());
     }
 }

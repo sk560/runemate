@@ -24,8 +24,6 @@ public class BankTask extends Task {
 
     @Override
     public void execute() {
-        //Methods.debug("Executing bank task.");
-
         if (!Methods.gotAllSupplies()) {
             if (Methods.atFaladorBank()) {
                 if (Bank.isOpen()) {
@@ -40,6 +38,7 @@ public class BankTask extends Task {
                     Bank.open();
                 }
             } else {
+                Methods.debug("Not at bank");
                 walkToBank();
             }
         } else {
