@@ -1,9 +1,13 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Methods;
 
+import com.runemate.game.api.hybrid.entities.GameObject;
 import com.runemate.game.api.hybrid.entities.GroundItem;
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Health;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
+import com.runemate.game.api.hybrid.location.Area;
+import com.runemate.game.api.hybrid.location.Coordinate;
+import com.runemate.game.api.hybrid.region.GameObjects;
 import com.runemate.game.api.hybrid.region.GroundItems;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
@@ -109,6 +113,13 @@ public class Methods {
     }
 
     /**
+     * Check if the player has all food.
+     */
+    public static boolean gotAllFood() {
+        return Inventory.getQuantity(LazyChaosDruids.foodName) == LazyChaosDruids.foodAmount;
+    }
+
+    /**
      * Check if player can fight.
      */
     public static boolean canFight() {
@@ -126,9 +137,8 @@ public class Methods {
     /**
      * Check if player can loot.
      */
-
     private static int note;
-    
+
     public static boolean canLoot() {
         GroundItem loot = GroundItems.newQuery().names("Herb", "Law rune", "Air rune", "Nature rune").results().nearest();
 
@@ -137,23 +147,17 @@ public class Methods {
             note = loot.getDefinition().getUnnotedId();
             String name = loot.getDefinition().getName();
 
-            if (LazyChaosDruids.lootAirRune) {
-                if (name.equals("Air rune")) {
-                    Methods.debug("Can loot Air rune.");
-                    return true;
-                }
+            if (LazyChaosDruids.lootAirRune && name.equals("Air rune")) {
+                Methods.debug("Can loot Air rune.");
+                return true;
             }
-            if (LazyChaosDruids.lootLawRune) {
-                if (name.equals("Law rune")) {
-                    Methods.debug("Can loot Law rune.");
-                    return true;
-                }
+            if (LazyChaosDruids.lootLawRune && name.equals("Law rune")) {
+                Methods.debug("Can loot Law rune.");
+                return true;
             }
-            if (LazyChaosDruids.lootNatureRune) {
-                if (name.equals("Nature rune")) {
-                    Methods.debug("Can loot Nature rune.");
-                    return true;
-                }
+            if (LazyChaosDruids.lootNatureRune && name.equals("Nature rune")) {
+                Methods.debug("Can loot Nature rune.");
+                return true;
             }
             if (LazyChaosDruids.lootGuam && note == 199) {
                 Methods.debug("Can loot Guam.");
@@ -205,5 +209,57 @@ public class Methods {
             }
         }
         return false;
+    }
+
+    /**
+     * Check if player has Falador teleport runes.
+     */
+    public static boolean gotTeleportRunes() {
+        return Inventory.containsAnyOf("Law rune") && Inventory.containsAnyOf("Water rune") && Inventory.getQuantity("Air rune") >= 3;
+    }
+
+    /**
+     * Check if player has Falador teleport runes.
+     */
+    public static boolean gotAllSupplies() {
+        return gotTeleportRunes() && gotAllFood();
+    }
+
+    /**
+     * Check if player has Falador teleport runes.
+     */
+    public static boolean gotLoot() {
+        return Inventory.getQuantity("Herb") >= 1;
+    }
+
+    /**
+     * Check if player can teleport.
+     */
+    public static boolean canTeleport() {
+        return atDruids() && gotTeleportRunes();
+    }
+
+    /**
+     * Check if player is at Chaos druids.
+     */
+    public static boolean atDruids() {
+        final Area DRUIDS = new Area.Rectangular(new Coordinate(2926, 9842, 0), new Coordinate(2940, 9854, 0));
+        return DRUIDS.contains(Players.getLocal());
+    }
+
+    /**
+     * Check if player is at Falador teleport area.
+     */
+    public static boolean atFalador() {
+        final Area FALADOR_TELEPORT = new Area.Rectangular(new Coordinate(2941, 3367, 0), new Coordinate(2970, 3384, 0));
+        return FALADOR_TELEPORT.contains(Players.getLocal());
+    }
+
+    /**
+     * Check if player is at Falador teleport area.
+     */
+    public static boolean atFaladorBank() {
+        GameObject box = GameObjects.newQuery().names("Bank Deposit Box").results().nearest();
+        return box.distanceTo(Players.getLocal()) <= 5;
     }
 }

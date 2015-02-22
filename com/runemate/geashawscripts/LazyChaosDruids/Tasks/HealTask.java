@@ -20,6 +20,7 @@ public class HealTask extends Task {
 
     @Override
     public void execute() {
+        //Methods.debug("Executing healing task.");
         SpriteItem food = Inventory.getItems(LazyChaosDruids.foodName).last();
 
         if (food != null) {

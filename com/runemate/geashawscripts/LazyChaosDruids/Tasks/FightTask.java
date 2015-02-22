@@ -18,11 +18,12 @@ public class FightTask extends Task {
 
     @Override
     public boolean validate() {
-        return !Methods.canLoot() && Methods.canFight();
+        return !Methods.atFalador() && !Methods.canLoot() && Methods.canFight();
     }
 
     @Override
     public void execute() {
+        //Methods.debug("Executing fighting task.");
         Npc npc = Npcs.newQuery().names("Chaos druid").results().nearestTo(Players.getLocal());
 
         if (!isInCombat()) {
@@ -43,21 +44,6 @@ public class FightTask extends Task {
                 }
             }
         }
-
-        /*if (druid != null) {
-            if (Players.getLocal().getTarget() == null) {
-                if (druid.isVisible()) {
-                    if (druid.getTarget() == null) {
-                        LazyChaosDruids.status = "Fighting";
-                        if (druid.interact("Attack")) {
-                            Execution.delayUntil(() -> druid.getTarget() != null, 500, 1500);
-                        }
-                    }
-                } else {
-                    Camera.turnTo(druid);
-                }
-            }
-        }*/
     }
 
     /**

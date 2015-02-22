@@ -2,10 +2,7 @@ package com.runemate.geashawscripts.LazyChaosDruids.gui;
 
 import com.runemate.geashawscripts.LazyChaosDruids.LazyChaosDruids;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 
 /**
  * Created by Ozzy on 10-2-2015.
@@ -20,6 +17,8 @@ public class Controller {
     private Slider sliderHealPercentage;
     @FXML
     private Button btnStart;
+    @FXML
+    private TextField txtFoodAmount;
     @FXML
     private CheckBox chkAirRune, chkLawRune, chkNatureRune, chkGuam, chkMarrentill,
             chkTarromin, chkHarralander, chkRanarr, chkToadflax, chkIrit, chkAvantoe,
@@ -45,6 +44,10 @@ public class Controller {
                 // Set the percentage as static constant.
                 LazyChaosDruids.healPercentage = (int) sliderHealPercentage.getValue();
             }
+            if (txtFoodAmount != null) {
+                LazyChaosDruids.foodAmount = Integer.parseInt(txtFoodAmount.getText());
+            }
+
             if (chkAirRune.isSelected()) {
                 LazyChaosDruids.lootList.add("Air rune");
                 LazyChaosDruids.lootAirRune = true;

@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="335.0" prefWidth="234.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="369.0" prefWidth="234.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="17.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lazy Chaos Druids" textAlignment="CENTER" wrappingWidth="110.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Text>
-      <CheckBox fx:id="chkAirRune" layoutX="20.0" layoutY="123.0" mnemonicParsing="false" selected="true" text="Air runes" />
-      <CheckBox fx:id="chkLawRune" layoutX="20.0" layoutY="143.0" mnemonicParsing="false" selected="true" text="Law runes" />
-      <CheckBox fx:id="chkNatureRune" layoutX="20.0" layoutY="163.0" mnemonicParsing="false" selected="true" text="Nature runes" />
-      <CheckBox fx:id="chkGuam" layoutX="20.0" layoutY="183.0" mnemonicParsing="false" text="Guam" />
-      <CheckBox fx:id="chkMarrentill" layoutX="20.0" layoutY="203.0" mnemonicParsing="false" text="Marrentill" />
-      <CheckBox fx:id="chkTarromin" layoutX="20.0" layoutY="223.0" mnemonicParsing="false" text="Tarromin" />
-      <CheckBox fx:id="chkHarralander" layoutX="20.0" layoutY="243.0" mnemonicParsing="false" text="Harralander" />
-      <CheckBox fx:id="chkRanarr" layoutX="20.0" layoutY="263.0" mnemonicParsing="false" selected="true" text="Ranarr" />
-      <CheckBox fx:id="chkToadflax" layoutX="127.0" layoutY="125.0" mnemonicParsing="false" text="Toadflax" />
-      <CheckBox fx:id="chkIrit" layoutX="127.0" layoutY="145.0" mnemonicParsing="false" text="Irit" />
-      <CheckBox fx:id="chkAvantoe" layoutX="127.0" layoutY="165.0" mnemonicParsing="false" text="Avantoe" />
-      <CheckBox fx:id="chkKwuarm" layoutX="127.0" layoutY="185.0" mnemonicParsing="false" selected="true" text="Kwuarm" />
-      <CheckBox fx:id="chkSnapdragon" layoutX="127.0" layoutY="205.0" mnemonicParsing="false" selected="true" text="Snapdragon" />
-      <CheckBox fx:id="chkCadantine" layoutX="127.0" layoutY="225.0" mnemonicParsing="false" selected="true" text="Cadantine" />
-      <CheckBox fx:id="chkLantadyme" layoutX="127.0" layoutY="245.0" mnemonicParsing="false" selected="true" text="Lantadyme" />
-      <CheckBox fx:id="chkDwarfweed" layoutX="127.0" layoutY="265.0" mnemonicParsing="false" selected="true" text="Dwarf weed" />
-      <Button fx:id="btnStart" layoutX="17.0" layoutY="294.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Start" />
       <ComboBox fx:id="cmbFood" layoutX="15.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0" promptText="Select food" />
-      <Slider fx:id="sliderHealPercentage" layoutX="15.0" layoutY="73.0" majorTickUnit="20.0" minorTickCount="10" prefHeight="38.0" prefWidth="200.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="30.0" />
+      <Slider fx:id="sliderHealPercentage" layoutX="15.0" layoutY="115.0" majorTickUnit="20.0" minorTickCount="10" prefHeight="38.0" prefWidth="206.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="30.0" />
+      <TextField fx:id="txtFoodAmount" layoutX="17.0" layoutY="77.0" prefHeight="25.0" prefWidth="200.0" promptText="Amount to bring..." />
+      <CheckBox fx:id="chkAirRune" layoutX="21.0" layoutY="160.0" mnemonicParsing="false" selected="true" text="Air runes" />
+      <CheckBox fx:id="chkLawRune" layoutX="21.0" layoutY="180.0" mnemonicParsing="false" selected="true" text="Law runes" />
+      <CheckBox fx:id="chkNatureRune" layoutX="21.0" layoutY="200.0" mnemonicParsing="false" selected="true" text="Nature runes" />
+      <CheckBox fx:id="chkGuam" layoutX="21.0" layoutY="220.0" mnemonicParsing="false" text="Guam" />
+      <CheckBox fx:id="chkMarrentill" layoutX="21.0" layoutY="240.0" mnemonicParsing="false" text="Marrentill" />
+      <CheckBox fx:id="chkTarromin" layoutX="21.0" layoutY="260.0" mnemonicParsing="false" text="Tarromin" />
+      <CheckBox fx:id="chkHarralander" layoutX="21.0" layoutY="280.0" mnemonicParsing="false" text="Harralander" />
+      <CheckBox fx:id="chkRanarr" layoutX="21.0" layoutY="300.0" mnemonicParsing="false" selected="true" text="Ranarr" />
+      <CheckBox fx:id="chkToadflax" layoutX="128.0" layoutY="162.0" mnemonicParsing="false" text="Toadflax" />
+      <CheckBox fx:id="chkIrit" layoutX="128.0" layoutY="182.0" mnemonicParsing="false" text="Irit" />
+      <CheckBox fx:id="chkAvantoe" layoutX="128.0" layoutY="202.0" mnemonicParsing="false" text="Avantoe" />
+      <CheckBox fx:id="chkKwuarm" layoutX="128.0" layoutY="222.0" mnemonicParsing="false" text="Kwuarm" />
+      <CheckBox fx:id="chkSnapdragon" layoutX="128.0" layoutY="242.0" mnemonicParsing="false" text="Snapdragon" />
+      <CheckBox fx:id="chkCadantine" layoutX="128.0" layoutY="262.0" mnemonicParsing="false" text="Cadantine" />
+      <CheckBox fx:id="chkLantadyme" layoutX="128.0" layoutY="282.0" mnemonicParsing="false" text="Lantadyme" />
+      <CheckBox fx:id="chkDwarfweed" layoutX="128.0" layoutY="302.0" mnemonicParsing="false" text="Dwarf weed" />
+      <Button fx:id="btnStart" layoutX="18.0" layoutY="331.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="200.0" text="Start" />
    </children>
 </AnchorPane>

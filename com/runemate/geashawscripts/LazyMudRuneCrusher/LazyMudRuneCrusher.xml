@@ -1,0 +1,15 @@
+<manifest>
+    <main-class>com.runemate.geashawscripts.LazyMudRuneCrusher.LazyMudRuneCrusher</main-class>
+    <name>Lazy Mud Rune Crusher</name>
+    <description>Crushes Mud runes.</description>
+    <version>1.0</version>
+    <open-source>true</open-source>
+    <compatibility>
+        <game-type>RS3</game-type>
+    </compatibility>
+    <categories>
+        <category>HERBLORE</category>
+    </categories>
+    <!--Required to publish on the bot store-->
+    <internal-id>mudrunecrusher</internal-id>
+</manifest>

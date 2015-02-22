@@ -4,13 +4,14 @@ import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
+import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
 
 /**
  * Created by Geashaw on 18-2-2015.
  */
 public class DismissTask extends Task {
 
-    final String[] dudes = new String[]{"Genie", "Flippa", "Leo", "Evil Bob", "Mysterious Old Man", "Freaky Forester", "Sergeant Damien"};
+    final String[] dudes = new String[]{"Genie", "Flippa", "Leo", "Evil Bob", "Mysterious Old Man", "Freaky Forester", "Sergeant Damien", "Quiz Master"};
 
     @Override
     public boolean validate() {
@@ -20,6 +21,7 @@ public class DismissTask extends Task {
 
     @Override
     public void execute() {
+        Methods.debug("Executing dismiss task.");
         Npc random = Npcs.newQuery().names(dudes).reachable().results().first();
 
         if (random != null) {
