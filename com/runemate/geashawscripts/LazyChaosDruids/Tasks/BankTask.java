@@ -78,8 +78,8 @@ public class BankTask extends Task {
      */
     private boolean withdrawSupplies() {
         if (!Methods.gotTeleportRunes()) {
-            if (Bank.getQuantity("Law rune") > 1 && Bank.getQuantity("Air rune") > 3 && Bank.getQuantity("Water rune") > 1) {
-                if (Bank.withdraw("Law rune", 1) && Bank.withdraw("Water rune", 1) && Bank.withdraw("Air rune", 3)) {
+            if (Bank.getQuantity("Law rune") > 1 && Bank.getQuantity("Air rune") > 3 && Bank.getQuantity("Water rune") > 1 && Bank.getQuantity("Nature rune") > 1) {
+                if (Bank.withdraw("Law rune", 1) && Bank.withdraw("Water rune", 1) && Bank.withdraw("Air rune", 3) && Bank.withdraw("Nature rune", 1)) {
                     Execution.delayUntil(() -> Methods.gotTeleportRunes(), 1000, 1500);
                 }
             }

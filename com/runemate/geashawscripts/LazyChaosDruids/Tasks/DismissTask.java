@@ -2,6 +2,7 @@ package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.Npc;
 import com.runemate.game.api.hybrid.region.Npcs;
+import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 
@@ -10,22 +11,19 @@ import com.runemate.game.api.script.framework.task.Task;
  */
 public class DismissTask extends Task {
 
-    final String[] dudes = new String[]{"Genie", "Flippa", "Leo", "Evil Bob", "Mysterious Old Man", "Freaky Forester", "Sergeant Damien", "Quiz Master", "Capt' Arnav"};
+    public static final String[] RANDOMS = {"Mysterious Old Man", "Drunken Dwarf", "Frog", "Rick Turpentine", "Sergeant Damien", "Pillory Guard", "Capt' Arnav", "Flippa", "Evil Bob", "Giles", "Leo", "Dunce"};
+
+    private Npc random;
 
     @Override
     public boolean validate() {
-        Npc random = Npcs.newQuery().names(dudes).reachable().results().first();
-        return random != null && random.isVisible();
+        return (random = Npcs.newQuery().names(RANDOMS).targeting(Players.getLocal()).reachable().results().first()) != null && random.isVisible();
     }
 
     @Override
     public void execute() {
-        Npc random = Npcs.newQuery().names(dudes).reachable().results().first();
-
-        if (random != null) {
-            if (random.interact("Dismiss")) {
-                Execution.delayUntil(() -> !random.isVisible(), 1000, 1500);
-            }
+        if (random != null && random.interact("Dismiss")) {
+            Execution.delayUntil(() -> !random.isVisible(), 1000, 1500);
         }
     }
 }

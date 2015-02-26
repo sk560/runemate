@@ -38,7 +38,7 @@ public class Bank extends Task {
                 openBank();
             }
         } else {
-            Camera.setPitch(0.234);
+            Camera.passivelyTurnTo(0, 0.230, 0.235);
             Camera.turnTo(banker);
         }
     }

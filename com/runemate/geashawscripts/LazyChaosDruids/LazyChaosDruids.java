@@ -4,7 +4,6 @@ import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.entities.GroundItem;
 import com.runemate.game.api.hybrid.local.Skill;
-import com.runemate.game.api.hybrid.local.hud.interfaces.Health;
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceWindows;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
 import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
@@ -152,8 +151,6 @@ public class LazyChaosDruids extends TaskScript implements PaintListener, Invent
         for (GroundItem loot:GroundItems.getLoaded()) {
             String s = loot.getDefinition().getName();
             String item = s.toLowerCase();
-            int plus = 0;
-
             if (!item.equals("bones") && !item.equals("coins")) {
                 Rectangle bound = loot.getModel().getBoundingRectangle();
 

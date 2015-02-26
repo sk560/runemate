@@ -1,10 +1,7 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
-import com.runemate.game.api.hybrid.queries.results.SpriteItemQueryResults;
-import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
-import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
 
 /**
  * Created by Deka on 18-2-2015.

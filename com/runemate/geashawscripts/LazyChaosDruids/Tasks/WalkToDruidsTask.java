@@ -1,11 +1,18 @@
 package com.runemate.geashawscripts.LazyChaosDruids.Tasks;
 
 import com.runemate.game.api.hybrid.entities.GameObject;
+import com.runemate.game.api.hybrid.local.Skill;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
+import com.runemate.game.api.hybrid.location.navigation.Path;
+import com.runemate.game.api.hybrid.location.navigation.Traversal;
 import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
+import com.runemate.game.api.hybrid.location.navigation.web.Web;
+import com.runemate.game.api.hybrid.location.navigation.web.WebPath;
+import com.runemate.game.api.hybrid.location.navigation.web.vertex_types.objects.BasicObjectVertex;
 import com.runemate.game.api.hybrid.region.GameObjects;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.hybrid.util.Usable;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyChaosDruids.Methods.Methods;
@@ -17,18 +24,21 @@ public class WalkToDruidsTask extends Task {
 
     @Override
     public boolean validate() {
-        return Methods.gotAllSupplies();
+        return Methods.gotAllSupplies() && !Methods.canFight() && !Methods.atDruids();
     }
 
     @Override
     public void execute() {
         if (Methods.atFaladorBank()) {
+            walkToLadder();
+        }
+        /*if (Methods.atFaladorBank()) {
             walkToShortcut();
         } else if (atWallShortcut()) {
             if (!atTheOtherSide()) {
                 useWallShortcut();
             }
-        } else if (canWalkToLadder() && !canWalkToDruids()) {
+        } else if (canWalkToLadder() && !canWalkToDruids() && !isWalkingToDruids) {
             Methods.debug("Can walk to ladder");
             walkToLadder();
         } else if (canClimbDownLadder()) {
@@ -37,8 +47,8 @@ public class WalkToDruidsTask extends Task {
             Methods.debug("Can walk to Druids");
             runToDruids();
         } else {
-            Methods.debug("This is how far I got...");
-        }
+            runToDruids();
+        }*/
     }
 
     /**
@@ -82,15 +92,45 @@ public class WalkToDruidsTask extends Task {
      * Method for walking to the ladder.
      */
     private boolean walkToLadder() {
+
+        final Web web = Traversal.getDefaultWeb();
+
+        final Coordinate geSidePosition = new Coordinate(2934, 3355, 0);
+        final Coordinate edgevilleSidePosition = new Coordinate(2936, 3355, 0);
+        final Usable requirement = new Usable() {
+            @Override
+            public boolean isUsable() {
+                return Skill.AGILITY.getBaseLevel() >= 5;
+            }
+        };
+
+        final BasicObjectVertex geSideObject = new BasicObjectVertex(geSidePosition, "Crumbling wall", "Climb-over", requirement);
+        final BasicObjectVertex edgevilleSideObject = new BasicObjectVertex(edgevilleSidePosition, "Crumbling wall", "Climb-over", requirement);
+
+        geSideObject.addBidirectionalEdge(edgevilleSideObject);
+
+        web.getVertexNearestTo(geSidePosition).addBidirectionalEdge(geSideObject);
+        web.getVertexNearestTo(edgevilleSidePosition).addBidirectionalEdge(edgevilleSideObject);
+
+        Traversal.getDefaultWeb().addVertices(geSideObject, edgevilleSideObject);
+
         final Area LADDER_AREA = new Area.Rectangular(new Coordinate(2882, 3395, 0), new Coordinate(2886, 3401, 0));
-        return BresenhamPath.buildTo(LADDER_AREA.getCenter()).step(true);
+        final WebPath path = Traversal.getDefaultWeb().getPathBuilder().buildTo(LADDER_AREA.getCenter());
+
+        Methods.debug("Checking path");
+        if (path != null) {
+            Methods.debug("Path not null");
+            return path.step(true);
+        }
+
+        return false;
     }
 
     /**
      * Check if player can walk to ladder.
      */
     private boolean canWalkToLadder() {
-        return !atClimbDownLadder() && !Methods.atFaladorBank() && !canClimbDownLadder();
+        return !atClimbDownLadder() && !Methods.atFaladorBank() && !canClimbDownLadder() && !isWalkingToDruids;
     }
 
     /**
@@ -149,7 +189,11 @@ public class WalkToDruidsTask extends Task {
      * Walk to Falador west bank method.
      */
     private boolean runToDruids() {
+        isWalkingToDruids = true;
         final Area DRUID_AREA = new Area.Rectangular(new Coordinate(2926, 9842, 0), new Coordinate(2940, 9854, 0));
-        return BresenhamPath.buildTo(DRUID_AREA.getCenter()).step(true);
+        Path walkToDruids = Traversal.getDefaultWeb().getPathBuilder().buildTo(DRUID_AREA.getCenter());
+        return walkToDruids.step(true);
     }
+
+    private boolean isWalkingToDruids = false;
 }

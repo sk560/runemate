@@ -4,6 +4,7 @@
     <description>Fights Chaos Druids in Taverly dungeon.</description>
     <version>1.0</version>
     <open-source>true</open-source>
+	<hidden>true</hidden>
     <compatibility>
         <game-type>OSRS</game-type>
     </compatibility>

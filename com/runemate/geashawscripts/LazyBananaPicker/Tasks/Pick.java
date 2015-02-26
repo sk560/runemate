@@ -42,7 +42,7 @@ public class Pick extends Task {
                 if (tree.isVisible()) {
                     if (!Methods.isBusy(Constants.player)) {
                         if (Camera.getPitch() < 0.35) {
-                            Camera.setPitch(0.60, 0.65);
+                            Camera.passivelyTurnTo(0, 0.60, 0.65);
                         } else {
                             Constants.status = "Picking bananas.";
                             return tree.interact("Pick");

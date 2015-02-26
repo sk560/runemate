@@ -17,7 +17,6 @@ public class Misc extends Task {
     @Override
     public void execute() {
         Methods.debug("Executing the Misc Task.");
-        double random = Random.nextDouble(0.330, 0.360);
-        Camera.setPitch(random);
+        Camera.passivelyTurnTo(0, 0.330, 0.360);
     }
 }
