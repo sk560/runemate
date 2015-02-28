@@ -1,8 +1,8 @@
 <manifest>
     <main-class>com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner</main-class>
     <name>Lazy AIO Miner</name>
-    <description>Powermines ores.</description>
-    <version>0.1</version>
+    <description>Mines ores in various locations. Dropping or banking them.</description>
+    <version>0.4</version>
     <open-source>true</open-source>
     <compatibility>
         <game-type>OSRS</game-type>

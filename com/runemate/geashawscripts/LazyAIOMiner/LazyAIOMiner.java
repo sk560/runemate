@@ -2,16 +2,22 @@ package com.runemate.geashawscripts.LazyAIOMiner;
 
 import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
+import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.hybrid.input.Mouse;
 import com.runemate.game.api.hybrid.local.Skill;
+import com.runemate.game.api.hybrid.location.Area;
+import com.runemate.game.api.hybrid.location.Coordinate;
+import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.hybrid.util.calculations.CommonMath;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
+import com.runemate.geashawscripts.LazyAIOMiner.Tasks.BankHandler;
 import com.runemate.geashawscripts.LazyAIOMiner.Tasks.DropHandler;
 import com.runemate.geashawscripts.LazyAIOMiner.Tasks.MineHandler;
+import com.runemate.geashawscripts.LazyAIOMiner.Tasks.RandomHandler;
 import com.runemate.geashawscripts.LazyAIOMiner.gui.Loader;
 import javafx.application.Platform;
 
@@ -34,9 +40,12 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
 
     public static String selectedOre = "";
     public static String oreName = "";
-    public static double oreExp;
+    public static Coordinate preferedTile;
 
-    public static String selectedArea = "";
+    public static Area mineArea;
+    public static Area bankArea;
+
+    public static boolean powermine;
 
     public static ArrayList<Integer> oreObjectIds = new ArrayList<>();
 
@@ -48,22 +57,24 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
 
     public void onStart(String... args) {
         startExp = Skill.MINING.getExperience();
-        // Set the Gui to be open.
         guiOpen = true;
-        // Add the new tasks from the Tasks folder.
-        add(new MineHandler(), new DropHandler());
-        // Add the listener for the paint.
+        add(new RandomHandler(), new MineHandler(), new DropHandler(), new BankHandler());
         getEventDispatcher().addListener(this);
-        // Set the default script loop delay.
         setLoopDelay(100, 300);
-        // Start the timer.
-        runtime.start();
-        // Launch the GUI on the JavaFX Application thread
         Platform.runLater(() -> new Loader());
+
         while (guiOpen) {
             Execution.delay(200);
         }
-        System.out.println(oreName);
+
+        if (!guiOpen) {
+            runtime.start();
+        }
+
+        if (!LazyAIOMiner.mineArea.contains(Players.getLocal())) {
+            System.out.println("Please start the script at the selected mining spot.");
+            Environment.getScript().stop();
+        }
     }
 
     /**

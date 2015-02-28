@@ -2,7 +2,13 @@ package com.runemate.geashawscripts.LazyAIOMiner.Utils;
 
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
+import com.runemate.game.api.hybrid.location.Coordinate;
+import com.runemate.game.api.hybrid.location.navigation.Path;
+import com.runemate.game.api.hybrid.location.navigation.Traversal;
+import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
+import com.runemate.game.api.hybrid.location.navigation.web.WebPath;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
 
 import java.text.NumberFormat;
 
@@ -54,5 +60,32 @@ public class Methods {
      */
     public static boolean isBusy() {
         return Players.getLocal().isMoving() || Players.getLocal().getAnimationId() != -1;
+    }
+
+    public static boolean atPreferedTile() {
+        final Coordinate tile = LazyAIOMiner.preferedTile;
+        return Players.getLocal().getPosition().equals(tile);
+    }
+
+    public static boolean walkToPreferedTile() {
+        final Coordinate tile = LazyAIOMiner.preferedTile;
+        if (!Players.getLocal().getPosition().equals(tile)) {
+            final WebPath path = Traversal.getDefaultWeb().getPathBuilder().buildTo(tile);
+            LazyAIOMiner.status = "Walking to spot";
+            return path != null && path.step(true);
+        }
+        return false;
+    }
+
+    public static boolean atBank() {
+        return LazyAIOMiner.bankArea.contains(Players.getLocal());
+    }
+
+    public static boolean atMiningSpot() {
+        return LazyAIOMiner.mineArea.contains(Players.getLocal());
+    }
+
+    public static boolean activateRun() {
+        return false;
     }
 }
