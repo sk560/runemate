@@ -31,8 +31,6 @@ public class MineHandler extends Task {
 
     @Override
     public void execute() {
-//Methods.debug("Executing mine handler");
-
         if (LazyAIOMiner.powermine) {
             if (!Methods.isBusy()) {
                 mineOres();
@@ -83,7 +81,7 @@ public class MineHandler extends Task {
         LocatableEntityQueryResults<GameObject> rocks = GameObjects.getLoaded(new Filter<GameObject>() {
             @Override
             public boolean accepts(GameObject gameObject) {
-                return LazyAIOMiner.oreObjectIds.contains(gameObject.getId()) && LazyAIOMiner.mineArea.contains(gameObject);
+                return LazyAIOMiner.oreObjectIds.contains(gameObject.getId()) && LazyAIOMiner.mineArea.contains(gameObject) && !Players.getLocal().isFacing(gameObject);
             }
         });
 

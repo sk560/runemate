@@ -2,10 +2,12 @@ package com.runemate.geashawscripts.LazyAIOMiner;
 
 import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
+import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.hybrid.input.Mouse;
 import com.runemate.game.api.hybrid.local.Skill;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
+import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.hybrid.util.calculations.CommonMath;
 import com.runemate.game.api.script.Execution;
@@ -16,7 +18,6 @@ import com.runemate.geashawscripts.LazyAIOMiner.Tasks.BankHandler;
 import com.runemate.geashawscripts.LazyAIOMiner.Tasks.DropHandler;
 import com.runemate.geashawscripts.LazyAIOMiner.Tasks.MineHandler;
 import com.runemate.geashawscripts.LazyAIOMiner.Tasks.RandomHandler;
-import com.runemate.geashawscripts.LazyAIOMiner.Utils.Methods;
 import com.runemate.geashawscripts.LazyAIOMiner.gui.Loader;
 import javafx.application.Platform;
 
@@ -24,6 +25,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -52,17 +55,23 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
     public static ArrayList<Integer> oreObjectIds = new ArrayList<>();
 
     public static final StopWatch runtime = new StopWatch();
+    public long startTime = 0;
 
-    int startExp, gainedExp;
+    int startExp = 0, gainedExp = 0, expTillLevel = 0, startLevel = 0, currentLevel = 0, gainedLevels = 0;
 
     public int oresMined;
 
+    private final InputStream chatbox = LazyAIOMiner.class.getResourceAsStream("/Resources/chatbox.png");
+
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.0");
+
     public void onStart(String... args) {
+
         startExp = Skill.MINING.getExperience();
+        startLevel = Skill.MINING.getCurrentLevel();
+
         guiOpen = true;
-        add(new RandomHandler(), new MineHandler(), new DropHandler(), new BankHandler());
-        getEventDispatcher().addListener(this);
-        setLoopDelay(100, 300);
+
         Platform.runLater(() -> new Loader());
 
         while (guiOpen) {
@@ -71,11 +80,16 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
 
         if (!guiOpen) {
             runtime.start();
+            startTime = System.currentTimeMillis();
         }
 
+        add(new RandomHandler(), new MineHandler(), new DropHandler(), new BankHandler());
+        getEventDispatcher().addListener(this);
+        setLoopDelay(100, 300);
+
         if (!LazyAIOMiner.mineArea.contains(Players.getLocal())) {
-            //System.out.println("Please start the script at the selected mining spot.");
-            //Environment.getScript().stop();
+            System.out.println("Please start the script at the selected mining spot.");
+            Environment.getScript().stop();
         }
     }
 
@@ -89,69 +103,45 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
         }
     }
 
-    /**
-     * This is where we put everything that we want to draw to the screen.
-     */
-    @Override
-    public void onPaint(Graphics2D g) {
-        int paintWidth = 200;
-        int paintHeight = 80;
-        int userCoverWith = 100;
-        int userCoverHeight = 15;
-
-        int TextXLocation = startX + 5;
-        int TextYLocation = startY + 5;
-
-        final Font small = new Font("Tahoma", 0, 12);
-
-        final Color color1 = new Color(51, 102, 255, 155);
-        final Color color2 = new Color(0, 0, 0);
-        final Color color3 = new Color(255, 255, 255);
-        final BasicStroke stroke1 = new BasicStroke(1);
-
-        gainedExp = Skill.MINING.getExperience() - startExp;
-
-        // Debugging purposes
-        g.setColor(color1);
-        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
-        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
-        g.setColor(color2);
-        g.setStroke(stroke1);
-        g.drawRect(startX + 1, startY + 1, paintWidth, paintHeight);
-        g.setFont(small);
-        g.setColor(color3);
-
-        // Standard paint.
-        g.drawString(getMetaData().getName() + " - Version " + getMetaData().getVersion(), TextXLocation, TextYLocation += 10);
-        g.drawString("Run time: " + runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
-        g.drawString("Status: " + status, TextXLocation, TextYLocation += 15);
-        g.drawString("Mined: " + displayFormatted(oresMined, runtime), TextXLocation, TextYLocation += 15);
-        g.drawString("Gained: " + displayFormatted(gainedExp, runtime), TextXLocation, TextYLocation += 15);
-
-        //Username Coverupper
-        g.setColor(Color.BLACK);
-        g.fillRect(7, ClientUI.getFrame().getHeight() - 126, userCoverWith, userCoverHeight);
-
-        drawMouse(g);
+    private String displayFormatted(int value) {
+        NumberFormat numFormat = NumberFormat.getIntegerInstance();
+        return numFormat.format(value);
     }
 
-    /**
-     * Method to format integers nicely with values per hour.
-     * @param value
-     *   Value to format.
-     * @param runtime
-     *   The runtime Stopwatch.
-     */
-    private String displayFormatted(int value, StopWatch runtime) {
+    private String displayFormattedPerHour(int value, StopWatch runtime) {
         NumberFormat numFormat = NumberFormat.getIntegerInstance();
         return numFormat.format(value) + " (" + numFormat.format((int) CommonMath.rate(TimeUnit.HOURS, runtime.getRuntime(), value)) + ")";
     }
 
-    public void drawMouse(Graphics g) {
-        final Point p = Mouse.getPosition();
-        g.setColor(Color.RED);
-        g.setColor(Color.BLUE);
-        g.drawOval(p.x-5,p.y-5,10,10);
+    public int getCurrentLevel() {return Skill.MINING.getCurrentLevel(); }
+
+    public int getGainedLevels() {return Skill.MINING.getCurrentLevel() - startLevel; }
+
+    public int getExpGained () {
+        return Skill.MINING.getExperience() - startExp;
+    }
+
+    public int getExpPerHour () {
+        return (int) ((getExpGained()) * 3600000D / (System.currentTimeMillis() - startTime));
+    }
+
+    public int getExpTillLevel() {return Skill.MINING.getExperienceToNextLevel(); }
+
+    public long getTimeToNextLevel () {
+        return (long) (Skill.MINING.getExperienceToNextLevel() * 3600000D / getExpPerHour() - startExp);
+    }
+
+    private String formatTime(long time) {
+        String hms = String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(time),
+                TimeUnit.MILLISECONDS.toMinutes(time)
+                        - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS
+                        .toHours(time)),
+                TimeUnit.MILLISECONDS.toSeconds(time)
+                        - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS
+                        .toMinutes(time)));
+
+        return hms;
     }
 
     boolean isMouseDown = false;
@@ -174,5 +164,56 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
             startX = e.getX() - relativeX;
             startY = e.getY() - relativeY;
         }
+    }
+
+    public void drawMouse(Graphics g) {
+        final Point p = Mouse.getPosition();
+        g.setColor(Color.RED);
+        g.setColor(Color.BLUE);
+        g.drawOval(p.x-5,p.y-5,10,10);
+    }
+
+    @Override
+    public void onPaint(Graphics2D g) {
+
+        drawMouse(g);
+
+        int paintWidth = 190;
+        int paintHeight = 110;
+        int userCoverWith = 100;
+        int userCoverHeight = 15;
+
+        int TextXLocation = startX + 5;
+        int TextYLocation = startY + 5;
+
+        final Font small = new Font("Tahoma", 0, 12);
+
+        final Color color1 = new Color(51, 102, 255, 155);
+        final Color color2 = new Color(0, 0, 0);
+        final Color color3 = new Color(255, 255, 255);
+        final BasicStroke stroke1 = new BasicStroke(1);
+
+        // Debugging purposes
+        g.setColor(color1);
+        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
+        g.fillRect(startX + 1, startY + 1, paintWidth, paintHeight);
+        g.setColor(color2);
+        g.setStroke(stroke1);
+        g.drawRect(startX + 1, startY + 1, paintWidth, paintHeight);
+        g.setFont(small);
+        g.setColor(color3);
+
+        // Standard paint.
+        g.drawString(getMetaData().getName() + " - Version " + getMetaData().getVersion(), TextXLocation, TextYLocation += 10);
+        g.drawString("Run time: " + runtime.getRuntimeAsString(), TextXLocation, TextYLocation += 15);
+        g.drawString("Status: " + status, TextXLocation, TextYLocation += 15);
+        g.drawString("Mined: " + displayFormattedPerHour(oresMined, runtime), TextXLocation, TextYLocation += 15);
+        g.drawString("Level: " + getCurrentLevel() + " (+" + getGainedLevels() + ")", TextXLocation, TextYLocation += 15);
+        g.drawString("Experience: " + displayFormattedPerHour(getExpGained(), runtime), TextXLocation, TextYLocation += 15);
+        g.drawString("Next level: " + displayFormatted(getExpTillLevel()) + " (" + formatTime(getTimeToNextLevel()) + ")", TextXLocation, TextYLocation += 15);
+
+        //Username Coverupper
+        g.setColor(Color.BLACK);
+        g.fillRect(7, ClientUI.getFrame().getHeight() - 126, userCoverWith, userCoverHeight);
     }
 }
