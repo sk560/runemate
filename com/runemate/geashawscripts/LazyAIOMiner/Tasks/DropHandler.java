@@ -5,6 +5,7 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.SpriteItem;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
+import com.runemate.geashawscripts.LazyAIOMiner.Utils.Methods;
 
 /**
  * Created by Geashaw on 11-2-2015.
@@ -13,12 +14,11 @@ public class DropHandler extends Task {
 
     @Override
     public boolean validate() {
-        return LazyAIOMiner.powermine && Inventory.getQuantity(LazyAIOMiner.oreName) > 0;
+        return LazyAIOMiner.powermine;
     }
 
     @Override
     public void execute() {
-//Methods.debug("Executing drop handler");
         dropOres();
     }
 
@@ -28,18 +28,20 @@ public class DropHandler extends Task {
         SpriteItem gem = Inventory.newQuery().names(GEMS).results().first();
         SpriteItem ore = Inventory.newQuery().names(LazyAIOMiner.oreName).results().first();
 
-        if (Inventory.containsAnyOf(GEMS)) {
-            if (gem != null) {
-                if (gem.interact("Drop", gem.getDefinition().getName())) {
-                    LazyAIOMiner.status = "Dropping " + gem.getDefinition().getName();
-                    Execution.delayUntil(() -> gem == null, 1000, 1500);
-                    return true;
+        if (LazyAIOMiner.dropgems) {
+            if (Inventory.containsAnyOf(GEMS)) {
+                if (gem != null) {
+                    if (gem.interact("Drop", gem.getDefinition().getName())) {
+                        LazyAIOMiner.status = "Dropping " + gem.getDefinition().getName();
+                        Execution.delayUntil(() -> gem == null, 1000, 1500);
+                        return true;
+                    }
                 }
             }
         }
 
-        if (Inventory.containsAnyOf(LazyAIOMiner.oreName)) {
-            if (ore != null) {
+        if (Inventory.getQuantity(LazyAIOMiner.oreName) >= LazyAIOMiner.dropCounter) {
+            while (ore != null) {
                 if (ore.interact("Drop", ore.getDefinition().getName())) {
                     LazyAIOMiner.status = "Dropping " + LazyAIOMiner.oreName;
                     Execution.delayUntil(() -> ore == null, 1000, 1500);

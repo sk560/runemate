@@ -2,7 +2,7 @@ package com.runemate.geashawscripts.LazyAIOMiner.gui;
 
 import com.runemate.game.api.hybrid.Environment;
 import com.runemate.game.api.script.framework.AbstractScript;
-import com.runemate.geashawscripts.LazyAutoTanner.LazyAutoTanner;
+import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,7 +28,7 @@ public class Loader extends Stage {
 
     // Method to be called to initiate the GUI, load the fxml etc.
     public void start(Stage stage) throws Exception {
-        InputStream fxmlInput = LazyAutoTanner.class.getResourceAsStream("/com/runemate/geashawscripts/LazyAIOMiner/gui/LazyAIOMinerGUI.fxml");
+        InputStream fxmlInput = LazyAIOMiner.class.getResourceAsStream("/com/runemate/geashawscripts/LazyAIOMiner/gui/LazyAIOMinerGUI.fxml");
         if (fxmlInput != null) {
             // FXML has been found successfully.
             FXMLLoader fxmlLoader = new FXMLLoader();

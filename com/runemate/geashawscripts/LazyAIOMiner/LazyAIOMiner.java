@@ -3,11 +3,15 @@ package com.runemate.geashawscripts.LazyAIOMiner;
 import com.runemate.game.api.client.ClientUI;
 import com.runemate.game.api.client.paint.PaintListener;
 import com.runemate.game.api.hybrid.Environment;
+import com.runemate.game.api.hybrid.entities.GameObject;
 import com.runemate.game.api.hybrid.input.Mouse;
 import com.runemate.game.api.hybrid.local.Skill;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
+import com.runemate.game.api.hybrid.queries.results.LocatableEntityQueryResults;
+import com.runemate.game.api.hybrid.region.GameObjects;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.hybrid.util.Filter;
 import com.runemate.game.api.hybrid.util.StopWatch;
 import com.runemate.game.api.hybrid.util.calculations.CommonMath;
 import com.runemate.game.api.script.Execution;
@@ -46,6 +50,9 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
     public static Area bankArea;
 
     public static boolean powermine;
+    public static boolean dropgems;
+
+    public static int dropCounter = 1;
 
     public static ArrayList<Integer> oreObjectIds = new ArrayList<>();
 
@@ -72,8 +79,8 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
         }
 
         if (!LazyAIOMiner.mineArea.contains(Players.getLocal())) {
-            System.out.println("Please start the script at the selected mining spot.");
-            Environment.getScript().stop();
+            //System.out.println("Please start the script at the selected mining spot.");
+            //Environment.getScript().stop();
         }
     }
 
@@ -146,10 +153,10 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
     }
 
     public void drawMouse(Graphics g) {
-        g.setColor(Mouse.isPressed() ? Color.RED : Color.GREEN);
-        final Point m = Mouse.getPosition();
-        g.drawLine(m.x -5, m.y + 5, m.x + 5, m.y - 5);
-        g.drawLine(m.x -5, m.y - 5, m.x + 5, m.y + 5);
+        final Point p = Mouse.getPosition();
+        g.setColor(Color.RED);
+        g.setColor(Color.BLUE);
+        g.drawOval(p.x-5,p.y-5,10,10);
     }
 
     boolean isMouseDown = false;

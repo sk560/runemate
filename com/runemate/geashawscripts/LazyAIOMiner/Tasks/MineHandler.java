@@ -64,7 +64,7 @@ public class MineHandler extends Task {
             if (firstRock != null) {
                 if (firstRock.interact("Mine", firstRock.getDefinition().getName())) {
                     LazyAIOMiner.status = "Mining " + LazyAIOMiner.oreName;
-                    Execution.delayUntil(() -> !Methods.isBusy(), 1000, 1500);
+                    Execution.delayUntil(() -> !Methods.isBusy(), 2000, 2500);
                     return true;
                 }
             }
@@ -83,17 +83,16 @@ public class MineHandler extends Task {
         LocatableEntityQueryResults<GameObject> rocks = GameObjects.getLoaded(new Filter<GameObject>() {
             @Override
             public boolean accepts(GameObject gameObject) {
-                return LazyAIOMiner.oreObjectIds.contains(gameObject.getId()) && LazyAIOMiner.mineArea.contains(gameObject) && !Players.getLocal().isFacing(gameObject);
+                return LazyAIOMiner.oreObjectIds.contains(gameObject.getId()) && LazyAIOMiner.mineArea.contains(gameObject);
             }
         });
 
-        GameObject firstRock = rocks.nearestTo(Players.getLocal());
-        GameObject nextRock = rocks.sortByDistance().limit(2).nearestTo(Players.getLocal());
+        GameObject nextRock = rocks.sortByDistance().limit(1, 2).random();
         LazyAIOMiner.status = "Hovering next rock";
-        return nextRock != null && !nextRock.equals(firstRock) && nextRock.hover();
+        return nextRock != null && !Players.getLocal().isFacing(nextRock) && nextRock.hover();
     }
 
     private boolean gotOre() {
-        return Inventory.getQuantity(LazyAIOMiner.oreName) > 0;
+        return Inventory.getQuantity(LazyAIOMiner.oreName) >= LazyAIOMiner.dropCounter;
     }
 }

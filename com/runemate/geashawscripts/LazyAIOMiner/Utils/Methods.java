@@ -1,11 +1,8 @@
 package com.runemate.geashawscripts.LazyAIOMiner.Utils;
 
-import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
-import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
+import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
-import com.runemate.game.api.hybrid.location.navigation.Path;
 import com.runemate.game.api.hybrid.location.navigation.Traversal;
-import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
 import com.runemate.game.api.hybrid.location.navigation.web.WebPath;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
@@ -48,14 +45,6 @@ public class Methods {
     }
 
     /**
-     * Check if an interface with a specific text is visible.
-     */
-    public static boolean interfaceTextIsVisible(String text) {
-        InterfaceComponent x = Interfaces.newQuery().texts(text).visible().results().first();
-        return x != null && x.isValid() && x.isVisible();
-    }
-
-    /**
      * Checks if the player is busy.
      */
     public static boolean isBusy() {
@@ -87,5 +76,11 @@ public class Methods {
 
     public static boolean activateRun() {
         return false;
+    }
+
+    public static boolean walkToArea(final Area area) {
+        final Coordinate destination = area.getRandomCoordinate();
+        final WebPath path = Traversal.getDefaultWeb().getPathBuilder().buildTo(destination);
+        return path != null && path.step(true);
     }
 }

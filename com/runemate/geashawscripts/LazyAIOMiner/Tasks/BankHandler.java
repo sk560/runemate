@@ -4,9 +4,6 @@ import com.runemate.game.api.hybrid.local.hud.interfaces.Bank;
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
-import com.runemate.game.api.hybrid.location.Coordinate;
-import com.runemate.game.api.hybrid.location.navigation.Traversal;
-import com.runemate.game.api.hybrid.location.navigation.web.WebPath;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
 import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
@@ -24,8 +21,6 @@ public class BankHandler extends Task {
 
     @Override
     public void execute() {
-//Methods.debug("Executing bank handler");
-
         if (Methods.atBank()) {
             if (Inventory.isFull()) {
                 if (!Bank.isOpen()) {
@@ -69,8 +64,10 @@ public class BankHandler extends Task {
     }
 
     private boolean walkToBank() {
+        LazyAIOMiner.status = "Walking to bank";
+        return Methods.walkToArea(LazyAIOMiner.bankArea);
 
-        Coordinate location = LazyAIOMiner.bankArea.getCenter();
+        /*Coordinate location = LazyAIOMiner.bankArea.getRandomCoordinate();
         WebPath bankPath = Traversal.getDefaultWeb().getPathBuilder().buildTo(location);
 
         if (bankPath != null) {
@@ -78,12 +75,14 @@ public class BankHandler extends Task {
             return bankPath.step();
         }
 
-        return false;
+        return false;*/
     }
 
     private boolean walkToMiningSpot() {
+        LazyAIOMiner.status = "Walking to mining spot";
+        return Methods.walkToArea(LazyAIOMiner.mineArea);
 
-        Coordinate location = LazyAIOMiner.mineArea.getCenter();
+        /*Coordinate location = LazyAIOMiner.mineArea.getRandomCoordinate();
         WebPath minePath = Traversal.getDefaultWeb().getPathBuilder().buildTo(location);
 
         if (minePath != null) {
@@ -91,7 +90,7 @@ public class BankHandler extends Task {
             return minePath.step();
         }
 
-        return false;
+        return false;*/
     }
 
 }

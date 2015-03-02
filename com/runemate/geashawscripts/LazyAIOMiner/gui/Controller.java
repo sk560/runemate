@@ -3,13 +3,11 @@ package com.runemate.geashawscripts.LazyAIOMiner.gui;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 
-import javax.swing.text.html.ListView;
 import java.util.Arrays;
 
 /**
@@ -22,7 +20,9 @@ public class Controller {
     @FXML
     private ComboBox<String> cmbArea;
     @FXML
-    private ComboBox<String> cmbMethod;
+    private CheckBox checkboxPowermine;
+    @FXML
+    private CheckBox checkboxDropGems;
     @FXML
     private Button btnStart;
 
@@ -37,11 +37,6 @@ public class Controller {
         String[] cmbLocationItems = new String[]{"South-east Varrock", "South-west Varrock", "Al Kharid", "Rimmington"};
         // Add the above strings to the cmbHide ComboBox.
         cmbArea.getItems().addAll(cmbLocationItems);
-
-        // Create a new String array for the ore names.
-        String[] cmbMethodItems = new String[]{"Powermine", "Bank"};
-        // Add the above strings to the cmbHide ComboBox.
-        cmbMethod.getItems().addAll(cmbMethodItems);
 
         // Set the action event.
         btnStart.setOnAction(event -> {
@@ -113,12 +108,19 @@ public class Controller {
                 }
             }
 
-            if (!cmbMethod.getSelectionModel().isEmpty()) {
-                String method = cmbMethod.getSelectionModel().getSelectedItem();
-                if (method == "Powermine") {
+            if (checkboxPowermine != null) {
+                if (checkboxPowermine.isSelected()) {
                     LazyAIOMiner.powermine = true;
                 } else {
                     LazyAIOMiner.powermine = false;
+                }
+            }
+
+            if (checkboxDropGems != null) {
+                if (checkboxDropGems.isSelected()) {
+                    LazyAIOMiner.dropgems = true;
+                } else {
+                    LazyAIOMiner.dropgems = false;
                 }
             }
 
