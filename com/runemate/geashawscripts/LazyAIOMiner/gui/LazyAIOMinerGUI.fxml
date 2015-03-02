@@ -15,7 +15,7 @@
       <ComboBox fx:id="cmbOre" layoutX="75.0" layoutY="60.0" prefHeight="25.0" prefWidth="119.0" promptText="Select ore" />
       <ComboBox fx:id="cmbArea" layoutX="75.0" layoutY="100.0" prefHeight="25.0" prefWidth="119.0" promptText="Select area" />
        <Button fx:id="btnStart" layoutX="75.0" layoutY="211.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" text="Start" />
-      <CheckBox fx:id="checkboxPowermine" layoutX="75.0" layoutY="145.0" mnemonicParsing="false" selected="true" text="Powermine " />
+      <CheckBox fx:id="checkboxPowermine" disable="true" layoutX="75.0" layoutY="145.0" mnemonicParsing="false" selected="true" text="Powermine " />
       <CheckBox fx:id="checkboxDropGems" layoutX="75.0" layoutY="176.0" mnemonicParsing="false" selected="true" text="Drop gems" />
    </children>
 </AnchorPane>
