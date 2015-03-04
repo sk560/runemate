@@ -50,7 +50,7 @@ public class Controller {
                 Integer[] clay = {7481, 7483, 13456, 13457, 13458};
                 Integer[] tin = {7484, 7486, 13447, 13448, 13449};
                 Integer[] copper = {7478, 7479, 7480, 13450, 13451, 13452, 13708};
-                Integer[] iron = {7487, 7488, 7489, 13444, 13445, 13446, 13710, 13711, };
+                Integer[] iron = {7487, 7488, 7489, 13444, 13445, 13446, 13710, 13711};
                 Integer[] silver = {13716, 13717};
                 Integer[] coal = {13714};
                 Integer[] gold = {7490, 7492, 13707, 13715};
@@ -81,17 +81,17 @@ public class Controller {
 
                 String area = cmbArea.getSelectionModel().getSelectedItem();
 
-                final Area VarrockEastMineArea = new Area.Rectangular(new Coordinate(3294,3355,0),new Coordinate(3276,3372,0));
-                final Area VarrockEastBankArea = new Area.Rectangular(new Coordinate(3249,3415,0),new Coordinate(3257,3425,0));
+                final Area VarrockEastMineArea = new Area.Rectangular(new Coordinate(3294, 3355, 0), new Coordinate(3276, 3372, 0));
+                final Area VarrockEastBankArea = new Area.Rectangular(new Coordinate(3249, 3415, 0), new Coordinate(3257, 3425, 0));
 
-                final Area VarrockSouthMineArea = new Area.Rectangular(new Coordinate(3170,3362,0),new Coordinate(3185,3380,0));
-                final Area VarrockSouthBankArea = new Area.Rectangular(new Coordinate(3179,3432,0),new Coordinate(3190,3447,0));
+                final Area VarrockSouthMineArea = new Area.Rectangular(new Coordinate(3170, 3362, 0), new Coordinate(3185, 3380, 0));
+                final Area VarrockSouthBankArea = new Area.Rectangular(new Coordinate(3179, 3432, 0), new Coordinate(3190, 3447, 0));
 
-                final Area AlKharidMineArea = new Area.Rectangular(new Coordinate(3286,3275,0),new Coordinate(3311,3320,0));
-                final Area AlKharidBankArea = new Area.Rectangular(new Coordinate(3264,3160,0),new Coordinate(3272,3174,0));
+                final Area AlKharidMineArea = new Area.Rectangular(new Coordinate(3286, 3275, 0), new Coordinate(3311, 3320, 0));
+                final Area AlKharidBankArea = new Area.Rectangular(new Coordinate(3264, 3160, 0), new Coordinate(3272, 3174, 0));
 
-                final Area RimmingtonMineArea = new Area.Circular(new Coordinate(2977,3238,0),14);
-                final Area RimmingtonBankArea = new Area.Rectangular(new Coordinate(3008,3350,0),new Coordinate(3018,3359,0));
+                final Area RimmingtonMineArea = new Area.Circular(new Coordinate(2977, 3238, 0), 14);
+                final Area RimmingtonBankArea = new Area.Rectangular(new Coordinate(3008, 3350, 0), new Coordinate(3018, 3359, 0));
 
                 if (area == "South-east Varrock") {
                     LazyAIOMiner.mineArea = VarrockEastMineArea;

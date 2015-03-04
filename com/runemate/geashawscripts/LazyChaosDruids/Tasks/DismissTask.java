@@ -11,7 +11,7 @@ import com.runemate.game.api.script.framework.task.Task;
  */
 public class DismissTask extends Task {
 
-    public static final String[] RANDOMS = {"Genie", "Mysterious Old Man", "Drunken Dwarf", "Frog", "Rick Turpentine", "Sergeant Damien", "Pillory Guard", "Capt' Arnav", "Flippa", "Evil Bob", "Giles", "Leo", "Dunce", "Sandwich lady"};
+    public static final String[] RANDOMS = {"Dunce", "Genie", "Mysterious Old Man", "Drunken Dwarf", "Frog", "Rick Turpentine", "Sergeant Damien", "Pillory Guard", "Capt' Arnav", "Flippa", "Evil Bob", "Giles", "Leo", "Dunce", "Sandwich lady"};
 
     private Npc random;
 

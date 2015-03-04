@@ -2,7 +2,7 @@
     <main-class>com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner</main-class>
     <name>Lazy AIO Miner</name>
     <description>Mines ores in various locations. Dropping or banking them.</description>
-    <version>0.7</version>
+    <version>0.75</version>
     <open-source>true</open-source>
     <compatibility>
         <game-type>OSRS</game-type>
@@ -10,9 +10,8 @@
     <categories>
         <category>MINING</category>
     </categories>
-	<resources>
+    <resources>
         <resource>com/runemate/geashawscripts/LazyAIOMiner/gui/LazyAIOMinerGUI.fxml</resource>
-        <resource>com/runemate/geashawscripts/LazyAIOMiner/Resources/chatbox.png</resource>
     </resources>
     <!--Required to publish on the bot store-->
     <internal-id>lazyaiominer</internal-id>
