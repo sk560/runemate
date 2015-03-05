@@ -2,6 +2,7 @@ package com.runemate.geashawscripts.LazyAIOMiner.Tasks;
 
 import com.runemate.game.api.hybrid.entities.GameObject;
 import com.runemate.game.api.hybrid.input.Mouse;
+import com.runemate.game.api.hybrid.local.hud.InteractablePoint;
 import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
 import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
@@ -58,7 +59,6 @@ public class MineHandler extends Task {
         });
 
         if (rocks != null) {
-            //GameObject firstRock = rocks.sortByDistance().limit(1).nearest();
             GameObject firstRock = rocks.nearestTo(Players.getLocal());
             if (firstRock != null) {
                 if (firstRock.interact("Mine", firstRock.getDefinition().getName())) {
@@ -74,7 +74,7 @@ public class MineHandler extends Task {
 
     private boolean hoverInventoryItem() {
         LazyAIOMiner.status = "Hovering inventory";
-        return Mouse.move(Inventory.getSlotBounds().get(Random.nextInt(0, 6)).getInteractionPoint());
+        return Mouse.move(Inventory.getSlotBounds().get(0).getInteractionPoint());
     }
 
     private boolean hoverNextRock() {

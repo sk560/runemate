@@ -3,10 +3,14 @@ package com.runemate.geashawscripts.LazyAIOMiner.gui;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 
 import java.util.Arrays;
 
@@ -16,96 +20,141 @@ import java.util.Arrays;
 public class Controller {
 
     @FXML
-    private ComboBox<String> cmbOre;
-    @FXML
-    private ComboBox<String> cmbArea;
-    @FXML
     private CheckBox checkboxPowermine;
     @FXML
     private CheckBox checkboxDropGems;
     @FXML
-    private Button btnStart;
+    private ListView<String> listLocation;
+    @FXML
+    private ListView<String> listOre;
+    @FXML
+    private Button buttonStart;
+
+    @FXML
+    private ObservableList<String> listLocationData = FXCollections.observableArrayList(
+            "North-east Ardougne", "South-east Varrock", "South-west Varrock", "Al Kharid", "Rimmington"
+    );
+    @FXML
+    private ObservableList<String> listOreData = FXCollections.observableArrayList(
+            "Clay", "Tin ore", "Copper ore", "Iron ore", "Coal"
+    );
+    @FXML
+    private ObservableList<String> listArdougneData = FXCollections.observableArrayList(
+            "Iron ore", "Coal"
+    );
+    @FXML
+    private ObservableList<String> listSouthEastVarrockData = FXCollections.observableArrayList(
+            "Tin ore", "Copper ore", "Iron ore"
+    );
+    @FXML
+    private ObservableList<String> listSouthWestVarrockData = FXCollections.observableArrayList(
+            "Clay", "Tin ore", "Copper ore", "Iron ore"
+    );
+    @FXML
+    private ObservableList<String> listAlKharidData = FXCollections.observableArrayList(
+            "Clay", "Tin ore", "Copper ore", "Iron ore", "Coal", "Silver ore", "Gold ore", "Mithril ore", "Adamantite ore"
+    );
+    @FXML
+    private ObservableList<String> listRimmingtonData = FXCollections.observableArrayList(
+            "Clay", "Tin ore", "Copper ore", "Iron ore", "Gold ore"
+    );
+
+    final Area VarrockEastMineArea = new Area.Rectangular(new Coordinate(3294, 3355, 0), new Coordinate(3276, 3372, 0));
+    final Area VarrockEastBankArea = new Area.Rectangular(new Coordinate(3249, 3415, 0), new Coordinate(3257, 3425, 0));
+
+    final Area VarrockSouthMineArea = new Area.Rectangular(new Coordinate(3170, 3362, 0), new Coordinate(3185, 3380, 0));
+    final Area VarrockSouthBankArea = new Area.Rectangular(new Coordinate(3179, 3432, 0), new Coordinate(3190, 3447, 0));
+
+    final Area AlKharidMineArea = new Area.Rectangular(new Coordinate(3286, 3275, 0), new Coordinate(3311, 3320, 0));
+    final Area AlKharidBankArea = new Area.Rectangular(new Coordinate(3264, 3160, 0), new Coordinate(3272, 3174, 0));
+
+    final Area RimmingtonMineArea = new Area.Circular(new Coordinate(2977, 3238, 0), 14);
+    final Area RimmingtonBankArea = new Area.Rectangular(new Coordinate(3008, 3350, 0), new Coordinate(3018, 3359, 0));
+
+    final Area ArdougneMineArea = new Area.Rectangular(new Coordinate(2686,3325,0),new Coordinate(2717,3340,0));
+    final Area ArdougneBankArea = new Area.Rectangular(new Coordinate(2647,3278,0),new Coordinate(2659,3288,0));
+
+    Integer[] clay = {7481, 7483, 13456, 13457, 13458};
+    Integer[] tin = {7484, 7486, 13447, 13448, 13449};
+    Integer[] copper = {7478, 7479, 7480, 13450, 13451, 13452, 13708};
+    Integer[] iron = {7487, 7488, 7489, 13444, 13445, 13446, 13710, 13711};
+    Integer[] silver = {13716, 13717};
+    Integer[] coal = {13706, 13714};
+    Integer[] gold = {7490, 7492, 13707, 13715};
+    Integer[] mithril = {13718, 13719};
+    Integer[] adamantite = {14168, 13720};
+
+    public void initialize() {
+        listLocation.setItems(listLocationData);
+        listOre.setItems(listOreData);
+
+        listLocation.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+                if (observable.getValue().equals("North-east Ardougne")) {
+                    listOre.setItems(listArdougneData);
+                } else if (observable.getValue().equals("South-east Varrock")) {
+                    listOre.setItems(listSouthEastVarrockData);
+                } else if (observable.getValue().equals("South-west Varrock")) {
+                    listOre.setItems(listSouthWestVarrockData);
+                } else if (observable.getValue().equals("Al Kharid")) {
+                    listOre.setItems(listAlKharidData);
+                } else if (observable.getValue().equals("Rimmington")) {
+                    listOre.setItems(listRimmingtonData);
+                }
+            }
+        });
+    }
 
     public void startController() {
 
-        // Create a new String array for the ore names.
-        String[] cmbOreItems = new String[]{"Clay", "Tin", "Copper", "Iron"};
-        // Add the above strings to the cmbHide ComboBox.
-        cmbOre.getItems().addAll(cmbOreItems);
-
-        // Create a new String array for the ore names.
-        String[] cmbLocationItems = new String[]{"South-east Varrock", "South-west Varrock", "Al Kharid", "Rimmington"};
-        // Add the above strings to the cmbHide ComboBox.
-        cmbArea.getItems().addAll(cmbLocationItems);
-
         // Set the action event.
-        btnStart.setOnAction(event -> {
+        buttonStart.setOnAction(event -> {
 
-            // Check if the ComboBox for the ore is not empty.
-            if (!cmbOre.getSelectionModel().isEmpty()) {
+            // Get location and ore.
+            String location = listLocation.getSelectionModel().getSelectedItem().toString();
+            String ore = listOre.getSelectionModel().getSelectedItem().toString();
 
-                String ore = cmbOre.getSelectionModel().getSelectedItem();
-                LazyAIOMiner.selectedOre = ore;
+            // Set location for debugging.
+            LazyAIOMiner.location = location;
+            LazyAIOMiner.oreName = listOre.getSelectionModel().getSelectedItem().toString();
 
-                Integer[] clay = {7481, 7483, 13456, 13457, 13458};
-                Integer[] tin = {7484, 7486, 13447, 13448, 13449};
-                Integer[] copper = {7478, 7479, 7480, 13450, 13451, 13452, 13708};
-                Integer[] iron = {7487, 7488, 7489, 13444, 13445, 13446, 13710, 13711};
-                Integer[] silver = {13716, 13717};
-                Integer[] coal = {13714};
-                Integer[] gold = {7490, 7492, 13707, 13715};
-                Integer[] mithril = {13718, 13719};
-                Integer[] adamantite = {14168, 13720};
-
-                if (ore == "Clay") {
-                    LazyAIOMiner.oreName = "Clay";
-                    LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(clay));
-                    LazyAIOMiner.preferedTile = new Coordinate(3180, 3371, 0);
-                } else if (ore == "Tin") {
-                    LazyAIOMiner.oreName = "Tin ore";
-                    LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(tin));
-                    LazyAIOMiner.preferedTile = new Coordinate(3282, 3363, 0);
-                } else if (ore == "Copper") {
-                    LazyAIOMiner.oreName = "Copper ore";
-                    LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(copper));
-                    LazyAIOMiner.preferedTile = new Coordinate(3289, 3362, 0);
-                } else if (ore == "Iron") {
-                    LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(iron));
-                    LazyAIOMiner.oreName = "Iron ore";
-                    LazyAIOMiner.preferedTile = new Coordinate(3286, 3368, 0);
-                }
+            if (location.equals("North-east Ardougne")) {
+                LazyAIOMiner.bankArea = ArdougneBankArea;
+                LazyAIOMiner.mineArea = ArdougneMineArea;
+            } else if (location.equals("South-east Varrock")) {
+                LazyAIOMiner.bankArea = VarrockEastBankArea;
+                LazyAIOMiner.mineArea = VarrockEastMineArea;
+            } else if (location.equals("South-west Varrock")) {
+                LazyAIOMiner.bankArea = VarrockSouthBankArea;
+                LazyAIOMiner.mineArea = VarrockSouthMineArea;
+            } else if (location.equals("Al Kharid")) {
+                LazyAIOMiner.bankArea = AlKharidBankArea;
+                LazyAIOMiner.mineArea = AlKharidMineArea;
+            } else if (location.equals("Rimmington")) {
+                LazyAIOMiner.bankArea = RimmingtonBankArea;
+                LazyAIOMiner.mineArea = RimmingtonMineArea;
             }
 
-            // Check if the ComboBox for the area is not empty.
-            if (!cmbArea.getSelectionModel().isEmpty()) {
-
-                String area = cmbArea.getSelectionModel().getSelectedItem();
-
-                final Area VarrockEastMineArea = new Area.Rectangular(new Coordinate(3294, 3355, 0), new Coordinate(3276, 3372, 0));
-                final Area VarrockEastBankArea = new Area.Rectangular(new Coordinate(3249, 3415, 0), new Coordinate(3257, 3425, 0));
-
-                final Area VarrockSouthMineArea = new Area.Rectangular(new Coordinate(3170, 3362, 0), new Coordinate(3185, 3380, 0));
-                final Area VarrockSouthBankArea = new Area.Rectangular(new Coordinate(3179, 3432, 0), new Coordinate(3190, 3447, 0));
-
-                final Area AlKharidMineArea = new Area.Rectangular(new Coordinate(3286, 3275, 0), new Coordinate(3311, 3320, 0));
-                final Area AlKharidBankArea = new Area.Rectangular(new Coordinate(3264, 3160, 0), new Coordinate(3272, 3174, 0));
-
-                final Area RimmingtonMineArea = new Area.Circular(new Coordinate(2977, 3238, 0), 14);
-                final Area RimmingtonBankArea = new Area.Rectangular(new Coordinate(3008, 3350, 0), new Coordinate(3018, 3359, 0));
-
-                if (area == "South-east Varrock") {
-                    LazyAIOMiner.mineArea = VarrockEastMineArea;
-                    LazyAIOMiner.bankArea = VarrockEastBankArea;
-                } else if (area == "South-west Varrock") {
-                    LazyAIOMiner.mineArea = VarrockSouthMineArea;
-                    LazyAIOMiner.bankArea = VarrockSouthBankArea;
-                } else if (area == "Al Kharid") {
-                    LazyAIOMiner.mineArea = AlKharidMineArea;
-                    LazyAIOMiner.bankArea = AlKharidBankArea;
-                } else if (area == "Rimmington") {
-                    LazyAIOMiner.mineArea = RimmingtonMineArea;
-                    LazyAIOMiner.bankArea = RimmingtonBankArea;
-                }
+            if (ore.equals("Clay")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(clay));
+            } else if (ore.equals("Tin ore")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(tin));
+            } else if (ore.equals("Copper ore")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(copper));
+            } else if (ore.equals("Iron ore")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(iron));
+            } else if (ore.equals("Silver ore")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(silver));
+            } else if (ore.equals("Coal")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(coal));
+            } else if (ore.equals("Gold ore")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(gold));
+            } else if (ore.equals("Mithril ore")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(mithril));
+            } else if (ore.equals("Adamantite ore")) {
+                LazyAIOMiner.oreObjectIds.addAll(Arrays.asList(adamantite));
             }
 
             if (checkboxPowermine != null) {

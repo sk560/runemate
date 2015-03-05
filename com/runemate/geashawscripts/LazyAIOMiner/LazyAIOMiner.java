@@ -20,13 +20,10 @@ import com.runemate.geashawscripts.LazyAIOMiner.Utils.PaintTracker;
 import com.runemate.geashawscripts.LazyAIOMiner.gui.Loader;
 import javafx.application.Platform;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -39,7 +36,7 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
 
     public static String status = "Loading...";
 
-    public static String selectedOre = "";
+    public static String location = "";
     public static String oreName = "";
     public static Coordinate preferedTile;
 
@@ -81,13 +78,18 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
             startTime = System.currentTimeMillis();
         }
 
-        add(new RandomHandler(), new MineHandler(), new DropHandler(), new BankHandler());
-        getEventDispatcher().addListener(this);
-        setLoopDelay(100, 300);
-
         if (!LazyAIOMiner.mineArea.contains(Players.getLocal())) {
             System.out.println("Please start the script at the selected mining spot.");
             Environment.getScript().stop();
+        } else {
+            add(new RandomHandler(), new MineHandler(), new DropHandler(), new BankHandler());
+            getEventDispatcher().addListener(this);
+            setLoopDelay(100, 300);
+
+            System.out.println("Powermine: " + LazyAIOMiner.powermine);
+            System.out.println("Drop gems: " + LazyAIOMiner.dropgems);
+            System.out.println("Ore name: " + oreName);
+            System.out.println("Location: " + location);
         }
     }
 
@@ -101,30 +103,19 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
         }
     }
 
-    private final Image paint = getImage("http://puu.sh/gmnfh/46e6f62854.png");
-
-    private Image getImage(String url) {
-        try {
-            return ImageIO.read(new URL(url));
-        } catch (IOException e) {
-            return null;
-        }
-    }
 
     @Override
     public void onPaint(Graphics2D g) {
-        PaintTracker.drawRotatingMouse(g);
-
         if (showPaint) {
             PaintTracker.drawPaint(g);
             g.setFont(new Font("Arial", 2, 12));
-            g.drawString("Version: " + getMetaData().getVersion(), 408, 415);
+            g.drawString("Version: " + getMetaData().getVersion(), 406, 415);
         } else {
             g.setColor(Color.BLACK);
             g.drawString("Click to show", 431, 521);
         }
 
-        PaintTracker.drawDraggablePaint(g);
+        PaintTracker.drawRotatingMouse(g);
     }
 
     final Rectangle hideButton = new Rectangle(0, 388, 518, 215);

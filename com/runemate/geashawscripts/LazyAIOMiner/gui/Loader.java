@@ -37,7 +37,7 @@ public class Loader extends Stage {
             Parent guiRoot = fxmlLoader.load(fxmlInput);
             // Set your GUI panels properties.
             Scene guiScene = new Scene(guiRoot);
-            stage.setTitle("LazyAIOMiner");
+            stage.setTitle("Lazy AIO Miner 0.8");
             stage.setScene(guiScene);
             guiStage = stage;
             Controller controller = fxmlLoader.getController();
