@@ -1,6 +1,7 @@
 package com.runemate.geashawscripts.LazyAIOMiner.Utils;
 
 import com.runemate.game.api.client.ClientUI;
+import com.runemate.game.api.hybrid.entities.Projectile;
 import com.runemate.game.api.hybrid.input.Mouse;
 import com.runemate.game.api.hybrid.local.Skill;
 import com.runemate.game.api.hybrid.util.StopWatch;
@@ -76,10 +77,6 @@ public class PaintTracker {
         g.drawString("Level: " + getCurrentLevel() + " (+" + getGainedLevels() + ")", TextXLocation, TextYLocation += 15);
         g.drawString("Experience: " + displayFormattedPerHour(getExpGained(), LazyAIOMiner.runtime), TextXLocation, TextYLocation += 15);
         g.drawString("Next level: " + displayFormatted(getExpTillLevel()) + " (" + formatTime(getTimeToNextLevel()) + ")", TextXLocation, TextYLocation += 15);
-
-        //Username Coverupper
-        //g.setColor(Color.BLACK);
-        //g.fillRect(7, ClientUI.getFrame().getHeight() - 126, LazyAIOMiner.userCoverWith, LazyAIOMiner.userCoverHeight);
     }
 
     public static void drawPaint(Graphics2D g) {
@@ -108,8 +105,6 @@ public class PaintTracker {
         g.setColor(new Color(0, 0, 0));
         g.setFont(new Font("Arial", 3, 12));
         g.drawString("By Geashaw", 407, 399);
-
-
     }
 
     public static String displayFormatted(int value) {
@@ -160,12 +155,5 @@ public class PaintTracker {
                         .toMinutes(time)));
 
         return hms;
-    }
-
-    public static void drawMouse(Graphics2D g) {
-        final Point p = Mouse.getPosition();
-        g.setColor(Color.RED);
-        g.setColor(Color.BLUE);
-        g.drawOval(p.x - 5, p.y - 5, 10, 10);
     }
 }

@@ -16,7 +16,7 @@ public class BankHandler extends Task {
 
     @Override
     public boolean validate() {
-        return Inventory.isFull() || Inventory.isEmpty();
+        return Methods.atBank() && !Inventory.isEmpty();
     }
 
     @Override
@@ -31,19 +31,7 @@ public class BankHandler extends Task {
             } else {
                 if (Bank.isOpen()) {
                     Bank.close();
-                } else {
-                    walkToMiningSpot();
                 }
-            }
-        } else if (Methods.atMiningSpot()) {
-            if (Inventory.isFull()) {
-                walkToBank();
-            }
-        } else {
-            if (Inventory.isFull()) {
-                walkToBank();
-            } else {
-                walkToMiningSpot();
             }
         }
     }
@@ -61,36 +49,6 @@ public class BankHandler extends Task {
             }
         }
         return false;
-    }
-
-    private boolean walkToBank() {
-        LazyAIOMiner.status = "Walking to bank";
-        return Methods.walkToArea(LazyAIOMiner.bankArea);
-
-        /*Coordinate location = LazyAIOMiner.bankArea.getRandomCoordinate();
-        WebPath bankPath = Traversal.getDefaultWeb().getPathBuilder().buildTo(location);
-
-        if (bankPath != null) {
-            LazyAIOMiner.status = "Walking to bank";
-            return bankPath.step();
-        }
-
-        return false;*/
-    }
-
-    private boolean walkToMiningSpot() {
-        LazyAIOMiner.status = "Walking to mining spot";
-        return Methods.walkToArea(LazyAIOMiner.mineArea);
-
-        /*Coordinate location = LazyAIOMiner.mineArea.getRandomCoordinate();
-        WebPath minePath = Traversal.getDefaultWeb().getPathBuilder().buildTo(location);
-
-        if (minePath != null) {
-            LazyAIOMiner.status = "Walking to mining spot";
-            return minePath.step();
-        }
-
-        return false;*/
     }
 
 }

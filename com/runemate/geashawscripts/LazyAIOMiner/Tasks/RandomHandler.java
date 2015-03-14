@@ -5,6 +5,7 @@ import com.runemate.game.api.hybrid.region.Npcs;
 import com.runemate.game.api.hybrid.region.Players;
 import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.task.Task;
+import com.runemate.geashawscripts.LazyAIOMiner.Utils.Methods;
 
 /**
  * Created by Geashaw on 18-2-2015.

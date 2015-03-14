@@ -12,18 +12,14 @@ import com.runemate.game.api.script.Execution;
 import com.runemate.game.api.script.framework.listeners.InventoryListener;
 import com.runemate.game.api.script.framework.listeners.events.ItemEvent;
 import com.runemate.game.api.script.framework.task.TaskScript;
-import com.runemate.geashawscripts.LazyAIOMiner.Tasks.BankHandler;
-import com.runemate.geashawscripts.LazyAIOMiner.Tasks.DropHandler;
-import com.runemate.geashawscripts.LazyAIOMiner.Tasks.MineHandler;
-import com.runemate.geashawscripts.LazyAIOMiner.Tasks.RandomHandler;
+import com.runemate.geashawscripts.LazyAIOMiner.Tasks.*;
 import com.runemate.geashawscripts.LazyAIOMiner.Utils.PaintTracker;
 import com.runemate.geashawscripts.LazyAIOMiner.gui.Loader;
 import javafx.application.Platform;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 /**
@@ -31,29 +27,37 @@ import java.util.ArrayList;
  */
 public class LazyAIOMiner extends TaskScript implements PaintListener, InventoryListener, MouseListener, MouseMotionListener {
 
+    public static final String[] GEMS = {"Uncut sapphire", "Uncut emerald", "Uncut ruby", "Uncut diamond"};
+
     public static boolean guiOpen;
     public boolean showPaint = true;
 
     public static String status = "Loading...";
+    public static String username = "";
+    public static int userId;
 
     public static String location = "";
     public static String oreName = "";
-    public static Coordinate preferedTile;
 
     public static Area mineArea;
     public static Area bankArea;
 
     public static boolean powermine;
     public static boolean dropgems;
+    public static boolean noMove;
 
-    public static int dropCounter = 1;
+    public static final Coordinate spot = Players.getLocal().getPosition();
 
     public static ArrayList<Integer> oreObjectIds = new ArrayList<>();
 
     public static final StopWatch runtime = new StopWatch();
-    public static long startTime = 0;
+    public static StopWatch updateTimer = new StopWatch();
+    public static final int updateIntervalMilliSeconds = 60000;
 
-    public static int oresMined = 0, startExp = 0, startLevel = 0;
+    public static long startTime = 0;
+    public static long timeRanSoFar, lastRunTime;
+
+    public static int oresMined, oresMinedSoFar, lastOresMined,startExp, startLevel, xpGained, expGainedSoFar, lastExpGained;
 
     public static int paintWidth = 190;
     public static int paintHeight = 95;
@@ -62,8 +66,14 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
 
     public void onStart(String... args) {
 
+        setLoopDelay(100, 300);
+
         startExp = Skill.MINING.getExperience();
         startLevel = Skill.MINING.getCurrentLevel();
+
+        // Getting the forum data.
+        userId = Environment.getForumId();
+        username = Environment.getForumName();
 
         guiOpen = true;
 
@@ -74,19 +84,23 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
         }
 
         if (!guiOpen) {
-            runtime.start();
-            startTime = System.currentTimeMillis();
-        }
 
-        if (!LazyAIOMiner.mineArea.contains(Players.getLocal())) {
-            System.out.println("Please start the script at the selected mining spot.");
-            Environment.getScript().stop();
-        } else {
-            add(new RandomHandler(), new MineHandler(), new DropHandler(), new BankHandler());
+            // Starting both timers.
+            runtime.start();
+            updateTimer.start();
+
+            startTime = System.currentTimeMillis();
+
+            if (!mineArea.contains(Players.getLocal()) && !bankArea.contains(Players.getLocal())) {
+                System.out.println("Please start the script at the bank or the selected mining spot.");
+                Environment.getScript().stop();
+            }
+
+            add(new UpdateTask(), new RandomHandler(), new MineHandler(), new DropHandler(), new ToBankHandler(), new BankHandler(), new ToMineHandler());
             getEventDispatcher().addListener(this);
-            setLoopDelay(100, 300);
 
             System.out.println("Powermine: " + LazyAIOMiner.powermine);
+            System.out.println("Don't move: " + LazyAIOMiner.noMove);
             System.out.println("Drop gems: " + LazyAIOMiner.dropgems);
             System.out.println("Ore name: " + oreName);
             System.out.println("Location: " + location);
@@ -103,9 +117,9 @@ public class LazyAIOMiner extends TaskScript implements PaintListener, Inventory
         }
     }
 
-
     @Override
     public void onPaint(Graphics2D g) {
+
         if (showPaint) {
             PaintTracker.drawPaint(g);
             g.setFont(new Font("Arial", 2, 12));

@@ -5,19 +5,20 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="535.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ListView fx:id="listLocation" layoutX="57.0" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" />
+        <ListView fx:id="listLocation" layoutX="57.0" layoutY="114.0" prefHeight="200.0" prefWidth="240.0" />
         <Text layoutX="57.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the location:" />
-        <Text layoutX="287.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the ore:" />
-        <ListView fx:id="listOre" layoutX="287.0" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" />
-        <Text layoutX="190.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lazy AIO Miner">
+        <Text layoutX="334.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the ore:" />
+        <ListView fx:id="listOre" layoutX="334.0" layoutY="114.0" prefHeight="200.0" prefWidth="240.0" />
+        <Text layoutX="241.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lazy AIO Miner">
             <font>
                 <Font size="20.0" />
             </font>
         </Text>
-        <CheckBox fx:id="checkboxPowermine" disable="true" layoutX="57.0" layoutY="343.0" mnemonicParsing="false" selected="true" text="Powermine ores" />
-        <CheckBox fx:id="checkboxDropGems" layoutX="190.0" layoutY="343.0" mnemonicParsing="false" text="Drop gems" />
-        <Button fx:id="buttonStart" layoutX="360.0" layoutY="339.0" mnemonicParsing="false" text="Start mining" />
+        <CheckBox fx:id="checkboxPowermine" layoutX="57.0" layoutY="343.0" mnemonicParsing="false" selected="true" text="Powermine ores" />
+        <CheckBox fx:id="checkboxDropGems" layoutX="283.0" layoutY="343.0" mnemonicParsing="false" selected="true" text="Drop gems" />
+        <Button fx:id="buttonStart" layoutX="493.0" layoutY="339.0" mnemonicParsing="false" text="Start mining" />
+      <CheckBox fx:id="checkboxNoMove" layoutX="186.0" layoutY="343.0" mnemonicParsing="false" selected="true" text="Don't move" />
     </children>
 </AnchorPane>

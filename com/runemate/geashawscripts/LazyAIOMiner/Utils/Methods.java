@@ -1,10 +1,21 @@
 package com.runemate.geashawscripts.LazyAIOMiner.Utils;
 
+import com.runemate.game.api.hybrid.entities.GameObject;
+import com.runemate.game.api.hybrid.entities.Player;
+import com.runemate.game.api.hybrid.entities.Projectile;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Bank;
+import com.runemate.game.api.hybrid.local.hud.interfaces.InterfaceComponent;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Interfaces;
+import com.runemate.game.api.hybrid.local.hud.interfaces.Inventory;
 import com.runemate.game.api.hybrid.location.Area;
 import com.runemate.game.api.hybrid.location.Coordinate;
 import com.runemate.game.api.hybrid.location.navigation.Traversal;
+import com.runemate.game.api.hybrid.location.navigation.basic.BresenhamPath;
 import com.runemate.game.api.hybrid.location.navigation.web.WebPath;
+import com.runemate.game.api.hybrid.queries.results.LocatableEntityQueryResults;
+import com.runemate.game.api.hybrid.region.GameObjects;
 import com.runemate.game.api.hybrid.region.Players;
+import com.runemate.game.api.hybrid.util.Filter;
 import com.runemate.geashawscripts.LazyAIOMiner.LazyAIOMiner;
 
 import java.text.NumberFormat;
@@ -51,36 +62,29 @@ public class Methods {
         return Players.getLocal().isMoving() || Players.getLocal().getAnimationId() != -1;
     }
 
-    public static boolean atPreferedTile() {
-        final Coordinate tile = LazyAIOMiner.preferedTile;
-        return Players.getLocal().getPosition().equals(tile);
-    }
-
-    public static boolean walkToPreferedTile() {
-        final Coordinate tile = LazyAIOMiner.preferedTile;
-        if (!Players.getLocal().getPosition().equals(tile)) {
-            final WebPath path = Traversal.getDefaultWeb().getPathBuilder().buildTo(tile);
-            LazyAIOMiner.status = "Walking to spot";
-            return path != null && path.step(true);
-        }
-        return false;
-    }
-
     public static boolean atBank() {
         return LazyAIOMiner.bankArea.contains(Players.getLocal());
     }
 
-    public static boolean atMiningSpot() {
+    public static boolean atMine() {
         return LazyAIOMiner.mineArea.contains(Players.getLocal());
     }
 
-    public static boolean activateRun() {
-        return false;
+
+
+    public static boolean canDropOre() {
+        return LazyAIOMiner.powermine && Inventory.getQuantity(LazyAIOMiner.oreName) >= 1;
     }
 
-    public static boolean walkToArea(final Area area) {
-        final Coordinate destination = area.getRandomCoordinate();
-        final WebPath path = Traversal.getDefaultWeb().getPathBuilder().buildTo(destination);
-        return path != null && path.step(true);
+    public static boolean canDropGems() {
+        return LazyAIOMiner.dropgems && Inventory.getQuantity(LazyAIOMiner.GEMS) >= 1;
+    }
+
+    public static boolean canActivateRun() {
+        return Traversal.getRunEnergy() > 20;
+    }
+
+    public static boolean activateRun() {
+        return !Traversal.isRunEnabled() && Traversal.toggleRun();
     }
 }

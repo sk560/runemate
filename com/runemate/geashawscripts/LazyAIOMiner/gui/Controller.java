@@ -24,6 +24,10 @@ public class Controller {
     @FXML
     private CheckBox checkboxDropGems;
     @FXML
+    private CheckBox checkboxNoMove;
+    @FXML
+    private CheckBox checkboxMineOneDropOne;
+    @FXML
     private ListView<String> listLocation;
     @FXML
     private ListView<String> listOre;
@@ -32,7 +36,7 @@ public class Controller {
 
     @FXML
     private ObservableList<String> listLocationData = FXCollections.observableArrayList(
-            "North-east Ardougne", "South-east Varrock", "South-west Varrock", "Al Kharid", "Rimmington"
+            "North-east Ardougne", "South-east Varrock", "South-west Varrock", "Al Kharid", "Rimmington", "Lumbridge East", "Lumbridge West"
     );
     @FXML
     private ObservableList<String> listOreData = FXCollections.observableArrayList(
@@ -58,6 +62,14 @@ public class Controller {
     private ObservableList<String> listRimmingtonData = FXCollections.observableArrayList(
             "Clay", "Tin ore", "Copper ore", "Iron ore", "Gold ore"
     );
+    @FXML
+    private ObservableList<String> listLumbridgeEastData = FXCollections.observableArrayList(
+            "Tin ore", "Copper ore"
+    );
+    @FXML
+    private ObservableList<String> listLumbridgeWestData = FXCollections.observableArrayList(
+            "Coal", "Mithril ore", "Adamantite ore"
+    );
 
     final Area VarrockEastMineArea = new Area.Rectangular(new Coordinate(3294, 3355, 0), new Coordinate(3276, 3372, 0));
     final Area VarrockEastBankArea = new Area.Rectangular(new Coordinate(3249, 3415, 0), new Coordinate(3257, 3425, 0));
@@ -74,15 +86,20 @@ public class Controller {
     final Area ArdougneMineArea = new Area.Rectangular(new Coordinate(2686,3325,0),new Coordinate(2717,3340,0));
     final Area ArdougneBankArea = new Area.Rectangular(new Coordinate(2647,3278,0),new Coordinate(2659,3288,0));
 
+    final Area LumbridgeEastMineArea = new Area.Rectangular(new Coordinate(3220,3142,0),new Coordinate(3231,3149,0));
+
+    final Area LumbridgeWestMineArea = new Area.Rectangular(new Coordinate(3141,3142,0),new Coordinate(3150,3154,0));
+    final Area LumbridgeWestBankArea = new Area.Rectangular(new Coordinate(3090,3239,0),new Coordinate(3097,3246,0));
+
     Integer[] clay = {7481, 7483, 13456, 13457, 13458};
-    Integer[] tin = {7484, 7486, 13447, 13448, 13449};
-    Integer[] copper = {7478, 7479, 7480, 13450, 13451, 13452, 13708};
+    Integer[] tin = {7484, 7486, 13447, 13448, 13449, 14883, 14864, 14863};
+    Integer[] copper = {7478, 7479, 7480, 13450, 13451, 13452, 13708, 14884, 14885, 1488};
     Integer[] iron = {7487, 7488, 7489, 13444, 13445, 13446, 13710, 13711};
     Integer[] silver = {13716, 13717};
-    Integer[] coal = {13706, 13714};
+    Integer[] coal = {13706, 13714, 14860, 14861, 14862};
     Integer[] gold = {7490, 7492, 13707, 13715};
-    Integer[] mithril = {13718, 13719};
-    Integer[] adamantite = {14168, 13720};
+    Integer[] mithril = {13718, 13719, 14890, 14948, 14949};
+    Integer[] adamantite = {14168, 13720, 14887, 14889};
 
     public void initialize() {
         listLocation.setItems(listLocationData);
@@ -102,6 +119,10 @@ public class Controller {
                     listOre.setItems(listAlKharidData);
                 } else if (observable.getValue().equals("Rimmington")) {
                     listOre.setItems(listRimmingtonData);
+                } else if (observable.getValue().equals("Lumbridge East")) {
+                    listOre.setItems(listLumbridgeEastData);
+                } else if (observable.getValue().equals("Lumbridge West")) {
+                    listOre.setItems(listLumbridgeWestData);
                 }
             }
         });
@@ -135,6 +156,11 @@ public class Controller {
             } else if (location.equals("Rimmington")) {
                 LazyAIOMiner.bankArea = RimmingtonBankArea;
                 LazyAIOMiner.mineArea = RimmingtonMineArea;
+            } else if (location.equals("Lumbridge East")) {
+                LazyAIOMiner.mineArea = LumbridgeEastMineArea;
+            } else if (location.equals("Lumbridge West")) {
+                LazyAIOMiner.mineArea = LumbridgeWestMineArea;
+                LazyAIOMiner.bankArea = LumbridgeWestBankArea;
             }
 
             if (ore.equals("Clay")) {
@@ -173,9 +199,18 @@ public class Controller {
                 }
             }
 
+            if (checkboxNoMove != null) {
+                if (checkboxNoMove.isSelected()) {
+                    LazyAIOMiner.noMove = true;
+                } else {
+                    LazyAIOMiner.noMove = false;
+                }
+            }
+
             LazyAIOMiner.guiOpen = false;
             // Close the gui.
             Loader.guiStage.close();
+
         });
     }
 }
